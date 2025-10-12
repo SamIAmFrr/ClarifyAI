@@ -94,6 +94,11 @@ async def get_current_user(request: Request) -> str:
     
     return session['user_id']
 
+# Health check endpoint
+@api_router.get("/")
+async def root():
+    return {"status": "ok", "message": "SafeEats AI API"}
+
 # Auth endpoints
 @api_router.post("/auth/session")
 async def create_session(request: Request, response: Response):
