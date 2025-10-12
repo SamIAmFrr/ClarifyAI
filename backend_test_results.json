@@ -1,0 +1,58 @@
+{
+  "total_tests": 10,
+  "passed_tests": 9,
+  "failed_tests": 1,
+  "success_rate": "90.0%",
+  "test_results": [
+    {
+      "test": "Backend Health Check",
+      "success": true,
+      "details": ""
+    },
+    {
+      "test": "Auth Session Without Session ID",
+      "success": true,
+      "details": "Expected 400, got 400"
+    },
+    {
+      "test": "Auth Me Without Token",
+      "success": true,
+      "details": "Expected 401, got 401"
+    },
+    {
+      "test": "Logout Without Auth",
+      "success": true,
+      "details": "Expected 401, got 401"
+    },
+    {
+      "test": "Get Profile Without Auth",
+      "success": true,
+      "details": "Expected 401, got 401"
+    },
+    {
+      "test": "Create Profile Without Auth",
+      "success": true,
+      "details": "Expected 401, got 401"
+    },
+    {
+      "test": "Update Profile Without Auth",
+      "success": true,
+      "details": "Expected 401, got 401"
+    },
+    {
+      "test": "Analyze Without Auth",
+      "success": true,
+      "details": "Expected 401, got 401"
+    },
+    {
+      "test": "History Without Auth",
+      "success": true,
+      "details": "Expected 401, got 401"
+    },
+    {
+      "test": "CORS Headers",
+      "success": false,
+      "details": "Missing CORS headers"
+    }
+  ]
+}
