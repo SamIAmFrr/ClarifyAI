@@ -125,7 +125,7 @@ export default function Dashboard({ user, setUser }) {
           <div className="logo-icon">
             <Shield size={20} />
           </div>
-          SafeEats AI
+          ClarifyAI
         </div>
         <div className="user-info">
           {user.picture && (
