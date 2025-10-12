@@ -1,8 +1,8 @@
-import { Shield } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 const REDIRECT_URL = `${window.location.origin}/dashboard`;
 const AUTH_URL = `https://auth.emergentagent.com/?redirect=${encodeURIComponent(REDIRECT_URL)}`;
+const LOGO_URL = "https://customer-assets.emergentagent.com/job_safe-eats-ai/artifacts/ld5nhj99_ChatGPT%20Image%20Oct%2012%2C%202025%2C%2011_29_54%20AM.png";
 
 export default function LandingPage() {
   const handleLogin = () => {
@@ -13,9 +13,7 @@ export default function LandingPage() {
     <div className="landing-page" data-testid="landing-page">
       <header className="landing-header">
         <div className="logo">
-          <div className="logo-icon">
-            <Shield size={20} />
-          </div>
+          <img src={LOGO_URL} alt="ClarifyAI Logo" className="logo-image" />
           ClarifyAI
         </div>
         <Button
