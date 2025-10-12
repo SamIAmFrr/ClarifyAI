@@ -97,7 +97,7 @@ async def get_current_user(request: Request) -> str:
 # Health check endpoint
 @api_router.get("/")
 async def root():
-    return {"status": "ok", "message": "SafeEats AI API"}
+    return {"status": "ok", "message": "ClarifyAI API"}
 
 # Auth endpoints
 @api_router.post("/auth/session")
