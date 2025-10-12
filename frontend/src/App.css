@@ -68,6 +68,12 @@ h1, h2, h3, h4, h5, h6 {
   color: #2e7d32;
 }
 
+.logo-image {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+}
+
 .logo-icon {
   width: 36px;
   height: 36px;
