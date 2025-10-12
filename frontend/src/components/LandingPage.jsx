@@ -16,7 +16,7 @@ export default function LandingPage() {
           <div className="logo-icon">
             <Shield size={20} />
           </div>
-          SafeEats AI
+          ClarifyAI
         </div>
         <Button
           onClick={handleLogin}
