@@ -123,9 +123,7 @@ export default function Dashboard({ user, setUser }) {
     <div className="dashboard" data-testid="dashboard">
       <header className="dashboard-header">
         <div className="logo">
-          <div className="logo-icon">
-            <Shield size={20} />
-          </div>
+          <img src={LOGO_URL} alt="ClarifyAI Logo" className="logo-image" />
           ClarifyAI
         </div>
         <div className="user-info">
