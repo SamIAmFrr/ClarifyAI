@@ -85,6 +85,29 @@ class ImageAnalysisResult(BaseModel):
     detailed_analysis: str
     timestamp: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
+class MenuDish(BaseModel):
+    name: str
+    description: Optional[str] = ""
+    is_safe: bool
+    allergens: List[str]
+    warnings: List[str]
+    modifications: List[str]
+
+class MenuAnalysisResult(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    restaurant_name: Optional[str] = ""
+    source: str  # 'url' or 'photo'
+    source_data: str  # URL or 'uploaded_photo'
+    safe_dishes: List[MenuDish]
+    unsafe_dishes: List[MenuDish]
+    summary: str
+    timestamp: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+
+class MenuURLRequest(BaseModel):
+    url: str
+
 # Authentication helper
 async def get_current_user(request: Request) -> str:
     session_token = request.cookies.get('session_token')
