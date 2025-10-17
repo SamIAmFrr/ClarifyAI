@@ -457,6 +457,243 @@ async def get_image_history(user_id: str = Depends(get_current_user)):
     ).sort("timestamp", -1).limit(20).to_list(20)
     return history
 
+# Menu URL Analysis endpoint
+@api_router.post("/analyze-menu-url", response_model=MenuAnalysisResult)
+async def analyze_menu_url(
+    request: MenuURLRequest,
+    user_id: str = Depends(get_current_user)
+):
+    # Get user's allergy profile
+    profile = await db.allergy_profiles.find_one({"user_id": user_id})
+    if not profile:
+        raise HTTPException(status_code=400, detail="Please set up your allergy profile first")
+    
+    allergies = profile.get('allergies', [])
+    dietary_restrictions = profile.get('dietary_restrictions', [])
+    
+    try:
+        # Fetch the menu content
+        async with httpx.AsyncClient(timeout=30.0) as client:
+            response = await client.get(request.url)
+            if response.status_code != 200:
+                raise HTTPException(status_code=400, detail="Unable to fetch menu from URL")
+            menu_content = response.text[:15000]  # Limit content size
+        
+        # Create AI prompt
+        system_message = f"""You are an expert restaurant menu analyzer. Analyze menu items for allergen safety.
+
+User's allergies: {', '.join(allergies) if allergies else 'None'}
+Dietary restrictions: {', '.join(dietary_restrictions) if dietary_restrictions else 'None'}
+
+Your task:
+1. Extract restaurant name if visible
+2. List all menu items with descriptions
+3. For each dish, determine if it's safe based on user's allergies
+4. Identify allergens in each dish
+5. Suggest modifications for unsafe dishes (e.g., "ask for no nuts", "dressing on the side")
+
+Respond in JSON format:
+{{
+  "restaurant_name": "Restaurant name or empty",
+  "safe_dishes": [
+    {{
+      "name": "Dish name",
+      "description": "Description",
+      "is_safe": true,
+      "allergens": [],
+      "warnings": [],
+      "modifications": []
+    }}
+  ],
+  "unsafe_dishes": [
+    {{
+      "name": "Dish name",
+      "description": "Description",
+      "is_safe": false,
+      "allergens": ["allergen1"],
+      "warnings": ["warning"],
+      "modifications": ["Order without X", "Ask for Y on the side"]
+    }}
+  ],
+  "summary": "Overall summary"
+}}"""
+        
+        user_message = f"Analyze this restaurant menu:\n\n{menu_content}\n\nProvide analysis in the JSON format specified."
+        
+        # Initialize Gemini chat
+        chat = LlmChat(
+            api_key=os.environ['EMERGENT_LLM_KEY'],
+            session_id=f"menu_url_{user_id}_{uuid.uuid4()}",
+            system_message=system_message
+        ).with_model("gemini", "gemini-2.5-pro")
+        
+        message = UserMessage(text=user_message)
+        ai_response = await chat.send_message(message)
+        
+        # Parse AI response
+        import json
+        response_text = ai_response
+        if '```json' in response_text:
+            response_text = response_text.split('```json')[1].split('```')[0].strip()
+        elif '```' in response_text:
+            response_text = response_text.split('```')[1].split('```')[0].strip()
+        
+        try:
+            parsed = json.loads(response_text)
+        except:
+            parsed = {
+                "restaurant_name": "",
+                "safe_dishes": [],
+                "unsafe_dishes": [],
+                "summary": "Unable to parse menu. Please try a different URL or upload a photo."
+            }
+        
+        result = MenuAnalysisResult(
+            user_id=user_id,
+            restaurant_name=parsed.get('restaurant_name', ''),
+            source='url',
+            source_data=request.url,
+            safe_dishes=[MenuDish(**dish) for dish in parsed.get('safe_dishes', [])],
+            unsafe_dishes=[MenuDish(**dish) for dish in parsed.get('unsafe_dishes', [])],
+            summary=parsed.get('summary', '')
+        )
+        
+        # Save to history
+        await db.menu_analysis_history.insert_one(result.model_dump())
+        
+        return result
+    
+    except httpx.RequestError as e:
+        logging.error(f"Menu URL fetch error: {str(e)}")
+        raise HTTPException(status_code=400, detail=f"Unable to fetch menu: {str(e)}")
+    except Exception as e:
+        logging.error(f"Menu URL analysis error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Menu analysis failed: {str(e)}")
+
+# Menu Photo Analysis endpoint
+@api_router.post("/analyze-menu-photo", response_model=MenuAnalysisResult)
+async def analyze_menu_photo(
+    file: UploadFile = File(...),
+    user_id: str = Depends(get_current_user)
+):
+    # Get user's allergy profile
+    profile = await db.allergy_profiles.find_one({"user_id": user_id})
+    if not profile:
+        raise HTTPException(status_code=400, detail="Please set up your allergy profile first")
+    
+    allergies = profile.get('allergies', [])
+    dietary_restrictions = profile.get('dietary_restrictions', [])
+    
+    try:
+        # Read image file
+        image_bytes = await file.read()
+        image_base64 = base64.b64encode(image_bytes).decode('utf-8')
+        
+        # Create AI prompt
+        system_message = f"""You are an expert restaurant menu analyzer. Analyze menu items for allergen safety.
+
+User's allergies: {', '.join(allergies) if allergies else 'None'}
+Dietary restrictions: {', '.join(dietary_restrictions) if dietary_restrictions else 'None'}
+
+Your task:
+1. Read all text from the menu photo
+2. Extract restaurant name if visible
+3. List all menu items with descriptions
+4. For each dish, determine if it's safe based on user's allergies
+5. Identify potential allergens
+6. Suggest modifications for unsafe dishes
+
+Respond in JSON format:
+{{
+  "restaurant_name": "Restaurant name or empty",
+  "safe_dishes": [
+    {{
+      "name": "Dish name",
+      "description": "Description",
+      "is_safe": true,
+      "allergens": [],
+      "warnings": [],
+      "modifications": []
+    }}
+  ],
+  "unsafe_dishes": [
+    {{
+      "name": "Dish name",
+      "description": "Description",
+      "is_safe": false,
+      "allergens": ["allergen1"],
+      "warnings": ["Contains nuts"],
+      "modifications": ["Order without nuts", "Ask about substitutions"]
+    }}
+  ],
+  "summary": "Overall summary with recommendations"
+}}"""
+        
+        user_message = f"""Analyze this restaurant menu photo. Extract all menu items and provide allergen safety analysis.
+
+Image data: data:image/jpeg;base64,{image_base64}
+
+Provide analysis in the JSON format specified."""
+        
+        # Initialize Gemini chat with vision
+        chat = LlmChat(
+            api_key=os.environ['EMERGENT_LLM_KEY'],
+            session_id=f"menu_photo_{user_id}_{uuid.uuid4()}",
+            system_message=system_message
+        ).with_model("gemini", "gemini-2.5-pro")
+        
+        message = UserMessage(
+            text=user_message,
+            image_url=f"data:image/jpeg;base64,{image_base64}"
+        )
+        ai_response = await chat.send_message(message)
+        
+        # Parse AI response
+        import json
+        response_text = ai_response
+        if '```json' in response_text:
+            response_text = response_text.split('```json')[1].split('```')[0].strip()
+        elif '```' in response_text:
+            response_text = response_text.split('```')[1].split('```')[0].strip()
+        
+        try:
+            parsed = json.loads(response_text)
+        except:
+            parsed = {
+                "restaurant_name": "",
+                "safe_dishes": [],
+                "unsafe_dishes": [],
+                "summary": "Unable to parse menu clearly. Please try with a clearer photo."
+            }
+        
+        result = MenuAnalysisResult(
+            user_id=user_id,
+            restaurant_name=parsed.get('restaurant_name', ''),
+            source='photo',
+            source_data='uploaded_photo',
+            safe_dishes=[MenuDish(**dish) for dish in parsed.get('safe_dishes', [])],
+            unsafe_dishes=[MenuDish(**dish) for dish in parsed.get('unsafe_dishes', [])],
+            summary=parsed.get('summary', '')
+        )
+        
+        # Save to history
+        await db.menu_analysis_history.insert_one(result.model_dump())
+        
+        return result
+    
+    except Exception as e:
+        logging.error(f"Menu photo analysis error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Menu analysis failed: {str(e)}")
+
+# Menu History endpoint
+@api_router.get("/menu-history", response_model=List[MenuAnalysisResult])
+async def get_menu_history(user_id: str = Depends(get_current_user)):
+    history = await db.menu_analysis_history.find(
+        {"user_id": user_id},
+        {"_id": 0}
+    ).sort("timestamp", -1).limit(20).to_list(20)
+    return history
+
 # Include router
 app.include_router(api_router)
 
