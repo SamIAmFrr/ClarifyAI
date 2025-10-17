@@ -124,6 +124,52 @@ export default function Dashboard({ user, setUser }) {
     }
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setImageFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleImageAnalyze = async () => {
+    if (!imageFile) {
+      toast.error("Please upload an image");
+      return;
+    }
+
+    if (!allergyProfile) {
+      toast.error("Please set up your allergy profile first");
+      setShowProfileForm(true);
+      return;
+    }
+
+    setAnalyzingImage(true);
+    setImageResult(null);
+
+    try {
+      const formData = new FormData();
+      formData.append('file', imageFile);
+
+      const response = await axios.post(`${API}/analyze-image`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      setImageResult(response.data);
+      loadImageHistory();
+      toast.success("Image analyzed successfully!");
+    } catch (error) {
+      toast.error(error.response?.data?.detail || "Image analysis failed");
+    } finally {
+      setAnalyzingImage(false);
+    }
+  };
+
   const handleLogout = async () => {
     try {
       await axios.post(`${API}/auth/logout`);
