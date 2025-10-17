@@ -73,6 +73,18 @@ class AnalysisResult(BaseModel):
     alternatives: List[str]
     timestamp: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
+class ImageAnalysisResult(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    product_name: Optional[str] = ""
+    ingredients: List[str]
+    detected_allergens: List[str]
+    is_safe: bool
+    warnings: List[str]
+    detailed_analysis: str
+    timestamp: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+
 # Authentication helper
 async def get_current_user(request: Request) -> str:
     session_token = request.cookies.get('session_token')
