@@ -324,6 +324,116 @@ async def get_history(user_id: str = Depends(get_current_user)):
     ).sort("timestamp", -1).limit(20).to_list(20)
     return history
 
+# Image Analysis endpoint
+@api_router.post("/analyze-image", response_model=ImageAnalysisResult)
+async def analyze_image(
+    file: UploadFile = File(...),
+    user_id: str = Depends(get_current_user)
+):
+    # Get user's allergy profile
+    profile = await db.allergy_profiles.find_one({"user_id": user_id})
+    if not profile:
+        raise HTTPException(status_code=400, detail="Please set up your allergy profile first")
+    
+    allergies = profile.get('allergies', [])
+    dietary_restrictions = profile.get('dietary_restrictions', [])
+    
+    try:
+        # Read image file
+        image_bytes = await file.read()
+        image_base64 = base64.b64encode(image_bytes).decode('utf-8')
+        
+        # Create AI prompt for image analysis
+        system_message = f"""You are an expert food label analyzer. Analyze product ingredient labels and identify allergens.
+
+User's allergies: {', '.join(allergies) if allergies else 'None'}
+Dietary restrictions: {', '.join(dietary_restrictions) if dietary_restrictions else 'None'}
+
+Your task:
+1. Read all text from the product label image
+2. Extract the product name if visible
+3. List all ingredients found
+4. Identify ALL potential allergens (common allergens: gluten, nuts, dairy, soy, eggs, fish, shellfish, sesame, etc.)
+5. Check against user's specific allergies
+6. Provide safety assessment
+
+Respond in JSON format:
+{{
+  "product_name": "Product name or empty string",
+  "ingredients": ["ingredient1", "ingredient2"],
+  "detected_allergens": ["allergen1", "allergen2"],
+  "is_safe": true/false,
+  "warnings": ["warning1", "warning2"],
+  "detailed_analysis": "Detailed explanation"
+}}"""
+        
+        user_message = f"""Analyze this food product label image. Extract all ingredients and identify any allergens.
+
+Image data: data:image/jpeg;base64,{image_base64}
+
+Provide your analysis in the JSON format specified."""
+        
+        # Initialize Gemini chat with vision
+        chat = LlmChat(
+            api_key=os.environ['EMERGENT_LLM_KEY'],
+            session_id=f"image_analysis_{user_id}_{uuid.uuid4()}",
+            system_message=system_message
+        ).with_model("gemini", "gemini-2.5-pro")
+        
+        message = UserMessage(
+            text=user_message,
+            image_url=f"data:image/jpeg;base64,{image_base64}"
+        )
+        ai_response = await chat.send_message(message)
+        
+        # Parse AI response
+        import json
+        response_text = ai_response
+        if '```json' in response_text:
+            response_text = response_text.split('```json')[1].split('```')[0].strip()
+        elif '```' in response_text:
+            response_text = response_text.split('```')[1].split('```')[0].strip()
+        
+        try:
+            parsed = json.loads(response_text)
+        except:
+            parsed = {
+                "product_name": "Unknown Product",
+                "ingredients": [],
+                "detected_allergens": [],
+                "is_safe": False,
+                "warnings": ["Unable to parse label completely. Please review manually."],
+                "detailed_analysis": response_text
+            }
+        
+        result = ImageAnalysisResult(
+            user_id=user_id,
+            product_name=parsed.get('product_name', ''),
+            ingredients=parsed.get('ingredients', []),
+            detected_allergens=parsed.get('detected_allergens', []),
+            is_safe=parsed.get('is_safe', False),
+            warnings=parsed.get('warnings', []),
+            detailed_analysis=parsed.get('detailed_analysis', '')
+        )
+        
+        # Save to history
+        await db.image_analysis_history.insert_one(result.model_dump())
+        
+        return result
+    
+    except Exception as e:
+        logging.error(f"Image analysis error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Image analysis failed: {str(e)}")
+
+# Image History endpoint
+@api_router.get("/image-history", response_model=List[ImageAnalysisResult])
+async def get_image_history(user_id: str = Depends(get_current_user)):
+    history = await db.image_analysis_history.find(
+        {"user_id": user_id},
+        {"_id": 0}
+    ).sort("timestamp", -1).limit(20).to_list(20)
+    return history
+
 # Include router
 app.include_router(api_router)
 
