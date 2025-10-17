@@ -27,6 +27,11 @@ export default function Dashboard({ user, setUser }) {
   const [analyzing, setAnalyzing] = useState(false);
   const [history, setHistory] = useState([]);
   const [showProfileForm, setShowProfileForm] = useState(false);
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
+  const [imageResult, setImageResult] = useState(null);
+  const [analyzingImage, setAnalyzingImage] = useState(false);
+  const [imageHistory, setImageHistory] = useState([]);
 
   useEffect(() => {
     loadProfile();
