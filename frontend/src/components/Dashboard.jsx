@@ -36,6 +36,7 @@ export default function Dashboard({ user, setUser }) {
   useEffect(() => {
     loadProfile();
     loadHistory();
+    loadImageHistory();
   }, []);
 
   const loadProfile = async () => {
