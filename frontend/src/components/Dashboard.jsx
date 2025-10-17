@@ -63,6 +63,15 @@ export default function Dashboard({ user, setUser }) {
     }
   };
 
+  const loadImageHistory = async () => {
+    try {
+      const response = await axios.get(`${API}/image-history`);
+      setImageHistory(response.data);
+    } catch (error) {
+      console.error('Failed to load image history:', error);
+    }
+  };
+
   const handleSaveProfile = async () => {
     const profileData = {
       allergies: profileForm.allergies.split(",").map(a => a.trim()).filter(Boolean),
