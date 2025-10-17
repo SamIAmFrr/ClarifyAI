@@ -407,6 +407,131 @@ export default function Dashboard({ user, setUser }) {
           )}
         </section>
 
+        {/* Image Upload Section */}
+        <section className="section">
+          <h2 className="section-title">📷 Scan Product Label</h2>
+          <p style={{ marginBottom: '1.5rem', color: '#558b2f' }}>
+            Upload a photo of a food product's ingredient list. AI will instantly identify allergens.
+          </p>
+
+          <div data-testid="image-upload-section">
+            <div style={{ marginBottom: '1.5rem' }}>
+              <Label htmlFor="label-image" className="mb-2 block font-semibold text-green-700">
+                Upload Product Label Image
+              </Label>
+              <Input
+                id="label-image"
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                data-testid="image-upload-input"
+                className="mb-2"
+              />
+              {imagePreview && (
+                <div style={{ marginTop: '1rem', textAlign: 'center' }}>
+                  <img
+                    src={imagePreview}
+                    alt="Preview"
+                    data-testid="image-preview"
+                    style={{ maxWidth: '100%', maxHeight: '300px', borderRadius: '12px', border: '2px solid #4caf50' }}
+                  />
+                </div>
+              )}
+            </div>
+
+            <Button
+              onClick={handleImageAnalyze}
+              data-testid="analyze-image-button"
+              disabled={analyzingImage || !imageFile}
+              className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-full px-8"
+            >
+              {analyzingImage ? "Analyzing Image..." : "Analyze Label"}
+            </Button>
+
+            {imageResult && (
+              <div
+                data-testid="image-analysis-result"
+                className={`result-card ${imageResult.is_safe ? 'safe' : 'danger'}`}
+                style={{ marginTop: '1.5rem' }}
+              >
+                <div className={`result-badge ${imageResult.is_safe ? 'safe' : 'danger'}`}>
+                  {imageResult.is_safe ? (
+                    <span data-testid="image-result-safe">
+                      <CheckCircle size={16} style={{ display: 'inline', marginRight: '0.5rem' }} />
+                      Safe to Consume
+                    </span>
+                  ) : (
+                    <span data-testid="image-result-unsafe">
+                      <AlertCircle size={16} style={{ display: 'inline', marginRight: '0.5rem' }} />
+                      Unsafe - Contains Allergens
+                    </span>
+                  )}
+                </div>
+
+                {imageResult.product_name && (
+                  <h3 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '1rem', color: '#2e7d32' }}>
+                    {imageResult.product_name}
+                  </h3>
+                )}
+
+                <div style={{ marginBottom: '1rem' }}>
+                  <Label className="font-semibold text-green-700 mb-2 block">Ingredients Found:</Label>
+                  <div className="allergy-tags">
+                    {imageResult.ingredients.slice(0, 10).map((ingredient, idx) => (
+                      <span key={idx} className="allergy-tag" style={{ background: '#e8f5e9', color: '#2e7d32' }}>
+                        {ingredient}
+                      </span>
+                    ))}
+                    {imageResult.ingredients.length > 10 && (
+                      <span className="allergy-tag" style={{ background: '#e8f5e9', color: '#2e7d32' }}>
+                        +{imageResult.ingredients.length - 10} more
+                      </span>
+                    )}
+                  </div>
+                </div>
+
+                {imageResult.detected_allergens.length > 0 && (
+                  <div style={{ marginBottom: '1rem' }}>
+                    <Label className="font-semibold text-red-700 mb-2 block">
+                      ⚠️ Detected Allergens:
+                    </Label>
+                    <div className="allergy-tags">
+                      {imageResult.detected_allergens.map((allergen, idx) => (
+                        <span
+                          key={idx}
+                          className="allergy-tag"
+                          data-testid={`detected-allergen-${idx}`}
+                          style={{ background: '#ffebee', color: '#c62828' }}
+                        >
+                          {allergen}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
+                {imageResult.warnings.length > 0 && (
+                  <div className="warning-list">
+                    <Label className="font-semibold text-orange-700 mb-2 block">
+                      <AlertCircle size={16} style={{ display: 'inline', marginRight: '0.5rem' }} />
+                      Warnings:
+                    </Label>
+                    {imageResult.warnings.map((warning, idx) => (
+                      <div key={idx} className="warning-item" data-testid={`image-warning-${idx}`}>
+                        • {warning}
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                <p style={{ marginTop: '1rem', lineHeight: 1.6, color: '#555' }}>
+                  {imageResult.detailed_analysis}
+                </p>
+              </div>
+            )}
+          </div>
+        </section>
+
         {/* History Section */}
         {history.length > 0 && (
           <section className="section">
