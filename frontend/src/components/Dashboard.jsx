@@ -874,6 +874,41 @@ export default function Dashboard({ user, setUser }) {
             </div>
           </section>
         )}
+
+        {/* Menu Analysis History */}
+        {menuHistory.length > 0 && (
+          <section className="section">
+            <h2 className="section-title">Recent Menu Analysis</h2>
+            <div className="history-grid" data-testid="menu-history-list">
+              {menuHistory.slice(0, 5).map((item, idx) => (
+                <div key={item.id} className="history-item" data-testid={`menu-history-item-${idx}`}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div>
+                      <Badge variant="default" style={{ background: '#9c27b0', color: 'white' }}>
+                        Menu Analysis
+                      </Badge>
+                      <h4 style={{ fontWeight: 600, margin: '0.5rem 0' }}>
+                        {item.restaurant_name || 'Restaurant Menu'}
+                      </h4>
+                      <p style={{ fontSize: '0.85rem', color: '#666', marginTop: '0.25rem' }}>
+                        {item.safe_dishes.length} safe • {item.unsafe_dishes.length} need modifications
+                      </p>
+                      <p style={{ fontSize: '0.85rem', color: '#666' }}>
+                        {new Date(item.timestamp).toLocaleDateString()}
+                      </p>
+                    </div>
+                    <div style={{ textAlign: 'center' }}>
+                      <CheckCircle size={20} color="#4caf50" />
+                      <p style={{ fontSize: '0.75rem', color: '#4caf50', marginTop: '0.25rem' }}>
+                        {item.safe_dishes.length}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
       </div>
     </div>
   );
