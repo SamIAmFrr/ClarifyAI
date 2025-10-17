@@ -560,6 +560,42 @@ export default function Dashboard({ user, setUser }) {
             </div>
           </section>
         )}
+
+        {/* Image Scan History */}
+        {imageHistory.length > 0 && (
+          <section className="section">
+            <h2 className="section-title">Recent Label Scans</h2>
+            <div className="history-grid" data-testid="image-history-list">
+              {imageHistory.slice(0, 5).map((item, idx) => (
+                <div key={item.id} className="history-item" data-testid={`image-history-item-${idx}`}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div>
+                      <Badge variant={item.is_safe ? "success" : "warning"}>
+                        Label Scan
+                      </Badge>
+                      <h4 style={{ fontWeight: 600, margin: '0.5rem 0' }}>
+                        {item.product_name || 'Product Label'}
+                      </h4>
+                      {item.detected_allergens.length > 0 && (
+                        <p style={{ fontSize: '0.85rem', color: '#d32f2f', marginTop: '0.25rem' }}>
+                          Allergens: {item.detected_allergens.join(', ')}
+                        </p>
+                      )}
+                      <p style={{ fontSize: '0.85rem', color: '#666' }}>
+                        {new Date(item.timestamp).toLocaleDateString()}
+                      </p>
+                    </div>
+                    {item.is_safe ? (
+                      <CheckCircle size={24} color="#4caf50" />
+                    ) : (
+                      <AlertCircle size={24} color="#f44336" />
+                    )}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        )}
       </div>
     </div>
   );
