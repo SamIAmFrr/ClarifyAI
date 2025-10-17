@@ -32,6 +32,13 @@ export default function Dashboard({ user, setUser }) {
   const [imageResult, setImageResult] = useState(null);
   const [analyzingImage, setAnalyzingImage] = useState(false);
   const [imageHistory, setImageHistory] = useState([]);
+  const [menuUrl, setMenuUrl] = useState("");
+  const [menuFile, setMenuFile] = useState(null);
+  const [menuPreview, setMenuPreview] = useState(null);
+  const [menuResult, setMenuResult] = useState(null);
+  const [analyzingMenu, setAnalyzingMenu] = useState(false);
+  const [menuHistory, setMenuHistory] = useState([]);
+  const [menuAnalysisType, setMenuAnalysisType] = useState("url"); // 'url' or 'photo'
 
   useEffect(() => {
     loadProfile();
