@@ -30,8 +30,7 @@ export default function LandingPage() {
         <div className="hero-content">
           <h1 className="hero-title">Live Safely with Your Allergies</h1>
           <p className="hero-subtitle">
-            AI-powered allergy assistant that helps you discover what's safe to eat,
-            use, and apply on your skin. Get instant analysis and personalized recommendations.
+            Personalized allergy insights, backed by real science.
           </p>
 
           <Button
