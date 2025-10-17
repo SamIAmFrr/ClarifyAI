@@ -618,6 +618,198 @@ export default function Dashboard({ user, setUser }) {
           </div>
         </section>
 
+        {/* Restaurant Menu Analysis Section */}
+        <section className="section">
+          <h2 className="section-title">🍽️ Restaurant Menu Analyzer</h2>
+          <p style={{ marginBottom: '1.5rem', color: '#558b2f' }}>
+            Paste a restaurant menu URL or upload a photo. AI will identify safe dishes and suggest modifications.
+          </p>
+
+          <div className="analysis-tabs" style={{ marginBottom: '1.5rem' }}>
+            <button
+              data-testid="menu-url-tab"
+              className={`tab-button ${menuAnalysisType === 'url' ? 'active' : ''}`}
+              onClick={() => setMenuAnalysisType('url')}
+            >
+              Menu URL
+            </button>
+            <button
+              data-testid="menu-photo-tab"
+              className={`tab-button ${menuAnalysisType === 'photo' ? 'active' : ''}`}
+              onClick={() => setMenuAnalysisType('photo')}
+            >
+              Menu Photo
+            </button>
+          </div>
+
+          {menuAnalysisType === 'url' ? (
+            <div data-testid="menu-url-section">
+              <div className="analysis-input-group">
+                <Input
+                  data-testid="menu-url-input"
+                  placeholder="Paste restaurant menu URL (e.g., https://restaurant.com/menu)"
+                  value={menuUrl}
+                  onChange={(e) => setMenuUrl(e.target.value)}
+                  className="analysis-input"
+                />
+                <Button
+                  onClick={handleMenuAnalyze}
+                  data-testid="analyze-menu-button"
+                  disabled={analyzingMenu}
+                  className="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white rounded-full px-8"
+                >
+                  {analyzingMenu ? "Analyzing..." : "Analyze Menu"}
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <div data-testid="menu-photo-section">
+              <div style={{ marginBottom: '1.5rem' }}>
+                <Label htmlFor="menu-photo" className="mb-2 block font-semibold text-green-700">
+                  Upload Menu Photo
+                </Label>
+                <Input
+                  id="menu-photo"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleMenuFileChange}
+                  data-testid="menu-photo-input"
+                  className="mb-2"
+                />
+                {menuPreview && (
+                  <div style={{ marginTop: '1rem', textAlign: 'center' }}>
+                    <img
+                      src={menuPreview}
+                      alt="Menu Preview"
+                      data-testid="menu-preview"
+                      style={{ maxWidth: '100%', maxHeight: '300px', borderRadius: '12px', border: '2px solid #9c27b0' }}
+                    />
+                  </div>
+                )}
+              </div>
+              <Button
+                onClick={handleMenuAnalyze}
+                data-testid="analyze-menu-photo-button"
+                disabled={analyzingMenu || !menuFile}
+                className="bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white rounded-full px-8"
+              >
+                {analyzingMenu ? "Analyzing..." : "Analyze Menu"}
+              </Button>
+            </div>
+          )}
+
+          {menuResult && (
+            <div data-testid="menu-analysis-result" style={{ marginTop: '2rem' }}>
+              {menuResult.restaurant_name && (
+                <h3 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '1rem', color: '#2e7d32' }}>
+                  {menuResult.restaurant_name}
+                </h3>
+              )}
+
+              <p style={{ marginBottom: '2rem', padding: '1rem', background: '#f3e5f5', borderRadius: '12px', color: '#6a1b9a' }}>
+                {menuResult.summary}
+              </p>
+
+              {menuResult.safe_dishes.length > 0 && (
+                <div style={{ marginBottom: '2rem' }}>
+                  <h4 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '1rem', color: '#2e7d32', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <CheckCircle size={24} color="#4caf50" />
+                    Safe Dishes ({menuResult.safe_dishes.length})
+                  </h4>
+                  <div style={{ display: 'grid', gap: '1rem' }}>
+                    {menuResult.safe_dishes.map((dish, idx) => (
+                      <div
+                        key={idx}
+                        data-testid={`safe-dish-${idx}`}
+                        style={{
+                          background: '#e8f5e9',
+                          padding: '1rem',
+                          borderRadius: '12px',
+                          borderLeft: '4px solid #4caf50'
+                        }}
+                      >
+                        <h5 style={{ fontWeight: 600, color: '#2e7d32', marginBottom: '0.5rem' }}>
+                          {dish.name}
+                        </h5>
+                        {dish.description && (
+                          <p style={{ fontSize: '0.9rem', color: '#558b2f', marginBottom: '0.5rem' }}>
+                            {dish.description}
+                          </p>
+                        )}
+                        <Badge style={{ background: '#4caf50', color: 'white' }}>✓ Safe to order</Badge>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {menuResult.unsafe_dishes.length > 0 && (
+                <div style={{ marginBottom: '2rem' }}>
+                  <h4 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '1rem', color: '#d32f2f', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <AlertCircle size={24} color="#f44336" />
+                    Dishes to Avoid or Modify ({menuResult.unsafe_dishes.length})
+                  </h4>
+                  <div style={{ display: 'grid', gap: '1rem' }}>
+                    {menuResult.unsafe_dishes.map((dish, idx) => (
+                      <div
+                        key={idx}
+                        data-testid={`unsafe-dish-${idx}`}
+                        style={{
+                          background: '#ffebee',
+                          padding: '1rem',
+                          borderRadius: '12px',
+                          borderLeft: '4px solid #f44336'
+                        }}
+                      >
+                        <h5 style={{ fontWeight: 600, color: '#c62828', marginBottom: '0.5rem' }}>
+                          {dish.name}
+                        </h5>
+                        {dish.description && (
+                          <p style={{ fontSize: '0.9rem', color: '#d32f2f', marginBottom: '0.5rem' }}>
+                            {dish.description}
+                          </p>
+                        )}
+                        
+                        {dish.allergens.length > 0 && (
+                          <div style={{ marginBottom: '0.75rem' }}>
+                            <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#b71c1c' }}>
+                              Contains: 
+                            </span>
+                            <div className="allergy-tags" style={{ marginTop: '0.5rem' }}>
+                              {dish.allergens.map((allergen, aIdx) => (
+                                <span
+                                  key={aIdx}
+                                  className="allergy-tag"
+                                  style={{ background: '#c62828', color: 'white', fontSize: '0.85rem' }}
+                                >
+                                  {allergen}
+                                </span>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+
+                        {dish.modifications.length > 0 && (
+                          <div style={{ marginTop: '0.75rem', padding: '0.75rem', background: '#fff3e0', borderRadius: '8px' }}>
+                            <span style={{ fontSize: '0.85rem', fontWeight: 600, color: '#e65100', display: 'block', marginBottom: '0.5rem' }}>
+                              💡 Suggested Modifications:
+                            </span>
+                            {dish.modifications.map((mod, mIdx) => (
+                              <div key={mIdx} style={{ fontSize: '0.9rem', color: '#f57c00', marginBottom: '0.25rem' }}>
+                                • {mod}
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+        </section>
+
         {/* History Section */}
         {history.length > 0 && (
           <section className="section">
