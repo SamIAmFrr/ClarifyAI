@@ -80,6 +80,15 @@ export default function Dashboard({ user, setUser }) {
     }
   };
 
+  const loadMenuHistory = async () => {
+    try {
+      const response = await axios.get(`${API}/menu-history`);
+      setMenuHistory(response.data);
+    } catch (error) {
+      console.error('Failed to load menu history:', error);
+    }
+  };
+
   const handleSaveProfile = async () => {
     const profileData = {
       allergies: profileForm.allergies.split(",").map(a => a.trim()).filter(Boolean),
