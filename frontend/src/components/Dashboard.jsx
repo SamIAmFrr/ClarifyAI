@@ -44,6 +44,7 @@ export default function Dashboard({ user, setUser }) {
     loadProfile();
     loadHistory();
     loadImageHistory();
+    loadMenuHistory();
   }, []);
 
   const loadProfile = async () => {
