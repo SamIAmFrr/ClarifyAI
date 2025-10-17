@@ -187,6 +187,75 @@ export default function Dashboard({ user, setUser }) {
     }
   };
 
+  const handleMenuFileChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setMenuFile(file);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setMenuPreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleMenuAnalyze = async () => {
+    if (!allergyProfile) {
+      toast.error("Please set up your allergy profile first");
+      setShowProfileForm(true);
+      return;
+    }
+
+    if (menuAnalysisType === 'url') {
+      if (!menuUrl.trim()) {
+        toast.error("Please enter a menu URL");
+        return;
+      }
+
+      setAnalyzingMenu(true);
+      setMenuResult(null);
+
+      try {
+        const response = await axios.post(`${API}/analyze-menu-url`, {
+          url: menuUrl
+        });
+        setMenuResult(response.data);
+        loadMenuHistory();
+        toast.success("Menu analyzed successfully!");
+      } catch (error) {
+        toast.error(error.response?.data?.detail || "Menu analysis failed");
+      } finally {
+        setAnalyzingMenu(false);
+      }
+    } else {
+      if (!menuFile) {
+        toast.error("Please upload a menu photo");
+        return;
+      }
+
+      setAnalyzingMenu(true);
+      setMenuResult(null);
+
+      try {
+        const formData = new FormData();
+        formData.append('file', menuFile);
+
+        const response = await axios.post(`${API}/analyze-menu-photo`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          }
+        });
+        setMenuResult(response.data);
+        loadMenuHistory();
+        toast.success("Menu analyzed successfully!");
+      } catch (error) {
+        toast.error(error.response?.data?.detail || "Menu analysis failed");
+      } finally {
+        setAnalyzingMenu(false);
+      }
+    }
+  };
+
   const handleLogout = async () => {
     try {
       await axios.post(`${API}/auth/logout`);
