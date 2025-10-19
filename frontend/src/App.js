@@ -4,6 +4,8 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import axios from "axios";
 import LandingPage from "@/components/LandingPage";
 import Dashboard from "@/components/Dashboard";
+import ProductScanner from "@/components/ProductScanner";
+import MenuAnalyzer from "@/components/MenuAnalyzer";
 import { Toaster } from "@/components/ui/sonner";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -14,10 +16,17 @@ axios.defaults.withCredentials = true;
 function App() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
+  const [allergyProfile, setAllergyProfile] = useState(null);
 
   useEffect(() => {
     checkAuth();
   }, []);
+
+  useEffect(() => {
+    if (user) {
+      loadProfile();
+    }
+  }, [user]);
 
   const checkAuth = async () => {
     // Check for session_id in URL fragment
@@ -56,6 +65,15 @@ function App() {
     }
   };
 
+  const loadProfile = async () => {
+    try {
+      const response = await axios.get(`${API}/profile/allergy`);
+      setAllergyProfile(response.data);
+    } catch (error) {
+      setAllergyProfile(null);
+    }
+  };
+
   if (loading) {
     return (
       <div className="loading-screen" data-testid="loading-screen">
@@ -75,7 +93,15 @@ function App() {
           />
           <Route
             path="/dashboard"
-            element={user ? <Dashboard user={user} setUser={setUser} /> : <Navigate to="/" />}
+            element={user ? <Dashboard user={user} setUser={setUser} allergyProfile={allergyProfile} reloadProfile={loadProfile} /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/product-scanner"
+            element={user ? <ProductScanner allergyProfile={allergyProfile} /> : <Navigate to="/" />}
+          />
+          <Route
+            path="/menu-analyzer"
+            element={user ? <MenuAnalyzer allergyProfile={allergyProfile} /> : <Navigate to="/" />}
           />
         </Routes>
       </BrowserRouter>
