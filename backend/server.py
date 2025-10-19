@@ -636,22 +636,24 @@ Respond in JSON format:
   "summary": "Overall summary with recommendations"
 }}"""
         
-        user_message = f"""Analyze this restaurant menu photo. Extract all menu items and provide allergen safety analysis.
-
-Image data: data:image/jpeg;base64,{image_base64}
-
-Provide analysis in the JSON format specified."""
+        user_message = "Analyze this restaurant menu photo. Extract all menu items and provide allergen safety analysis."
         
-        # Initialize Gemini chat with vision
+        # Initialize Gemini chat with vision using FileContent
         chat = LlmChat(
             api_key=os.environ['EMERGENT_LLM_KEY'],
             session_id=f"menu_photo_{user_id}_{uuid.uuid4()}",
             system_message=system_message
         ).with_model("gemini", "gemini-2.5-pro")
         
+        # Create FileContent for the image
+        file_content = FileContent(
+            content_type="image/jpeg",
+            file_content_base64=image_base64
+        )
+        
         message = UserMessage(
             text=user_message,
-            image_url=f"data:image/jpeg;base64,{image_base64}"
+            file_contents=[file_content]
         )
         ai_response = await chat.send_message(message)
         
