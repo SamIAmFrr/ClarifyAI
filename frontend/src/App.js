@@ -3,7 +3,7 @@ import "@/App.css";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import axios from "axios";
 import LandingPage from "@/components/LandingPage";
-import Dashboard from "@/components/Dashboard";
+import Dashboard from "@/components/DashboardSimple";
 import ProductScanner from "@/components/ProductScanner";
 import MenuAnalyzer from "@/components/MenuAnalyzer";
 import AppLayout from "@/components/AppLayout";
