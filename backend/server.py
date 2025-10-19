@@ -347,7 +347,7 @@ async def get_history(user_id: str = Depends(get_current_user)):
     ).sort("timestamp", -1).limit(20).to_list(20)
     return history
 
-# Image Analysis endpoint
+# Image Analysis endpoint - Updated for all product types
 @api_router.post("/analyze-image", response_model=ImageAnalysisResult)
 async def analyze_image(
     file: UploadFile = File(...),
@@ -360,25 +360,30 @@ async def analyze_image(
     
     allergies = profile.get('allergies', [])
     dietary_restrictions = profile.get('dietary_restrictions', [])
+    skin_sensitivities = profile.get('skin_sensitivities', [])
     
     try:
         # Read image file
         image_bytes = await file.read()
         image_base64 = base64.b64encode(image_bytes).decode('utf-8')
         
-        # Create AI prompt for image analysis
-        system_message = f"""You are an expert food label analyzer. Analyze product ingredient labels and identify allergens.
+        # Create AI prompt for all product types
+        system_message = f"""You are an expert product label analyzer for ALL types of products including food, skincare, cosmetics, fragrances, and personal care products.
 
 User's allergies: {', '.join(allergies) if allergies else 'None'}
 Dietary restrictions: {', '.join(dietary_restrictions) if dietary_restrictions else 'None'}
+Skin sensitivities: {', '.join(skin_sensitivities) if skin_sensitivities else 'None'}
 
 Your task:
-1. Read all text from the product label image
-2. Extract the product name if visible
-3. List all ingredients found
-4. Identify ALL potential allergens (common allergens: gluten, nuts, dairy, soy, eggs, fish, shellfish, sesame, etc.)
-5. Check against user's specific allergies
-6. Provide safety assessment
+1. Identify the product type (food, skincare, cosmetic, fragrance, etc.)
+2. Read all text from the product label image
+3. Extract the product name if visible
+4. List all ingredients found
+5. Identify ALL potential allergens:
+   - For food: gluten, nuts, dairy, soy, eggs, fish, shellfish, sesame, etc.
+   - For skincare/cosmetics: fragrances, parabens, sulfates, alcohol, essential oils, preservatives, etc.
+   - Cross-check with user's specific allergies and skin sensitivities
+6. Provide safety assessment based on product type
 
 Respond in JSON format:
 {{
@@ -387,25 +392,27 @@ Respond in JSON format:
   "detected_allergens": ["allergen1", "allergen2"],
   "is_safe": true/false,
   "warnings": ["warning1", "warning2"],
-  "detailed_analysis": "Detailed explanation"
+  "detailed_analysis": "Detailed explanation including product type and safety assessment"
 }}"""
         
-        user_message = f"""Analyze this food product label image. Extract all ingredients and identify any allergens.
-
-Image data: data:image/jpeg;base64,{image_base64}
-
-Provide your analysis in the JSON format specified."""
+        user_message = "Analyze this product label image. Identify the product type, extract all ingredients, and identify any allergens or irritants based on the user's profile."
         
-        # Initialize Gemini chat with vision
+        # Initialize Gemini chat with vision using FileContent
         chat = LlmChat(
             api_key=os.environ['EMERGENT_LLM_KEY'],
             session_id=f"image_analysis_{user_id}_{uuid.uuid4()}",
             system_message=system_message
         ).with_model("gemini", "gemini-2.5-pro")
         
+        # Create FileContent for the image
+        file_content = FileContent(
+            content_type="image/jpeg",
+            file_content_base64=image_base64
+        )
+        
         message = UserMessage(
             text=user_message,
-            image_url=f"data:image/jpeg;base64,{image_base64}"
+            file_contents=[file_content]
         )
         ai_response = await chat.send_message(message)
         
