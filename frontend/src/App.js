@@ -6,6 +6,7 @@ import LandingPage from "@/components/LandingPage";
 import Dashboard from "@/components/Dashboard";
 import ProductScanner from "@/components/ProductScanner";
 import MenuAnalyzer from "@/components/MenuAnalyzer";
+import AppLayout from "@/components/AppLayout";
 import { Toaster } from "@/components/ui/sonner";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -93,15 +94,39 @@ function App() {
           />
           <Route
             path="/dashboard"
-            element={user ? <Dashboard user={user} setUser={setUser} allergyProfile={allergyProfile} reloadProfile={loadProfile} /> : <Navigate to="/" />}
+            element={
+              user ? (
+                <AppLayout user={user} setUser={setUser}>
+                  <Dashboard allergyProfile={allergyProfile} reloadProfile={loadProfile} />
+                </AppLayout>
+              ) : (
+                <Navigate to="/" />
+              )
+            }
           />
           <Route
             path="/product-scanner"
-            element={user ? <ProductScanner allergyProfile={allergyProfile} /> : <Navigate to="/" />}
+            element={
+              user ? (
+                <AppLayout user={user} setUser={setUser}>
+                  <ProductScanner allergyProfile={allergyProfile} />
+                </AppLayout>
+              ) : (
+                <Navigate to="/" />
+              )
+            }
           />
           <Route
             path="/menu-analyzer"
-            element={user ? <MenuAnalyzer allergyProfile={allergyProfile} /> : <Navigate to="/" />}
+            element={
+              user ? (
+                <AppLayout user={user} setUser={setUser}>
+                  <MenuAnalyzer allergyProfile={allergyProfile} />
+                </AppLayout>
+              ) : (
+                <Navigate to="/" />
+              )
+            }
           />
         </Routes>
       </BrowserRouter>
