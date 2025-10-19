@@ -81,6 +81,7 @@ class ImageAnalysisResult(BaseModel):
     ingredients: List[str]
     detected_allergens: List[str]
     is_safe: bool
+    safety_rating: int  # 0-100 rating for the user
     warnings: List[str]
     detailed_analysis: str
     timestamp: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
