@@ -185,6 +185,66 @@ h1, h2, h3, h4, h5, h6 {
   position: sticky;
   top: 0;
   z-index: 100;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.nav-links {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.nav-link {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  text-decoration: none;
+  color: #2e7d32;
+  font-weight: 500;
+  transition: background 0.3s ease, color 0.3s ease;
+  background: transparent;
+}
+
+.nav-link:hover {
+  background: rgba(76, 175, 80, 0.1);
+}
+
+.nav-link.active {
+  background: linear-gradient(135deg, #66bb6a, #4caf50);
+  color: white;
+}
+
+.page-header {
+  padding: 2rem;
+  text-align: center;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.page-title {
+  font-size: clamp(1.75rem, 4vw, 2.5rem);
+  font-weight: 700;
+  color: #1b5e20;
+  margin-bottom: 1rem;
+  font-family: 'Merriweather', serif;
+}
+
+.page-subtitle {
+  font-size: 1rem;
+  color: #558b2f;
+  line-height: 1.6;
+}
+
+.scanner-page,
+.menu-page {
+  min-height: 100vh;
+  padding: 2rem;
+}
+
+.scanner-page .section,
+.menu-page .section {
+  max-width: 1000px;
+  margin: 0 auto;
 }
 
 .user-info {
