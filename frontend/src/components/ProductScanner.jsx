@@ -154,7 +154,7 @@ export default function ProductScanner({ allergyProfile }) {
               </div>
 
               {imageResult.product_name && (
-                <h3 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '1rem', color: '#2e7d32' }}>
+                <h3 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '1rem', color: '#7c3aed' }}>
                   {imageResult.product_name}
                 </h3>
               )}
