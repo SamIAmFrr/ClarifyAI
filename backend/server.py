@@ -47,6 +47,7 @@ class AllergyProfile(BaseModel):
     user_id: str
     allergies: List[str]
     dietary_restrictions: Optional[List[str]] = []
+    religion_restrictions: Optional[List[str]] = []
     skin_sensitivities: Optional[List[str]] = []
     severity_notes: Optional[str] = ""
     updated_at: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
@@ -54,6 +55,7 @@ class AllergyProfile(BaseModel):
 class AllergyProfileCreate(BaseModel):
     allergies: List[str]
     dietary_restrictions: Optional[List[str]] = []
+    religion_restrictions: Optional[List[str]] = []
     skin_sensitivities: Optional[List[str]] = []
     severity_notes: Optional[str] = ""
 
