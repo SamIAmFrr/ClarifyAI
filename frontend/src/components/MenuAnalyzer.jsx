@@ -197,8 +197,8 @@ export default function MenuAnalyzer({ allergyProfile }) {
 
             {menuResult.safe_dishes.length > 0 && (
               <div style={{ marginBottom: '2rem' }}>
-                <h4 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '1rem', color: '#2e7d32', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                  <CheckCircle size={24} color="#4caf50" />
+                <h4 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '1rem', color: '#7c3aed', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                  <CheckCircle size={24} color="#a855f7" />
                   Safe Dishes ({menuResult.safe_dishes.length})
                 </h4>
                 <div style={{ display: 'grid', gap: '1rem' }}>
