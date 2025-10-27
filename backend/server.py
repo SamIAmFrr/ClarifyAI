@@ -440,6 +440,7 @@ Respond in JSON format:
                 "ingredients": [],
                 "detected_allergens": [],
                 "is_safe": False,
+                "safety_rating": 0,
                 "warnings": ["Unable to parse label completely. Please review manually."],
                 "detailed_analysis": response_text
             }
@@ -450,6 +451,7 @@ Respond in JSON format:
             ingredients=parsed.get('ingredients', []),
             detected_allergens=parsed.get('detected_allergens', []),
             is_safe=parsed.get('is_safe', False),
+            safety_rating=parsed.get('safety_rating', 0),
             warnings=parsed.get('warnings', []),
             detailed_analysis=parsed.get('detailed_analysis', '')
         )
@@ -460,8 +462,17 @@ Respond in JSON format:
         return result
     
     except Exception as e:
-        logging.error(f"Image analysis error: {str(e)}")
-        raise HTTPException(status_code=500, detail=f"Image analysis failed: {str(e)}")
+        error_msg = str(e)
+        logging.error(f"Image analysis error: {error_msg}")
+        
+        # Check for budget/credit errors
+        if "budget" in error_msg.lower() or "credit" in error_msg.lower():
+            raise HTTPException(
+                status_code=402,
+                detail="AI credits exhausted. Please add balance to your Universal Key: Go to Profile → Universal Key → Add Balance"
+            )
+        
+        raise HTTPException(status_code=500, detail=f"Image analysis failed: {error_msg}")
 
 # Image History endpoint
 @api_router.get("/image-history", response_model=List[ImageAnalysisResult])
