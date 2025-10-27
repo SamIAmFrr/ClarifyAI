@@ -289,12 +289,12 @@ Provide your response in this JSON format:
 }}"""
     
     try:
-        # Initialize Gemini chat
+        # Initialize Gemini chat - Using Flash model (much cheaper/free)
         chat = LlmChat(
             api_key=os.environ['EMERGENT_LLM_KEY'],
             session_id=f"analysis_{user_id}_{uuid.uuid4()}",
             system_message=system_message
-        ).with_model("gemini", "gemini-2.5-pro")
+        ).with_model("gemini", "gemini-2.0-flash-exp")
         
         message = UserMessage(text=user_message)
         ai_response = await chat.send_message(message)
