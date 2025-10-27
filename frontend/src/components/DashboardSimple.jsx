@@ -291,7 +291,7 @@ export default function Dashboard({ allergyProfile, reloadProfile }) {
 
             {result.alternatives.length > 0 && (
               <div className="alternatives-list">
-                <Label className="font-semibold text-green-700 mb-2 block">
+                <Label className="font-semibold text-purple-700 mb-2 block">
                   <Info size={16} style={{ display: 'inline', marginRight: '0.5rem' }} />
                   Safe Alternatives:
                 </Label>
