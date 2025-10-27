@@ -7,6 +7,17 @@
 }
 
 /* Light Mode (Default) */
+@media (prefers-color-scheme: light) {
+  body {
+    background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 50%, #faf5ff 100%);
+    color: #1f2937;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: #6b21a8;
+  }
+}
+
 body {
   font-family: 'Inter', sans-serif;
   background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 50%, #faf5ff 100%);
