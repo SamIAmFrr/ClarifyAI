@@ -141,7 +141,7 @@ export default function Dashboard({ allergyProfile, reloadProfile }) {
             )}
             {allergyProfile.skin_sensitivities?.length > 0 && (
               <div style={{ marginBottom: '1rem' }}>
-                <Label className="font-semibold text-green-700">Skin Sensitivities:</Label>
+                <Label className="font-semibold text-purple-700">Skin Sensitivities:</Label>
                 <div className="allergy-tags">
                   {allergyProfile.skin_sensitivities.map((sensitivity, idx) => (
                     <span key={idx} className="allergy-tag">
