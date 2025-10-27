@@ -118,18 +118,39 @@ export default function ProductScanner({ allergyProfile }) {
               className={`result-card ${imageResult.is_safe ? 'safe' : 'danger'}`}
               style={{ marginTop: '1.5rem' }}
             >
-              <div className={`result-badge ${imageResult.is_safe ? 'safe' : 'danger'}`}>
-                {imageResult.is_safe ? (
-                  <span data-testid="image-result-safe">
-                    <CheckCircle size={16} style={{ display: 'inline', marginRight: '0.5rem' }} />
-                    Safe to Use
-                  </span>
-                ) : (
-                  <span data-testid="image-result-unsafe">
-                    <AlertCircle size={16} style={{ display: 'inline', marginRight: '0.5rem' }} />
-                    Unsafe - Contains Allergens/Irritants
-                  </span>
-                )}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', flexWrap: 'wrap', gap: '1rem', marginBottom: '1rem' }}>
+                <div className={`result-badge ${imageResult.is_safe ? 'safe' : 'danger'}`}>
+                  {imageResult.is_safe ? (
+                    <span data-testid="image-result-safe">
+                      <CheckCircle size={16} style={{ display: 'inline', marginRight: '0.5rem' }} />
+                      Safe to Use
+                    </span>
+                  ) : (
+                    <span data-testid="image-result-unsafe">
+                      <AlertCircle size={16} style={{ display: 'inline', marginRight: '0.5rem' }} />
+                      Unsafe - Contains Allergens/Irritants
+                    </span>
+                  )}
+                </div>
+
+                {/* Personalized Safety Rating */}
+                <div style={{ 
+                  background: imageResult.safety_rating >= 75 ? '#e8f5e9' : imageResult.safety_rating >= 50 ? '#fff3e0' : '#ffebee',
+                  padding: '1rem 1.5rem',
+                  borderRadius: '16px',
+                  textAlign: 'center',
+                  border: `3px solid ${imageResult.safety_rating >= 75 ? '#4caf50' : imageResult.safety_rating >= 50 ? '#ff9800' : '#f44336'}`
+                }}>
+                  <div style={{ fontSize: '2.5rem', fontWeight: 700, color: imageResult.safety_rating >= 75 ? '#2e7d32' : imageResult.safety_rating >= 50 ? '#e65100' : '#c62828' }}>
+                    {imageResult.safety_rating}
+                  </div>
+                  <div style={{ fontSize: '0.85rem', fontWeight: 600, color: imageResult.safety_rating >= 75 ? '#2e7d32' : imageResult.safety_rating >= 50 ? '#e65100' : '#c62828' }}>
+                    Safety Score
+                  </div>
+                  <div style={{ fontSize: '0.75rem', color: '#666', marginTop: '0.25rem' }}>
+                    Personalized for you
+                  </div>
+                </div>
               </div>
 
               {imageResult.product_name && (
