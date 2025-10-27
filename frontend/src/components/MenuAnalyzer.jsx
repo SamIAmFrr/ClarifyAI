@@ -144,7 +144,7 @@ export default function MenuAnalyzer({ allergyProfile }) {
         ) : (
           <div data-testid="menu-photo-section">
             <div style={{ marginBottom: '1.5rem' }}>
-              <Label htmlFor="menu-photo" className="mb-2 block font-semibold text-green-700">
+              <Label htmlFor="menu-photo" className="mb-2 block font-semibold text-purple-700">
                 Upload or Take Photo of Menu
               </Label>
               <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
