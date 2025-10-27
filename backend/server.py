@@ -376,13 +376,14 @@ Dietary restrictions: {', '.join(dietary_restrictions) if dietary_restrictions e
 Skin sensitivities: {', '.join(skin_sensitivities) if skin_sensitivities else 'None'}
 
 Your task:
-1. Identify the product type (food, skincare, cosmetic, fragrance, etc.)
+1. Identify the product type (food, skincare, cosmetic, perfume, cologne, fragrance, etc.)
 2. Read all text from the product label image
 3. Extract the product name if visible
 4. List all ingredients found
-5. Identify ALL potential allergens:
+5. Identify ALL potential allergens and irritants:
    - For food: gluten, nuts, dairy, soy, eggs, fish, shellfish, sesame, etc.
    - For skincare/cosmetics: fragrances, parabens, sulfates, alcohol, essential oils, preservatives, etc.
+   - For perfumes/colognes: specific fragrance compounds, alcohol content, allergens like linalool, limonene, citronellol, geraniol, etc.
    - Cross-check with user's specific allergies and skin sensitivities
 6. Provide safety assessment based on product type
 7. Calculate a personalized safety rating (0-100) where:
