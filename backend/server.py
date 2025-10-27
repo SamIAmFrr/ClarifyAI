@@ -263,21 +263,23 @@ async def analyze_item(request: AnalysisRequest, user_id: str = Depends(get_curr
     
     allergies = profile.get('allergies', [])
     dietary_restrictions = profile.get('dietary_restrictions', [])
-    skin_sensitivities = profile.get('skin_sensitivities', [])
+    religion_restrictions = profile.get('religion_restrictions', [])
     
     # Create AI prompt
     system_message = f"""You are an expert allergy assistant. Analyze products, ingredients, foods, perfumes, and fragrances for allergy safety.
     
 User's allergies: {', '.join(allergies) if allergies else 'None'}
 Dietary restrictions: {', '.join(dietary_restrictions) if dietary_restrictions else 'None'}
+Religion restrictions: {', '.join(religion_restrictions) if religion_restrictions else 'None'}
 Skin sensitivities: {', '.join(skin_sensitivities) if skin_sensitivities else 'None'}
     
 Provide a thorough analysis including:
 1. Safety assessment (safe/warning/danger)
 2. Specific concerns related to user's allergies and skin sensitivities
-3. For perfumes/fragrances: identify common allergen compounds (linalool, limonene, citronellol, geraniol, etc.)
-4. Alternative suggestions if unsafe - MUST provide 3-5 specific alternatives when item is unsafe
-5. Emergency advice if needed
+3. Check against religious dietary laws (Halal, Kosher, Hindu vegetarian, etc.)
+4. For perfumes/fragrances: identify common allergen compounds (linalool, limonene, citronellol, geraniol, etc.)
+5. Alternative suggestions if unsafe - MUST provide 3-5 specific alternatives when item is unsafe
+6. Emergency advice if needed
 
 Be clear, concise, and prioritize user safety. When something is unsafe, ALWAYS suggest 3-5 safe alternatives."""
     
