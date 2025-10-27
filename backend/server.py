@@ -263,7 +263,7 @@ async def analyze_item(request: AnalysisRequest, user_id: str = Depends(get_curr
     skin_sensitivities = profile.get('skin_sensitivities', [])
     
     # Create AI prompt
-    system_message = f"""You are an expert allergy assistant. Analyze products, ingredients, and foods for allergy safety.
+    system_message = f"""You are an expert allergy assistant. Analyze products, ingredients, foods, perfumes, and fragrances for allergy safety.
     
 User's allergies: {', '.join(allergies) if allergies else 'None'}
 Dietary restrictions: {', '.join(dietary_restrictions) if dietary_restrictions else 'None'}
@@ -271,9 +271,10 @@ Skin sensitivities: {', '.join(skin_sensitivities) if skin_sensitivities else 'N
     
 Provide a thorough analysis including:
 1. Safety assessment (safe/warning/danger)
-2. Specific concerns related to user's allergies
-3. Alternative suggestions if unsafe
-4. Emergency advice if needed
+2. Specific concerns related to user's allergies and skin sensitivities
+3. For perfumes/fragrances: identify common allergen compounds (linalool, limonene, citronellol, geraniol, etc.)
+4. Alternative suggestions if unsafe
+5. Emergency advice if needed
 
 Be clear, concise, and prioritize user safety."""
     
