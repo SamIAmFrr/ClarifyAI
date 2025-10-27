@@ -213,7 +213,7 @@ export default function MenuAnalyzer({ allergyProfile }) {
                         borderLeft: '4px solid #4caf50'
                       }}
                     >
-                      <h5 style={{ fontWeight: 600, color: '#2e7d32', marginBottom: '0.5rem' }}>
+                      <h5 style={{ fontWeight: 600, color: '#7c3aed', marginBottom: '0.5rem' }}>
                         {dish.name}
                       </h5>
                       {dish.description && (
