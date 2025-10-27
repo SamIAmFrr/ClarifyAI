@@ -73,7 +73,7 @@ export default function ProductScanner({ allergyProfile }) {
       <div className="section">
         <div data-testid="image-upload-section">
           <div style={{ marginBottom: '1.5rem' }}>
-            <Label htmlFor="label-image" className="mb-2 block font-semibold text-green-700">
+            <Label htmlFor="label-image" className="mb-2 block font-semibold text-purple-700">
               Upload or Take Photo of Product Label
             </Label>
             <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
