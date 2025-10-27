@@ -186,7 +186,7 @@ export default function MenuAnalyzer({ allergyProfile }) {
         {menuResult && (
           <div data-testid="menu-analysis-result" style={{ marginTop: '2rem' }}>
             {menuResult.restaurant_name && (
-              <h3 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '1rem', color: '#2e7d32' }}>
+              <h3 style={{ fontSize: '1.5rem', fontWeight: 700, marginBottom: '1rem', color: '#7c3aed' }}>
                 {menuResult.restaurant_name}
               </h3>
             )}
