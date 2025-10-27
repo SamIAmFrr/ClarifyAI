@@ -250,7 +250,7 @@ export default function Dashboard({ allergyProfile, reloadProfile }) {
             onClick={handleAnalyze}
             data-testid="analyze-button"
             disabled={analyzing}
-            className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white rounded-full px-8"
+            className="bg-black hover:bg-gray-800 text-white rounded-md px-8 disabled:bg-gray-400"
           >
             {analyzing ? "Analyzing..." : "Analyze"}
           </Button>
