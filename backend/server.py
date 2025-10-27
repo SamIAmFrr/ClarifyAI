@@ -273,10 +273,10 @@ Provide a thorough analysis including:
 1. Safety assessment (safe/warning/danger)
 2. Specific concerns related to user's allergies and skin sensitivities
 3. For perfumes/fragrances: identify common allergen compounds (linalool, limonene, citronellol, geraniol, etc.)
-4. Alternative suggestions if unsafe
+4. Alternative suggestions if unsafe - MUST provide 3-5 specific alternatives when item is unsafe
 5. Emergency advice if needed
 
-Be clear, concise, and prioritize user safety."""
+Be clear, concise, and prioritize user safety. When something is unsafe, ALWAYS suggest 3-5 safe alternatives."""
     
     user_message = f"""Analyze this {request.analysis_type}: {request.query}
     
