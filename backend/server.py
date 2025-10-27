@@ -627,6 +627,7 @@ async def analyze_menu_photo(
     
     allergies = profile.get('allergies', [])
     dietary_restrictions = profile.get('dietary_restrictions', [])
+    religion_restrictions = profile.get('religion_restrictions', [])
     
     try:
         # Read image file
@@ -638,6 +639,7 @@ async def analyze_menu_photo(
 
 User's allergies: {', '.join(allergies) if allergies else 'None'}
 Dietary restrictions: {', '.join(dietary_restrictions) if dietary_restrictions else 'None'}
+Religion restrictions: {', '.join(religion_restrictions) if religion_restrictions else 'None'}
 
 Your task:
 1. Read all text from the menu photo
