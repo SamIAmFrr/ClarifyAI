@@ -15,6 +15,7 @@ export default function Dashboard({ allergyProfile, reloadProfile }) {
   const [profileForm, setProfileForm] = useState({
     allergies: "",
     dietary_restrictions: "",
+    religion_restrictions: "",
     skin_sensitivities: "",
     severity_notes: ""
   });
