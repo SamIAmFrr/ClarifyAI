@@ -324,7 +324,7 @@ export default function Dashboard({ allergyProfile, reloadProfile }) {
                     </p>
                   </div>
                   {item.is_safe ? (
-                    <CheckCircle size={24} color="#4caf50" />
+                    <CheckCircle size={24} color="#a855f7" />
                   ) : (
                     <AlertCircle size={24} color="#ff9800" />
                   )}
