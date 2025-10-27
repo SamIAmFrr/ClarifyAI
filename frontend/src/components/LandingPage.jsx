@@ -37,7 +37,7 @@ export default function LandingPage() {
             onClick={handleLogin}
             size="lg"
             data-testid="hero-get-started-button"
-            className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-12 py-6 text-lg rounded-lg shadow-lg hover:shadow-xl transition-all"
+            className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white px-12 py-6 text-lg rounded-lg shadow-lg hover:shadow-xl transition-all shadow-purple-500/50"
           >
             Get Started Free
           </Button>
