@@ -202,7 +202,7 @@ export default function Dashboard({ allergyProfile, reloadProfile }) {
               <Button
                 onClick={handleSaveProfile}
                 data-testid="save-profile-button"
-                className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-lg"
+                className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white rounded-lg shadow-lg shadow-purple-500/30"
               >
                 Save Profile
               </Button>
