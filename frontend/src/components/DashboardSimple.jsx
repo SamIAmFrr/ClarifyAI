@@ -269,7 +269,7 @@ export default function Dashboard({ allergyProfile, reloadProfile }) {
               )}
             </div>
 
-            <h3 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '1rem', color: '#2e7d32' }}>
+            <h3 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '1rem', color: '#7c3aed' }}>
               {result.query}
             </h3>
 
