@@ -405,10 +405,11 @@ Respond in JSON format:
   "is_safe": true/false,
   "safety_rating": 85,
   "warnings": ["warning1", "warning2"],
+  "alternatives": ["safe alternative 1", "safe alternative 2", "safe alternative 3", "safe alternative 4", "safe alternative 5"],
   "detailed_analysis": "Detailed explanation including product type, safety assessment, and rating justification"
 }}
 
-IMPORTANT: If the product is unsafe (is_safe = false or safety_rating < 50), you MUST provide detailed recommendations for 3-5 safe alternative products in the detailed_analysis section."""
+CRITICAL: If the product is unsafe (is_safe = false or safety_rating < 75), you MUST provide 3-5 specific safe alternative products in the "alternatives" array. These should be real product names or categories that are safe for the user's allergies."""
         
         user_message = "Analyze this product label image. Identify the product type, extract all ingredients, and identify any allergens or irritants based on the user's profile."
         
