@@ -141,10 +141,10 @@ export default function ProductScanner({ allergyProfile }) {
                   textAlign: 'center',
                   border: `3px solid ${imageResult.safety_rating >= 75 ? '#4caf50' : imageResult.safety_rating >= 50 ? '#ff9800' : '#f44336'}`
                 }}>
-                  <div style={{ fontSize: '2.5rem', fontWeight: 700, color: imageResult.safety_rating >= 75 ? '#2e7d32' : imageResult.safety_rating >= 50 ? '#e65100' : '#c62828' }}>
+                  <div style={{ fontSize: '2.5rem', fontWeight: 700, color: imageResult.safety_rating >= 75 ? '#7c3aed' : imageResult.safety_rating >= 50 ? '#e65100' : '#c62828' }}>
                     {imageResult.safety_rating}
                   </div>
-                  <div style={{ fontSize: '0.85rem', fontWeight: 600, color: imageResult.safety_rating >= 75 ? '#2e7d32' : imageResult.safety_rating >= 50 ? '#e65100' : '#c62828' }}>
+                  <div style={{ fontSize: '0.85rem', fontWeight: 600, color: imageResult.safety_rating >= 75 ? '#7c3aed' : imageResult.safety_rating >= 50 ? '#e65100' : '#c62828' }}>
                     Safety Score
                   </div>
                   <div style={{ fontSize: '0.75rem', color: '#666', marginTop: '0.25rem' }}>
