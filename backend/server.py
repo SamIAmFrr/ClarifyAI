@@ -405,12 +405,12 @@ Respond in JSON format:
         
         user_message = "Analyze this product label image. Identify the product type, extract all ingredients, and identify any allergens or irritants based on the user's profile."
         
-        # Initialize Gemini chat with vision using FileContent
+        # Initialize Gemini chat with vision using FileContent - Using Flash model (much cheaper/free)
         chat = LlmChat(
             api_key=os.environ['EMERGENT_LLM_KEY'],
             session_id=f"image_analysis_{user_id}_{uuid.uuid4()}",
             system_message=system_message
-        ).with_model("gemini", "gemini-2.5-pro")
+        ).with_model("gemini", "gemini-2.0-flash-exp")
         
         # Create FileContent for the image
         file_content = FileContent(
