@@ -83,6 +83,7 @@ class ImageAnalysisResult(BaseModel):
     is_safe: bool
     safety_rating: int  # 0-100 rating for the user
     warnings: List[str]
+    alternatives: List[str]  # Safe alternative products
     detailed_analysis: str
     timestamp: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
