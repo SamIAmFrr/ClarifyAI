@@ -109,7 +109,7 @@ export default function Dashboard({ allergyProfile, reloadProfile }) {
             onClick={() => setShowProfileForm(!showProfileForm)}
             data-testid="edit-profile-button"
             variant="outline"
-            className="rounded-lg border-gray-300 hover:border-blue-500 hover:text-blue-600"
+            className="rounded-lg border-purple-500 text-purple-300 hover:border-purple-400 hover:text-purple-200 hover:bg-purple-500/10"
           >
             {showProfileForm ? "Cancel" : allergyProfile ? "Edit Profile" : "Set Up Profile"}
           </Button>
