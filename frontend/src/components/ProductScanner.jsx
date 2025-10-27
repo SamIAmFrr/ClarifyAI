@@ -163,12 +163,12 @@ export default function ProductScanner({ allergyProfile }) {
                 <Label className="font-semibold text-purple-700 mb-2 block">Ingredients Found:</Label>
                 <div className="allergy-tags">
                   {imageResult.ingredients.slice(0, 15).map((ingredient, idx) => (
-                    <span key={idx} className="allergy-tag" style={{ background: '#e8f5e9', color: '#2e7d32' }}>
+                    <span key={idx} className="allergy-tag" style={{ background: '#f3e8ff', color: '#7c3aed' }}>
                       {ingredient}
                     </span>
                   ))}
                   {imageResult.ingredients.length > 15 && (
-                    <span className="allergy-tag" style={{ background: '#e8f5e9', color: '#2e7d32' }}>
+                    <span className="allergy-tag" style={{ background: '#f3e8ff', color: '#7c3aed' }}>
                       +{imageResult.ingredients.length - 15} more
                     </span>
                   )}
