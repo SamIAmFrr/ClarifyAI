@@ -450,6 +450,7 @@ CRITICAL: If the product is unsafe (is_safe = false or safety_rating < 75), you 
                 "is_safe": False,
                 "safety_rating": 0,
                 "warnings": ["Unable to parse label completely. Please review manually."],
+                "alternatives": [],
                 "detailed_analysis": response_text
             }
         
@@ -461,6 +462,7 @@ CRITICAL: If the product is unsafe (is_safe = false or safety_rating < 75), you 
             is_safe=parsed.get('is_safe', False),
             safety_rating=parsed.get('safety_rating', 0),
             warnings=parsed.get('warnings', []),
+            alternatives=parsed.get('alternatives', []),
             detailed_analysis=parsed.get('detailed_analysis', '')
         )
         
