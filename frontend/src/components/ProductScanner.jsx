@@ -209,6 +209,35 @@ export default function ProductScanner({ allergyProfile }) {
                 </div>
               )}
 
+              {imageResult.alternatives && imageResult.alternatives.length > 0 && (
+                <div className="alternatives-list">
+                  <Label className="font-semibold text-purple-700 mb-2 block" style={{ fontSize: '1rem', marginTop: '1.5rem' }}>
+                    💡 Safe Alternatives For You:
+                  </Label>
+                  <div style={{ display: 'grid', gap: '0.75rem' }}>
+                    {imageResult.alternatives.map((alt, idx) => (
+                      <div 
+                        key={idx} 
+                        className="alternative-item" 
+                        data-testid={`image-alternative-${idx}`}
+                        style={{ 
+                          background: 'rgba(168, 85, 247, 0.1)', 
+                          border: '1px solid rgba(168, 85, 247, 0.3)',
+                          padding: '1rem',
+                          borderRadius: '8px',
+                          display: 'flex',
+                          alignItems: 'start',
+                          gap: '0.75rem'
+                        }}
+                      >
+                        <span style={{ color: '#a855f7', fontWeight: 600, fontSize: '1.1rem' }}>✓</span>
+                        <span style={{ flex: 1, color: '#7c3aed', fontWeight: 500 }}>{alt}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               <p style={{ marginTop: '1rem', lineHeight: 1.6, color: '#555', padding: '1rem', background: '#f9f9f9', borderRadius: '8px' }}>
                 {imageResult.detailed_analysis}
               </p>
