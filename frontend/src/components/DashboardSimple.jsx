@@ -31,6 +31,7 @@ export default function Dashboard({ allergyProfile, reloadProfile }) {
       setProfileForm({
         allergies: allergyProfile.allergies.join(", "),
         dietary_restrictions: allergyProfile.dietary_restrictions?.join(", ") || "",
+        religion_restrictions: allergyProfile.religion_restrictions?.join(", ") || "",
         skin_sensitivities: allergyProfile.skin_sensitivities?.join(", ") || "",
         severity_notes: allergyProfile.severity_notes || ""
       });
