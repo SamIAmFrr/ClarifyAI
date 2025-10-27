@@ -118,7 +118,7 @@ export default function Dashboard({ allergyProfile, reloadProfile }) {
         {allergyProfile && !showProfileForm ? (
           <div data-testid="allergy-profile-display">
             <div style={{ marginBottom: '1rem' }}>
-              <Label className="font-semibold text-green-700">Allergies:</Label>
+              <Label className="font-semibold text-purple-700">Allergies:</Label>
               <div className="allergy-tags">
                 {allergyProfile.allergies.map((allergy, idx) => (
                   <span key={idx} className="allergy-tag" data-testid={`allergy-tag-${idx}`}>
@@ -129,7 +129,7 @@ export default function Dashboard({ allergyProfile, reloadProfile }) {
             </div>
             {allergyProfile.dietary_restrictions?.length > 0 && (
               <div style={{ marginBottom: '1rem' }}>
-                <Label className="font-semibold text-green-700">Dietary Restrictions:</Label>
+                <Label className="font-semibold text-purple-700">Dietary Restrictions:</Label>
                 <div className="allergy-tags">
                   {allergyProfile.dietary_restrictions.map((restriction, idx) => (
                     <span key={idx} className="allergy-tag">
