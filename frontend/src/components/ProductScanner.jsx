@@ -65,7 +65,7 @@ export default function ProductScanner({ allergyProfile }) {
       <div className="page-header">
         <h1 className="page-title">📷 Product Label Scanner</h1>
         <p className="page-subtitle">
-          Upload a photo of any product label - food, skincare, cosmetics, or fragrances. 
+          Upload a photo of any product label - food, skincare, cosmetics, perfumes, colognes, or fragrances. 
           AI will instantly identify allergens and irritants based on your profile.
         </p>
       </div>
