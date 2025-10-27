@@ -369,6 +369,7 @@ async def analyze_image(
     
     allergies = profile.get('allergies', [])
     dietary_restrictions = profile.get('dietary_restrictions', [])
+    religion_restrictions = profile.get('religion_restrictions', [])
     skin_sensitivities = profile.get('skin_sensitivities', [])
     
     try:
@@ -381,6 +382,7 @@ async def analyze_image(
 
 User's allergies: {', '.join(allergies) if allergies else 'None'}
 Dietary restrictions: {', '.join(dietary_restrictions) if dietary_restrictions else 'None'}
+Religion restrictions: {', '.join(religion_restrictions) if religion_restrictions else 'None'}
 Skin sensitivities: {', '.join(skin_sensitivities) if skin_sensitivities else 'None'}
 
 Your task:
