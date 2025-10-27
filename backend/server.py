@@ -285,9 +285,11 @@ Provide your response in this JSON format:
   "is_safe": true/false,
   "summary": "Brief safety summary",
   "warnings": ["warning1", "warning2"],
-  "alternatives": ["alternative1", "alternative2"],
+  "alternatives": ["alternative1", "alternative2", "alternative3", "alternative4", "alternative5"],
   "detailed_analysis": "Detailed explanation"
-}}"""
+}}
+
+IMPORTANT: If is_safe is false, you MUST provide 3-5 safe alternatives that the user can use instead. These should be specific product names or ingredients that are safe for their allergies."""
     
     try:
         # Initialize Gemini chat - Using your free Google API key
