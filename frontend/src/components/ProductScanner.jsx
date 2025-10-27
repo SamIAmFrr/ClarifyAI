@@ -160,7 +160,7 @@ export default function ProductScanner({ allergyProfile }) {
               )}
 
               <div style={{ marginBottom: '1rem' }}>
-                <Label className="font-semibold text-green-700 mb-2 block">Ingredients Found:</Label>
+                <Label className="font-semibold text-purple-700 mb-2 block">Ingredients Found:</Label>
                 <div className="allergy-tags">
                   {imageResult.ingredients.slice(0, 15).map((ingredient, idx) => (
                     <span key={idx} className="allergy-tag" style={{ background: '#e8f5e9', color: '#2e7d32' }}>
