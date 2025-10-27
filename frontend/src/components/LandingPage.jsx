@@ -20,7 +20,7 @@ export default function LandingPage() {
           onClick={handleLogin}
           size="lg"
           data-testid="header-login-button"
-          className="bg-black hover:bg-gray-800 text-white px-8 rounded-md min-h-[44px]"
+          className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white px-8 rounded-lg min-h-[44px]"
         >
           Sign in with Google
         </Button>
