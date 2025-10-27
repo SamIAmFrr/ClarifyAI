@@ -62,7 +62,7 @@ export default function AppLayout({ user, setUser, children }) {
             size="sm"
             onClick={handleLogout}
             data-testid="logout-button"
-            className="rounded-lg border-gray-300 hover:border-blue-500 hover:text-blue-600"
+            className="rounded-lg border-purple-500 text-purple-300 hover:border-purple-400 hover:text-purple-200 hover:bg-purple-500/10"
           >
             <LogOut size={16} className="mr-2" />
             Logout
