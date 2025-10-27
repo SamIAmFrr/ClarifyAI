@@ -405,7 +405,9 @@ Respond in JSON format:
   "safety_rating": 85,
   "warnings": ["warning1", "warning2"],
   "detailed_analysis": "Detailed explanation including product type, safety assessment, and rating justification"
-}}"""
+}}
+
+IMPORTANT: If the product is unsafe (is_safe = false or safety_rating < 50), you MUST provide detailed recommendations for 3-5 safe alternative products in the detailed_analysis section."""
         
         user_message = "Analyze this product label image. Identify the product type, extract all ingredients, and identify any allergens or irritants based on the user's profile."
         
