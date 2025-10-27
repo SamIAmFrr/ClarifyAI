@@ -161,7 +161,7 @@ export default function MenuAnalyzer({ allergyProfile }) {
                   onClick={handleMenuAnalyze}
                   data-testid="analyze-menu-photo-button"
                   disabled={analyzingMenu || !menuFile}
-                  className="bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white rounded-lg px-8 disabled:bg-gray-400"
+                  className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white rounded-lg px-8 disabled:bg-gray-600 shadow-lg shadow-purple-500/30"
                 >
                   {analyzingMenu ? "Analyzing..." : "Analyze Menu"}
                 </Button>
