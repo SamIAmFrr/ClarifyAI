@@ -385,6 +385,12 @@ Your task:
    - For skincare/cosmetics: fragrances, parabens, sulfates, alcohol, essential oils, preservatives, etc.
    - Cross-check with user's specific allergies and skin sensitivities
 6. Provide safety assessment based on product type
+7. Calculate a personalized safety rating (0-100) where:
+   - 100 = Completely safe, no concerns
+   - 75-99 = Generally safe, minor considerations
+   - 50-74 = Caution advised, some concerning ingredients
+   - 25-49 = High risk, multiple allergens present
+   - 0-24 = Dangerous, contains user's major allergens
 
 Respond in JSON format:
 {{
@@ -392,8 +398,9 @@ Respond in JSON format:
   "ingredients": ["ingredient1", "ingredient2"],
   "detected_allergens": ["allergen1", "allergen2"],
   "is_safe": true/false,
+  "safety_rating": 85,
   "warnings": ["warning1", "warning2"],
-  "detailed_analysis": "Detailed explanation including product type and safety assessment"
+  "detailed_analysis": "Detailed explanation including product type, safety assessment, and rating justification"
 }}"""
         
         user_message = "Analyze this product label image. Identify the product type, extract all ingredients, and identify any allergens or irritants based on the user's profile."
