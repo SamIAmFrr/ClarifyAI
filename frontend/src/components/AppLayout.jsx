@@ -92,7 +92,9 @@ export default function AppLayout({ user, setUser, children }) {
         </div>
       </header>
 
-      {children}
+      <div className="content-wrapper" key={location.pathname}>
+        {children}
+      </div>
     </div>
   );
 }
