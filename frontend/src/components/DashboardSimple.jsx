@@ -220,42 +220,46 @@ export default function Dashboard({ allergyProfile, reloadProfile }) {
           Quickly analyze food, products, skincare items, or ingredients by name.
         </p>
         
-        <div className="analysis-tabs">
-          {[
-            { value: 'food', label: 'Food' },
-            { value: 'product', label: 'Product' },
-            { value: 'skincare', label: 'Skincare' },
-            { value: 'fragrance', label: 'Perfume/Cologne' },
-            { value: 'ingredient', label: 'Ingredient' }
-          ].map(tab => (
-            <button
-              key={tab.value}
-              data-testid={`tab-${tab.value}`}
-              className={`tab-button ${analysisType === tab.value ? 'active' : ''}`}
-              onClick={() => setAnalysisType(tab.value)}
-            >
-              {tab.label}
-            </button>
-          ))}
-        </div>
+        <div className="animated-border-box">
+          <div className="animated-border-content">
+            <div className="analysis-tabs">
+              {[
+                { value: 'food', label: 'Food' },
+                { value: 'product', label: 'Product' },
+                { value: 'skincare', label: 'Skincare' },
+                { value: 'fragrance', label: 'Perfume/Cologne' },
+                { value: 'ingredient', label: 'Ingredient' }
+              ].map(tab => (
+                <button
+                  key={tab.value}
+                  data-testid={`tab-${tab.value}`}
+                  className={`tab-button ${analysisType === tab.value ? 'active' : ''}`}
+                  onClick={() => setAnalysisType(tab.value)}
+                >
+                  {tab.label}
+                </button>
+              ))}
+            </div>
 
-        <div className="analysis-input-group">
-          <Input
-            data-testid="analysis-query-input"
-            placeholder={`Enter ${analysisType} name or description...`}
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            onKeyPress={(e) => e.key === 'Enter' && handleAnalyze()}
-            className="analysis-input"
-          />
-          <Button
-            onClick={handleAnalyze}
-            data-testid="analyze-button"
-            disabled={analyzing}
-            className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white rounded-lg px-8 disabled:bg-gray-600 shadow-lg shadow-purple-500/30"
-          >
-            {analyzing ? "Analyzing..." : "Analyze"}
-          </Button>
+            <div className="analysis-input-group">
+              <Input
+                data-testid="analysis-query-input"
+                placeholder={`Enter ${analysisType} name or description...`}
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && handleAnalyze()}
+                className="analysis-input"
+              />
+              <Button
+                onClick={handleAnalyze}
+                data-testid="analyze-button"
+                disabled={analyzing}
+                className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white rounded-lg px-8 disabled:bg-gray-600 shadow-lg shadow-purple-500/30"
+              >
+                {analyzing ? "Analyzing..." : "Analyze"}
+              </Button>
+            </div>
+          </div>
         </div>
 
         {result && (
