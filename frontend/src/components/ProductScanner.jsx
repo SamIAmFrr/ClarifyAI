@@ -104,18 +104,18 @@ export default function ProductScanner({ allergyProfile }) {
           </div>
         </div>
 
-          {imagePreview && (
-            <div style={{ marginTop: '1.5rem', textAlign: 'center', background: '#f5f5f5', padding: '1.5rem', borderRadius: '16px' }}>
-              <img
-                src={imagePreview}
-                alt="Preview"
-                data-testid="image-preview"
-                style={{ maxWidth: '100%', maxHeight: '400px', borderRadius: '12px', border: '2px solid #4caf50' }}
-              />
-            </div>
-          )}
+        {imagePreview && (
+          <div style={{ marginTop: '1.5rem', textAlign: 'center', background: '#f5f5f5', padding: '1.5rem', borderRadius: '16px' }}>
+            <img
+              src={imagePreview}
+              alt="Preview"
+              data-testid="image-preview"
+              style={{ maxWidth: '100%', maxHeight: '400px', borderRadius: '12px', border: '2px solid #4caf50' }}
+            />
+          </div>
+        )}
 
-          {imageResult && (
+        {imageResult && (
             <div
               data-testid="image-analysis-result"
               className={`result-card ${imageResult.is_safe ? 'safe' : 'danger'}`}
