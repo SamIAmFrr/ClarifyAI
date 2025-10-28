@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { Search, ChefHat, AlertCircle, CheckCircle } from "lucide-react";
+import { Search, ChefHat, AlertCircle, CheckCircle, Clock, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,7 +11,7 @@ const API = `${BACKEND_URL}/api`;
 
 export default function RecipeFinder({ allergyProfile }) {
   const [searchQuery, setSearchQuery] = useState("");
-  const [recipes, setRecipes] = useState(null);
+  const [result, setResult] = useState(null);
   const [searching, setSearching] = useState(false);
 
   const handleSearch = async () => {
@@ -26,13 +26,13 @@ export default function RecipeFinder({ allergyProfile }) {
     }
 
     setSearching(true);
-    setRecipes(null);
+    setResult(null);
 
     try {
-      const response = await axios.post(`${API}/find-recipes`, {
-        query: searchQuery
+      const response = await axios.post(`${API}/recipe-finder`, {
+        food_item: searchQuery
       });
-      setRecipes(response.data);
+      setResult(response.data);
       toast.success("Recipes found!");
     } catch (error) {
       toast.error(error.response?.data?.detail || "Recipe search failed");
