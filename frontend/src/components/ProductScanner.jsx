@@ -71,35 +71,38 @@ export default function ProductScanner({ allergyProfile }) {
       </div>
 
       <div className="section">
-        <div data-testid="image-upload-section">
-          <div style={{ marginBottom: '1.5rem' }}>
-            <Label htmlFor="label-image" className="mb-2 block font-semibold text-purple-700">
-              Upload or Take Photo of Product Label
-            </Label>
-            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
-              <Input
-                id="label-image"
-                type="file"
-                accept="image/*"
-                capture="environment"
-                onChange={handleImageChange}
-                data-testid="image-upload-input"
-                style={{ flex: 1, minWidth: '250px' }}
-              />
-              <Button
-                onClick={handleImageAnalyze}
-                data-testid="analyze-image-button"
-                disabled={analyzingImage || !imageFile}
-                className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white rounded-lg px-8 disabled:bg-gray-600 shadow-lg shadow-purple-500/30"
-              >
-                <Upload size={18} className="mr-2" />
-                {analyzingImage ? "Analyzing..." : "Analyze Product"}
-              </Button>
+        <div className="animated-border-box">
+          <div className="animated-border-content" data-testid="image-upload-section">
+            <div style={{ marginBottom: '1.5rem' }}>
+              <Label htmlFor="label-image" className="mb-2 block font-semibold text-purple-700">
+                Upload or Take Photo of Product Label
+              </Label>
+              <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                <Input
+                  id="label-image"
+                  type="file"
+                  accept="image/*"
+                  capture="environment"
+                  onChange={handleImageChange}
+                  data-testid="image-upload-input"
+                  style={{ flex: 1, minWidth: '250px' }}
+                />
+                <Button
+                  onClick={handleImageAnalyze}
+                  data-testid="analyze-image-button"
+                  disabled={analyzingImage || !imageFile}
+                  className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white rounded-lg px-8 disabled:bg-gray-600 shadow-lg shadow-purple-500/30"
+                >
+                  <Upload size={18} className="mr-2" />
+                  {analyzingImage ? "Analyzing..." : "Analyze Product"}
+                </Button>
+              </div>
+              <p style={{ fontSize: '0.85rem', color: '#666', marginTop: '0.5rem' }}>
+                📱 On mobile: Tap to take a photo with your camera or choose from gallery
+              </p>
             </div>
-            <p style={{ fontSize: '0.85rem', color: '#666', marginTop: '0.5rem' }}>
-              📱 On mobile: Tap to take a photo with your camera or choose from gallery
-            </p>
           </div>
+        </div>
 
           {imagePreview && (
             <div style={{ marginTop: '1.5rem', textAlign: 'center', background: '#f5f5f5', padding: '1.5rem', borderRadius: '16px' }}>
