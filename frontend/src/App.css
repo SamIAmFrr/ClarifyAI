@@ -935,61 +935,111 @@ h1, h2, h3, h4, h5, h6 {
 .animated-border-box::before {
   content: '';
   position: absolute;
-  width: 20px;
-  height: 20px;
-  background: radial-gradient(circle, #e879f9 0%, #c084fc 40%, #a855f7 60%, transparent 80%);
+  width: 30px;
+  height: 8px;
+  background: radial-gradient(ellipse, #e879f9 0%, #c084fc 50%, #a855f7 70%, transparent 100%);
   border-radius: 50%;
-  filter: blur(6px);
+  filter: blur(3px);
   opacity: 0.9;
   pointer-events: none;
   z-index: 10;
-  animation: travelBorder 3s linear infinite;
+  animation: travelBorder 6s linear infinite;
 }
 
 @keyframes travelBorder {
-  /* Top edge - left to right */
+  /* Top edge - horizontal oval moving left to right */
   0% {
-    top: -10px;
+    top: -4px;
     left: 0%;
+    width: 30px;
+    height: 8px;
   }
-  22.5% {
-    top: -10px;
-    left: 100%;
+  23% {
+    top: -4px;
+    left: calc(100% - 30px);
+    width: 30px;
+    height: 8px;
   }
   
-  /* Right edge - top to bottom */
+  /* Transition to vertical oval */
+  24% {
+    top: -4px;
+    left: calc(100% - 4px);
+    width: 8px;
+    height: 30px;
+  }
+  
+  /* Right edge - vertical oval moving top to bottom */
   25% {
     top: 0%;
-    left: calc(100% + 10px);
+    left: calc(100% - 4px);
+    width: 8px;
+    height: 30px;
   }
-  47.5% {
-    top: 100%;
-    left: calc(100% + 10px);
+  48% {
+    top: calc(100% - 30px);
+    left: calc(100% - 4px);
+    width: 8px;
+    height: 30px;
   }
   
-  /* Bottom edge - right to left */
+  /* Transition to horizontal oval */
+  49% {
+    top: calc(100% - 4px);
+    left: calc(100% - 30px);
+    width: 30px;
+    height: 8px;
+  }
+  
+  /* Bottom edge - horizontal oval moving right to left */
   50% {
-    top: calc(100% + 10px);
-    left: 100%;
+    top: calc(100% - 4px);
+    left: calc(100% - 30px);
+    width: 30px;
+    height: 8px;
   }
-  72.5% {
-    top: calc(100% + 10px);
+  73% {
+    top: calc(100% - 4px);
     left: 0%;
+    width: 30px;
+    height: 8px;
   }
   
-  /* Left edge - bottom to top */
-  75% {
-    top: 100%;
-    left: -10px;
+  /* Transition to vertical oval */
+  74% {
+    top: calc(100% - 30px);
+    left: -4px;
+    width: 8px;
+    height: 30px;
   }
-  97.5% {
+  
+  /* Left edge - vertical oval moving bottom to top */
+  75% {
+    top: calc(100% - 30px);
+    left: -4px;
+    width: 8px;
+    height: 30px;
+  }
+  98% {
     top: 0%;
-    left: -10px;
+    left: -4px;
+    width: 8px;
+    height: 30px;
+  }
+  
+  /* Transition back to horizontal oval */
+  99% {
+    top: -4px;
+    left: 0%;
+    width: 30px;
+    height: 8px;
   }
   
   100% {
-    top: -10px;
+    top: -4px;
     left: 0%;
+    width: 30px;
+    height: 8px;
   }
 }
 
