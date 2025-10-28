@@ -923,7 +923,7 @@ h1, h2, h3, h4, h5, h6 {
 
 }
 
-/* Animated Shooting Star Border Effect - Follows Rectangle Path */
+/* Animated Shooting Star Border Effect - Constant Speed */
 .animated-border-box {
   position: relative;
   border-radius: 12px;
@@ -943,18 +943,18 @@ h1, h2, h3, h4, h5, h6 {
   opacity: 0.9;
   pointer-events: none;
   z-index: 10;
-  animation: travelBorder 6s linear infinite;
+  animation: travelBorder 8s linear infinite;
 }
 
 @keyframes travelBorder {
-  /* Top edge - horizontal oval moving left to right */
+  /* Top edge - horizontal oval moving left to right (longest edge, gets most time) */
   0% {
     top: -4px;
     left: 0%;
     width: 30px;
     height: 8px;
   }
-  23% {
+  30% {
     top: -4px;
     left: calc(100% - 30px);
     width: 30px;
@@ -962,15 +962,15 @@ h1, h2, h3, h4, h5, h6 {
   }
   
   /* Transition to vertical oval */
-  24% {
+  31% {
     top: -4px;
     left: calc(100% - 4px);
     width: 8px;
     height: 30px;
   }
   
-  /* Right edge - vertical oval moving top to bottom */
-  25% {
+  /* Right edge - vertical oval moving top to bottom (shorter edge, gets less time) */
+  32% {
     top: 0%;
     left: calc(100% - 4px);
     width: 8px;
@@ -991,14 +991,14 @@ h1, h2, h3, h4, h5, h6 {
     height: 8px;
   }
   
-  /* Bottom edge - horizontal oval moving right to left */
+  /* Bottom edge - horizontal oval moving right to left (longest edge, gets most time) */
   50% {
     top: calc(100% - 4px);
     left: calc(100% - 30px);
     width: 30px;
     height: 8px;
   }
-  73% {
+  80% {
     top: calc(100% - 4px);
     left: 0%;
     width: 30px;
@@ -1006,15 +1006,15 @@ h1, h2, h3, h4, h5, h6 {
   }
   
   /* Transition to vertical oval */
-  74% {
+  81% {
     top: calc(100% - 30px);
     left: -4px;
     width: 8px;
     height: 30px;
   }
   
-  /* Left edge - vertical oval moving bottom to top */
-  75% {
+  /* Left edge - vertical oval moving bottom to top (shorter edge, gets less time) */
+  82% {
     top: calc(100% - 30px);
     left: -4px;
     width: 8px;
