@@ -31,6 +31,12 @@ export default function AppLayout({ user, setUser, children }) {
 
   return (
     <div className="dashboard">
+      {/* Corner Animation Elements */}
+      <div className={`corner-animation corner-top-left ${animateCorners ? 'animate' : ''}`}></div>
+      <div className={`corner-animation corner-top-right ${animateCorners ? 'animate' : ''}`}></div>
+      <div className={`corner-animation corner-bottom-left ${animateCorners ? 'animate' : ''}`}></div>
+      <div className={`corner-animation corner-bottom-right ${animateCorners ? 'animate' : ''}`}></div>
+      
       <header className="dashboard-header">
         <div style={{ display: 'flex', alignItems: 'center', gap: '2rem', flexWrap: 'wrap' }}>
           <div className="logo">
