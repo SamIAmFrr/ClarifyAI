@@ -923,48 +923,71 @@ h1, h2, h3, h4, h5, h6 {
 
 }
 
-/* Animated Shooting Star Border Effect */
+/* Animated Shooting Star Border Effect - Follows Rectangle Path */
 .animated-border-box {
   position: relative;
   border-radius: 12px;
-  padding: 2px;
-  background: transparent;
+  background: rgba(255, 255, 255, 0.95);
+  border: 2px solid rgba(168, 85, 247, 0.1);
   overflow: visible;
 }
 
 .animated-border-box::before {
   content: '';
   position: absolute;
-  inset: 0;
-  border-radius: 12px;
-  padding: 2px;
-  background: 
-    conic-gradient(
-      from 0deg,
-      transparent 0deg 340deg,
-      #a855f7 340deg 345deg,
-      #c084fc 345deg 350deg,
-      #e879f9 350deg 355deg,
-      #c084fc 355deg 360deg,
-      transparent 360deg
-    );
-  -webkit-mask: 
-    linear-gradient(#fff 0 0) content-box, 
-    linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  animation: rotateStar 2s linear infinite;
+  width: 60px;
+  height: 60px;
+  background: radial-gradient(circle, #e879f9 0%, #c084fc 30%, #a855f7 50%, transparent 70%);
+  border-radius: 50%;
+  filter: blur(8px);
+  opacity: 0.8;
   pointer-events: none;
-  z-index: 1;
+  z-index: 10;
+  animation: travelBorder 4s linear infinite;
 }
 
-.animated-border-box::after {
-  content: '';
-  position: absolute;
-  inset: 2px;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.95);
-  z-index: 2;
+@keyframes travelBorder {
+  /* Start at top-left, move right along top edge */
+  0% {
+    top: -30px;
+    left: -30px;
+  }
+  /* Move to top-right corner */
+  23% {
+    top: -30px;
+    left: calc(100% - 30px);
+  }
+  /* Move down along right edge */
+  25% {
+    top: -30px;
+    left: calc(100% - 30px);
+  }
+  48% {
+    top: calc(100% - 30px);
+    left: calc(100% - 30px);
+  }
+  /* Move left along bottom edge */
+  50% {
+    top: calc(100% - 30px);
+    left: calc(100% - 30px);
+  }
+  73% {
+    top: calc(100% - 30px);
+    left: -30px;
+  }
+  /* Move up along left edge */
+  75% {
+    top: calc(100% - 30px);
+    left: -30px;
+  }
+  98% {
+    top: -30px;
+    left: -30px;
+  }
+  100% {
+    top: -30px;
+    left: -30px;
+  }
 }
 
 .animated-border-content {
@@ -975,18 +998,14 @@ h1, h2, h3, h4, h5, h6 {
   z-index: 3;
 }
 
-@keyframes rotateStar {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
 /* Dark mode for animated border */
 @media (prefers-color-scheme: dark) {
-  .animated-border-box::after {
+  .animated-border-box {
     background: rgba(0, 0, 0, 0.7);
+    border: 2px solid rgba(168, 85, 247, 0.3);
+  }
+  
+  .animated-border-box::before {
+    opacity: 1;
   }
 }
