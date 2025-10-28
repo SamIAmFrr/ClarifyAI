@@ -1,6 +1,7 @@
 import { LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
@@ -9,6 +10,14 @@ const LOGO_URL = "https://customer-assets.emergentagent.com/job_safe-eats-ai/art
 
 export default function AppLayout({ user, setUser, children }) {
   const location = useLocation();
+  const [animateCorners, setAnimateCorners] = useState(false);
+
+  // Trigger corner animation on route change
+  useEffect(() => {
+    setAnimateCorners(true);
+    const timer = setTimeout(() => setAnimateCorners(false), 800);
+    return () => clearTimeout(timer);
+  }, [location.pathname]);
 
   const handleLogout = async () => {
     try {
