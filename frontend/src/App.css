@@ -935,58 +935,61 @@ h1, h2, h3, h4, h5, h6 {
 .animated-border-box::before {
   content: '';
   position: absolute;
-  width: 60px;
-  height: 60px;
-  background: radial-gradient(circle, #e879f9 0%, #c084fc 30%, #a855f7 50%, transparent 70%);
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(circle, #e879f9 0%, #c084fc 40%, #a855f7 60%, transparent 80%);
   border-radius: 50%;
-  filter: blur(8px);
-  opacity: 0.8;
+  filter: blur(6px);
+  opacity: 0.9;
   pointer-events: none;
   z-index: 10;
-  animation: travelBorder 4s linear infinite;
+  animation: travelBorder 3s linear infinite;
 }
 
 @keyframes travelBorder {
-  /* Start at top-left, move right along top edge */
+  /* Top edge - left to right */
   0% {
-    top: -30px;
-    left: -30px;
+    top: -10px;
+    left: 0%;
   }
-  /* Move to top-right corner */
-  23% {
-    top: -30px;
-    left: calc(100% - 30px);
+  22.5% {
+    top: -10px;
+    left: 100%;
   }
-  /* Move down along right edge */
+  
+  /* Right edge - top to bottom */
   25% {
-    top: -30px;
-    left: calc(100% - 30px);
+    top: 0%;
+    left: calc(100% + 10px);
   }
-  48% {
-    top: calc(100% - 30px);
-    left: calc(100% - 30px);
+  47.5% {
+    top: 100%;
+    left: calc(100% + 10px);
   }
-  /* Move left along bottom edge */
+  
+  /* Bottom edge - right to left */
   50% {
-    top: calc(100% - 30px);
-    left: calc(100% - 30px);
+    top: calc(100% + 10px);
+    left: 100%;
   }
-  73% {
-    top: calc(100% - 30px);
-    left: -30px;
+  72.5% {
+    top: calc(100% + 10px);
+    left: 0%;
   }
-  /* Move up along left edge */
+  
+  /* Left edge - bottom to top */
   75% {
-    top: calc(100% - 30px);
-    left: -30px;
+    top: 100%;
+    left: -10px;
   }
-  98% {
-    top: -30px;
-    left: -30px;
+  97.5% {
+    top: 0%;
+    left: -10px;
   }
+  
   100% {
-    top: -30px;
-    left: -30px;
+    top: -10px;
+    left: 0%;
   }
 }
 
