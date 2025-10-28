@@ -14,9 +14,19 @@ export default function AppLayout({ user, setUser, children }) {
 
   // Trigger corner animation on route change
   useEffect(() => {
-    setAnimateCorners(true);
-    const timer = setTimeout(() => setAnimateCorners(false), 800);
-    return () => clearTimeout(timer);
+    // Reset animation state first
+    setAnimateCorners(false);
+    
+    // Use requestAnimationFrame to ensure the reset happens before triggering
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setAnimateCorners(true);
+        
+        // Reset after animation completes
+        const timer = setTimeout(() => setAnimateCorners(false), 800);
+        return () => clearTimeout(timer);
+      });
+    });
   }, [location.pathname]);
 
   const handleLogout = async () => {
