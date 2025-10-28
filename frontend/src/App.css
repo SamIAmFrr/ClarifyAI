@@ -923,92 +923,12 @@ h1, h2, h3, h4, h5, h6 {
 
 }
 
-/* Small Glowing Orb Traveling Around Border - Like Chat Video */
+/* No Border Animation */
 .animated-border-box {
   position: relative;
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.95);
   border: 2px solid rgba(168, 85, 247, 0.1);
-  overflow: visible;
-}
-
-.animated-border-box::before {
-  content: '';
-  position: absolute;
-  width: 40px;
-  height: 40px;
-  background: radial-gradient(circle, rgba(232, 121, 249, 0.9) 0%, rgba(192, 132, 252, 0.6) 25%, rgba(168, 85, 247, 0.3) 50%, transparent 70%);
-  border-radius: 50%;
-  filter: blur(8px);
-  pointer-events: none;
-  z-index: 10;
-  animation: travelBorder 4s linear infinite;
-}
-
-@keyframes travelBorder {
-  /* Top edge - move left to right */
-  0% {
-    top: -20px;
-    left: 0%;
-  }
-  24% {
-    top: -20px;
-    left: calc(100% - 40px);
-  }
-  
-  /* Top-right corner */
-  25% {
-    top: -20px;
-    left: calc(100% - 40px);
-  }
-  
-  /* Right edge - move top to bottom */
-  26% {
-    top: 0%;
-    left: calc(100% + 20px);
-  }
-  49% {
-    top: calc(100% - 40px);
-    left: calc(100% + 20px);
-  }
-  
-  /* Bottom-right corner */
-  50% {
-    top: calc(100% - 40px);
-    left: calc(100% + 20px);
-  }
-  
-  /* Bottom edge - move right to left */
-  51% {
-    top: calc(100% + 20px);
-    left: calc(100% - 40px);
-  }
-  74% {
-    top: calc(100% + 20px);
-    left: 0%;
-  }
-  
-  /* Bottom-left corner */
-  75% {
-    top: calc(100% + 20px);
-    left: 0%;
-  }
-  
-  /* Left edge - move bottom to top */
-  76% {
-    top: calc(100% - 40px);
-    left: -60px;
-  }
-  99% {
-    top: 0%;
-    left: -60px;
-  }
-  
-  /* Top-left corner */
-  100% {
-    top: -20px;
-    left: 0%;
-  }
 }
 
 .animated-border-content {
@@ -1016,7 +936,6 @@ h1, h2, h3, h4, h5, h6 {
   background: transparent;
   border-radius: 10px;
   padding: 1.5rem;
-  z-index: 11;
 }
 
 /* Dark mode */
@@ -1024,10 +943,5 @@ h1, h2, h3, h4, h5, h6 {
   .animated-border-box {
     background: rgba(0, 0, 0, 0.7);
     border: 2px solid rgba(168, 85, 247, 0.3);
-  }
-  
-  .animated-border-box::before {
-    background: radial-gradient(circle, rgba(232, 121, 249, 1) 0%, rgba(192, 132, 252, 0.8) 25%, rgba(168, 85, 247, 0.4) 50%, transparent 70%);
-    filter: blur(10px);
   }
 }
