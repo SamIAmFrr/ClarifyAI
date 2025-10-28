@@ -120,68 +120,72 @@ export default function MenuAnalyzer({ allergyProfile }) {
           </button>
         </div>
 
-        {menuAnalysisType === 'url' ? (
-          <div data-testid="menu-url-section">
-            <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
-              <Input
-                data-testid="menu-url-input"
-                placeholder="Paste restaurant menu URL (e.g., https://restaurant.com/menu)"
-                value={menuUrl}
-                onChange={(e) => setMenuUrl(e.target.value)}
-                style={{ flex: 1, minWidth: '300px' }}
-                className="analysis-input"
-              />
-              <Button
-                onClick={handleMenuAnalyze}
-                data-testid="analyze-menu-button"
-                disabled={analyzingMenu}
-                className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white rounded-lg px-8 disabled:bg-gray-600 shadow-lg shadow-purple-500/30"
-              >
-                {analyzingMenu ? "Analyzing..." : "Analyze Menu"}
-              </Button>
-            </div>
-          </div>
-        ) : (
-          <div data-testid="menu-photo-section">
-            <div style={{ marginBottom: '1.5rem' }}>
-              <Label htmlFor="menu-photo" className="mb-2 block font-semibold text-purple-700">
-                Upload or Take Photo of Menu
-              </Label>
-              <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
-                <Input
-                  id="menu-photo"
-                  type="file"
-                  accept="image/*"
-                  capture="environment"
-                  onChange={handleMenuFileChange}
-                  data-testid="menu-photo-input"
-                  style={{ flex: 1, minWidth: '250px' }}
-                />
-                <Button
-                  onClick={handleMenuAnalyze}
-                  data-testid="analyze-menu-photo-button"
-                  disabled={analyzingMenu || !menuFile}
-                  className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white rounded-lg px-8 disabled:bg-gray-600 shadow-lg shadow-purple-500/30"
-                >
-                  {analyzingMenu ? "Analyzing..." : "Analyze Menu"}
-                </Button>
-              </div>
-              <p style={{ fontSize: '0.85rem', color: '#666', marginTop: '0.5rem' }}>
-                📱 On mobile: Tap to take a photo with your camera or choose from gallery
-              </p>
-              {menuPreview && (
-                <div style={{ marginTop: '1.5rem', textAlign: 'center', background: '#f5f5f5', padding: '1.5rem', borderRadius: '16px' }}>
-                  <img
-                    src={menuPreview}
-                    alt="Menu Preview"
-                    data-testid="menu-preview"
-                    style={{ maxWidth: '100%', maxHeight: '400px', borderRadius: '12px', border: '2px solid #9c27b0' }}
+        <div className="animated-border-box">
+          <div className="animated-border-content">
+            {menuAnalysisType === 'url' ? (
+              <div data-testid="menu-url-section">
+                <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
+                  <Input
+                    data-testid="menu-url-input"
+                    placeholder="Paste restaurant menu URL (e.g., https://restaurant.com/menu)"
+                    value={menuUrl}
+                    onChange={(e) => setMenuUrl(e.target.value)}
+                    style={{ flex: 1, minWidth: '300px' }}
+                    className="analysis-input"
                   />
+                  <Button
+                    onClick={handleMenuAnalyze}
+                    data-testid="analyze-menu-button"
+                    disabled={analyzingMenu}
+                    className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white rounded-lg px-8 disabled:bg-gray-600 shadow-lg shadow-purple-500/30"
+                  >
+                    {analyzingMenu ? "Analyzing..." : "Analyze Menu"}
+                  </Button>
                 </div>
-              )}
-            </div>
+              </div>
+            ) : (
+              <div data-testid="menu-photo-section">
+                <div style={{ marginBottom: '1.5rem' }}>
+                  <Label htmlFor="menu-photo" className="mb-2 block font-semibold text-purple-700">
+                    Upload or Take Photo of Menu
+                  </Label>
+                  <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                    <Input
+                      id="menu-photo"
+                      type="file"
+                      accept="image/*"
+                      capture="environment"
+                      onChange={handleMenuFileChange}
+                      data-testid="menu-photo-input"
+                      style={{ flex: 1, minWidth: '250px' }}
+                    />
+                    <Button
+                      onClick={handleMenuAnalyze}
+                      data-testid="analyze-menu-photo-button"
+                      disabled={analyzingMenu || !menuFile}
+                      className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white rounded-lg px-8 disabled:bg-gray-600 shadow-lg shadow-purple-500/30"
+                    >
+                      {analyzingMenu ? "Analyzing..." : "Analyze Menu"}
+                    </Button>
+                  </div>
+                  <p style={{ fontSize: '0.85rem', color: '#666', marginTop: '0.5rem' }}>
+                    📱 On mobile: Tap to take a photo with your camera or choose from gallery
+                  </p>
+                  {menuPreview && (
+                    <div style={{ marginTop: '1.5rem', textAlign: 'center', background: '#f5f5f5', padding: '1.5rem', borderRadius: '16px' }}>
+                      <img
+                        src={menuPreview}
+                        alt="Menu Preview"
+                        data-testid="menu-preview"
+                        style={{ maxWidth: '100%', maxHeight: '400px', borderRadius: '12px', border: '2px solid #9c27b0' }}
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
           </div>
-        )}
+        </div>
 
         {menuResult && (
           <div data-testid="menu-analysis-result" style={{ marginTop: '2rem' }}>
