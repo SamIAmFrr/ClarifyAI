@@ -923,7 +923,7 @@ h1, h2, h3, h4, h5, h6 {
 
 }
 
-/* Animated Shooting Star Border Effect - Buttery Smooth */
+/* Animated Glowing Line Border Effect - Like Chat */
 .animated-border-box {
   position: relative;
   border-radius: 12px;
@@ -935,83 +935,115 @@ h1, h2, h3, h4, h5, h6 {
 .animated-border-box::before {
   content: '';
   position: absolute;
-  width: 30px;
-  height: 8px;
-  background: radial-gradient(ellipse, #e879f9 0%, #c084fc 60%, #a855f7 80%, transparent 100%);
-  border-radius: 50%;
-  filter: blur(1px);
-  opacity: 0.95;
+  width: 80px;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, #a855f7, #e879f9, #a855f7, transparent);
+  box-shadow: 0 0 10px #e879f9, 0 0 20px #a855f7;
+  border-radius: 2px;
   pointer-events: none;
   z-index: 10;
-  animation: travelBorder 8s linear infinite;
+  animation: lineTravel 6s linear infinite;
 }
 
-@keyframes travelBorder {
-  /* Top edge - horizontal oval */
-  0% { top: -4px; left: 0%; width: 30px; height: 8px; }
-  26% { top: -4px; left: calc(100% - 30px); width: 30px; height: 8px; }
+@keyframes lineTravel {
+  /* Top edge - horizontal line moving left to right */
+  0%, 2% {
+    top: 0;
+    left: 0%;
+    width: 80px;
+    height: 3px;
+    transform: rotate(0deg);
+  }
+  23% {
+    top: 0;
+    left: calc(100% - 80px);
+    width: 80px;
+    height: 3px;
+    transform: rotate(0deg);
+  }
   
-  /* Top-right corner - ultra smooth 10-step transition */
-  26.5% { top: -4px; left: calc(100% - 28px); width: 28px; height: 9px; }
-  27% { top: -4px; left: calc(100% - 26px); width: 26px; height: 10px; }
-  27.5% { top: -4px; left: calc(100% - 24px); width: 24px; height: 12px; }
-  28% { top: -4px; left: calc(100% - 21px); width: 21px; height: 14px; }
-  28.5% { top: -4px; left: calc(100% - 18px); width: 18px; height: 16px; }
-  29% { top: -4px; left: calc(100% - 15px); width: 15px; height: 19px; }
-  29.5% { top: -4px; left: calc(100% - 12px); width: 12px; height: 22px; }
-  30% { top: -4px; left: calc(100% - 9px); width: 9px; height: 25px; }
-  30.5% { top: -4px; left: calc(100% - 6px); width: 8px; height: 27px; }
-  31% { top: -2px; left: calc(100% - 4px); width: 8px; height: 30px; }
+  /* Top-right corner transition */
+  25% {
+    top: 0;
+    left: 100%;
+    width: 3px;
+    height: 80px;
+    transform: rotate(0deg);
+  }
   
-  /* Right edge - vertical oval */
-  32% { top: 0%; left: calc(100% - 4px); width: 8px; height: 30px; }
-  44% { top: calc(100% - 30px); left: calc(100% - 4px); width: 8px; height: 30px; }
+  /* Right edge - vertical line moving top to bottom */
+  27% {
+    top: 0%;
+    left: calc(100% - 3px);
+    width: 3px;
+    height: 80px;
+    transform: rotate(0deg);
+  }
+  48% {
+    top: calc(100% - 80px);
+    left: calc(100% - 3px);
+    width: 3px;
+    height: 80px;
+    transform: rotate(0deg);
+  }
   
-  /* Bottom-right corner - ultra smooth 10-step transition */
-  44.5% { top: calc(100% - 27px); left: calc(100% - 4px); width: 8px; height: 27px; }
-  45% { top: calc(100% - 25px); left: calc(100% - 4px); width: 9px; height: 25px; }
-  45.5% { top: calc(100% - 22px); left: calc(100% - 4px); width: 12px; height: 22px; }
-  46% { top: calc(100% - 19px); left: calc(100% - 4px); width: 15px; height: 19px; }
-  46.5% { top: calc(100% - 16px); left: calc(100% - 4px); width: 18px; height: 16px; }
-  47% { top: calc(100% - 14px); left: calc(100% - 4px); width: 21px; height: 14px; }
-  47.5% { top: calc(100% - 12px); left: calc(100% - 6px); width: 24px; height: 12px; }
-  48% { top: calc(100% - 10px); left: calc(100% - 8px); width: 26px; height: 10px; }
-  48.5% { top: calc(100% - 9px); left: calc(100% - 12px); width: 28px; height: 9px; }
-  49% { top: calc(100% - 4px); left: calc(100% - 30px); width: 30px; height: 8px; }
+  /* Bottom-right corner transition */
+  50% {
+    top: 100%;
+    left: calc(100% - 80px);
+    width: 80px;
+    height: 3px;
+    transform: rotate(0deg);
+  }
   
-  /* Bottom edge - horizontal oval */
-  50% { top: calc(100% - 4px); left: calc(100% - 30px); width: 30px; height: 8px; }
-  76% { top: calc(100% - 4px); left: 0%; width: 30px; height: 8px; }
+  /* Bottom edge - horizontal line moving right to left */
+  52% {
+    top: calc(100% - 3px);
+    left: calc(100% - 80px);
+    width: 80px;
+    height: 3px;
+    transform: rotate(0deg);
+  }
+  73% {
+    top: calc(100% - 3px);
+    left: 0%;
+    width: 80px;
+    height: 3px;
+    transform: rotate(0deg);
+  }
   
-  /* Bottom-left corner - ultra smooth 10-step transition */
-  76.5% { top: calc(100% - 4px); left: -2px; width: 28px; height: 9px; }
-  77% { top: calc(100% - 4px); left: -4px; width: 26px; height: 10px; }
-  77.5% { top: calc(100% - 4px); left: -4px; width: 24px; height: 12px; }
-  78% { top: calc(100% - 4px); left: -4px; width: 21px; height: 14px; }
-  78.5% { top: calc(100% - 4px); left: -4px; width: 18px; height: 16px; }
-  79% { top: calc(100% - 4px); left: -4px; width: 15px; height: 19px; }
-  79.5% { top: calc(100% - 6px); left: -4px; width: 12px; height: 22px; }
-  80% { top: calc(100% - 8px); left: -4px; width: 9px; height: 25px; }
-  80.5% { top: calc(100% - 12px); left: -4px; width: 8px; height: 27px; }
-  81% { top: calc(100% - 30px); left: -4px; width: 8px; height: 30px; }
+  /* Bottom-left corner transition */
+  75% {
+    top: calc(100% - 80px);
+    left: 0;
+    width: 3px;
+    height: 80px;
+    transform: rotate(0deg);
+  }
   
-  /* Left edge - vertical oval */
-  82% { top: calc(100% - 30px); left: -4px; width: 8px; height: 30px; }
-  94% { top: 0%; left: -4px; width: 8px; height: 30px; }
+  /* Left edge - vertical line moving bottom to top */
+  77% {
+    top: calc(100% - 80px);
+    left: 0;
+    width: 3px;
+    height: 80px;
+    transform: rotate(0deg);
+  }
+  98% {
+    top: 0%;
+    left: 0;
+    width: 3px;
+    height: 80px;
+    transform: rotate(0deg);
+  }
   
-  /* Top-left corner - ultra smooth 10-step transition */
-  94.5% { top: -2px; left: -4px; width: 8px; height: 27px; }
-  95% { top: -4px; left: -4px; width: 9px; height: 25px; }
-  95.5% { top: -4px; left: -4px; width: 12px; height: 22px; }
-  96% { top: -4px; left: -4px; width: 15px; height: 19px; }
-  96.5% { top: -4px; left: -4px; width: 18px; height: 16px; }
-  97% { top: -4px; left: -4px; width: 21px; height: 14px; }
-  97.5% { top: -4px; left: -2px; width: 24px; height: 12px; }
-  98% { top: -4px; left: 0%; width: 26px; height: 10px; }
-  98.5% { top: -4px; left: 0%; width: 28px; height: 9px; }
-  99% { top: -4px; left: 0%; width: 30px; height: 8px; }
-  
-  100% { top: -4px; left: 0%; width: 30px; height: 8px; }
+  100% {
+    top: 0;
+    left: 0%;
+    width: 80px;
+    height: 3px;
+    transform: rotate(0deg);
+  }
 }
 
 .animated-border-content {
@@ -1030,6 +1062,6 @@ h1, h2, h3, h4, h5, h6 {
   }
   
   .animated-border-box::before {
-    opacity: 1;
+    box-shadow: 0 0 15px #e879f9, 0 0 25px #a855f7;
   }
 }
