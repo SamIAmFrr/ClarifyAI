@@ -118,6 +118,18 @@ function App() {
             }
           />
           <Route
+            path="/recipe-finder"
+            element={
+              user ? (
+                <AppLayout user={user} setUser={setUser}>
+                  <RecipeFinder allergyProfile={allergyProfile} />
+                </AppLayout>
+              ) : (
+                <Navigate to="/" />
+              )
+            }
+          />
+          <Route
             path="/menu-analyzer"
             element={
               user ? (
