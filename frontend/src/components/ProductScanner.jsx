@@ -246,7 +246,6 @@ export default function ProductScanner({ allergyProfile }) {
               </p>
             </div>
           )}
-        </div>
       </div>
     </div>
   );
