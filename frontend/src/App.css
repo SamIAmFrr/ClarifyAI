@@ -935,21 +935,22 @@ h1, h2, h3, h4, h5, h6 {
 .animated-border-box::before {
   content: '';
   position: absolute;
-  inset: 0;
+  inset: -2px;
   border-radius: 12px;
-  padding: 2px;
   background: linear-gradient(
     90deg,
+    transparent,
+    transparent,
+    transparent,
     #a855f7,
-    #ec4899,
-    #8b5cf6,
-    #a855f7
+    #c084fc,
+    #e879f9,
+    transparent,
+    transparent,
+    transparent
   );
-  background-size: 300% 300%;
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  animation: rotateBorder 3s linear infinite;
+  background-size: 200% 100%;
+  animation: shootingStar 3s linear infinite;
   pointer-events: none;
   z-index: 1;
 }
