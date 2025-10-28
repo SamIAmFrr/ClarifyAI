@@ -923,7 +923,7 @@ h1, h2, h3, h4, h5, h6 {
 
 }
 
-/* Animated Small Orb Border Effect - Travels Around Border */
+/* Small Glowing Orb Traveling Around Border - Like Chat Video */
 .animated-border-box {
   position: relative;
   border-radius: 12px;
@@ -935,24 +935,79 @@ h1, h2, h3, h4, h5, h6 {
 .animated-border-box::before {
   content: '';
   position: absolute;
-  width: 12px;
-  height: 12px;
-  background: radial-gradient(circle, #e879f9 0%, #c084fc 40%, #a855f7 60%, transparent 100%);
+  width: 40px;
+  height: 40px;
+  background: radial-gradient(circle, rgba(232, 121, 249, 0.9) 0%, rgba(192, 132, 252, 0.6) 25%, rgba(168, 85, 247, 0.3) 50%, transparent 70%);
   border-radius: 50%;
-  box-shadow: 0 0 15px #e879f9, 0 0 25px #a855f7, 0 0 35px rgba(232, 121, 249, 0.5);
+  filter: blur(8px);
   pointer-events: none;
   z-index: 10;
-  offset-path: path('M 12 0 L calc(100% - 12) 0 Q 100% 0 100% 12 L 100% calc(100% - 12) Q 100% 100% calc(100% - 12) 100% L 12 100% Q 0 100% 0 calc(100% - 12) L 0 12 Q 0 0 12 0');
-  offset-distance: 0%;
-  animation: travelPath 3s linear infinite;
+  animation: travelBorder 4s linear infinite;
 }
 
-@keyframes travelPath {
+@keyframes travelBorder {
+  /* Top edge - move left to right */
   0% {
-    offset-distance: 0%;
+    top: -20px;
+    left: 0%;
   }
+  24% {
+    top: -20px;
+    left: calc(100% - 40px);
+  }
+  
+  /* Top-right corner */
+  25% {
+    top: -20px;
+    left: calc(100% - 40px);
+  }
+  
+  /* Right edge - move top to bottom */
+  26% {
+    top: 0%;
+    left: calc(100% + 20px);
+  }
+  49% {
+    top: calc(100% - 40px);
+    left: calc(100% + 20px);
+  }
+  
+  /* Bottom-right corner */
+  50% {
+    top: calc(100% - 40px);
+    left: calc(100% + 20px);
+  }
+  
+  /* Bottom edge - move right to left */
+  51% {
+    top: calc(100% + 20px);
+    left: calc(100% - 40px);
+  }
+  74% {
+    top: calc(100% + 20px);
+    left: 0%;
+  }
+  
+  /* Bottom-left corner */
+  75% {
+    top: calc(100% + 20px);
+    left: 0%;
+  }
+  
+  /* Left edge - move bottom to top */
+  76% {
+    top: calc(100% - 40px);
+    left: -60px;
+  }
+  99% {
+    top: 0%;
+    left: -60px;
+  }
+  
+  /* Top-left corner */
   100% {
-    offset-distance: 100%;
+    top: -20px;
+    left: 0%;
   }
 }
 
@@ -964,7 +1019,7 @@ h1, h2, h3, h4, h5, h6 {
   z-index: 11;
 }
 
-/* Dark mode for animated border */
+/* Dark mode */
 @media (prefers-color-scheme: dark) {
   .animated-border-box {
     background: rgba(0, 0, 0, 0.7);
@@ -972,6 +1027,7 @@ h1, h2, h3, h4, h5, h6 {
   }
   
   .animated-border-box::before {
-    box-shadow: 0 0 20px #e879f9, 0 0 35px #a855f7, 0 0 50px rgba(232, 121, 249, 0.6);
+    background: radial-gradient(circle, rgba(232, 121, 249, 1) 0%, rgba(192, 132, 252, 0.8) 25%, rgba(168, 85, 247, 0.4) 50%, transparent 70%);
+    filter: blur(10px);
   }
 }
