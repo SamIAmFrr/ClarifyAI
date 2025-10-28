@@ -112,6 +112,29 @@ class MenuAnalysisResult(BaseModel):
 class MenuURLRequest(BaseModel):
     url: str
 
+class RecipeRequest(BaseModel):
+    food_item: str
+
+class Recipe(BaseModel):
+    name: str
+    description: Optional[str] = ""
+    prep_time: Optional[str] = ""
+    cook_time: Optional[str] = ""
+    servings: Optional[str] = ""
+    ingredients: List[str]
+    instructions: List[str]
+    allergen_warnings: List[str]
+    safe_for_user: bool
+
+class RecipeFinderResult(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    food_item: str
+    recipes: List[Recipe]
+    summary: str
+    timestamp: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
+
 # Authentication helper
 async def get_current_user(request: Request) -> str:
     session_token = request.cookies.get('session_token')
