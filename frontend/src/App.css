@@ -923,12 +923,13 @@ h1, h2, h3, h4, h5, h6 {
 
 }
 
-/* Animated Glowing Border Effect */
+/* Animated Shooting Star Border Effect */
 .animated-border-box {
   position: relative;
   border-radius: 12px;
   padding: 2px;
-  background: linear-gradient(135deg, #faf5ff 0%, #f3e8ff 100%);
+  background: transparent;
+  overflow: hidden;
 }
 
 .animated-border-box::before {
