@@ -5,6 +5,7 @@ import axios from "axios";
 import LandingPage from "@/components/LandingPage";
 import Dashboard from "@/components/DashboardSimple";
 import ProductScanner from "@/components/ProductScanner";
+import RecipeFinder from "@/components/RecipeFinder";
 import MenuAnalyzer from "@/components/MenuAnalyzer";
 import AppLayout from "@/components/AppLayout";
 import { Toaster } from "@/components/ui/sonner";
