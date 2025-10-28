@@ -929,28 +929,31 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 12px;
   padding: 2px;
   background: transparent;
-  overflow: hidden;
+  overflow: visible;
 }
 
 .animated-border-box::before {
   content: '';
   position: absolute;
-  inset: -2px;
+  inset: 0;
   border-radius: 12px;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    transparent,
-    transparent,
-    #a855f7,
-    #c084fc,
-    #e879f9,
-    transparent,
-    transparent,
-    transparent
-  );
-  background-size: 200% 100%;
-  animation: shootingStar 3s linear infinite;
+  padding: 2px;
+  background: 
+    conic-gradient(
+      from 0deg,
+      transparent 0deg 340deg,
+      #a855f7 340deg 345deg,
+      #c084fc 345deg 350deg,
+      #e879f9 350deg 355deg,
+      #c084fc 355deg 360deg,
+      transparent 360deg
+    );
+  -webkit-mask: 
+    linear-gradient(#fff 0 0) content-box, 
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: rotateStar 2s linear infinite;
   pointer-events: none;
   z-index: 1;
 }
@@ -972,32 +975,17 @@ h1, h2, h3, h4, h5, h6 {
   z-index: 3;
 }
 
-@keyframes shootingStar {
+@keyframes rotateStar {
   0% {
-    transform: rotate(0deg) translateX(0);
-    background-position: 0% 0%;
-  }
-  25% {
-    background-position: 100% 0%;
-  }
-  50% {
-    background-position: 100% 100%;
-  }
-  75% {
-    background-position: 0% 100%;
+    transform: rotate(0deg);
   }
   100% {
     transform: rotate(360deg);
-    background-position: 0% 0%;
   }
 }
 
 /* Dark mode for animated border */
 @media (prefers-color-scheme: dark) {
-  .animated-border-box {
-    background: transparent;
-  }
-
   .animated-border-box::after {
     background: rgba(0, 0, 0, 0.7);
   }
