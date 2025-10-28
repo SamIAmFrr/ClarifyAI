@@ -148,6 +148,99 @@ class AllergyAssistantAPITester:
             self.log_test("CORS Headers", False, str(e))
             return False
 
+    def test_recipe_finder_without_auth(self):
+        """Test recipe finder endpoint without authentication"""
+        try:
+            response = requests.post(f"{self.api_url}/recipe-finder", json={
+                "food_item": "chocolate cake"
+            })
+            success = response.status_code == 401
+            self.log_test("Recipe Finder Without Auth", success,
+                         f"Expected 401, got {response.status_code}")
+            return success
+        except Exception as e:
+            self.log_test("Recipe Finder Without Auth", False, str(e))
+            return False
+
+    def test_recipe_finder_empty_food_item(self):
+        """Test recipe finder with empty food item (without auth)"""
+        try:
+            response = requests.post(f"{self.api_url}/recipe-finder", json={
+                "food_item": ""
+            })
+            success = response.status_code == 401  # Should fail auth first
+            self.log_test("Recipe Finder Empty Food Item", success,
+                         f"Expected 401 (auth failure), got {response.status_code}")
+            return success
+        except Exception as e:
+            self.log_test("Recipe Finder Empty Food Item", False, str(e))
+            return False
+
+    def test_recipe_finder_invalid_request(self):
+        """Test recipe finder with invalid request body"""
+        try:
+            response = requests.post(f"{self.api_url}/recipe-finder", json={
+                "invalid_field": "test"
+            })
+            success = response.status_code in [401, 422]  # Auth or validation error
+            self.log_test("Recipe Finder Invalid Request", success,
+                         f"Expected 401 or 422, got {response.status_code}")
+            return success
+        except Exception as e:
+            self.log_test("Recipe Finder Invalid Request", False, str(e))
+            return False
+
+    def test_recipe_history_without_auth(self):
+        """Test recipe history endpoint without authentication"""
+        try:
+            response = requests.get(f"{self.api_url}/recipe-history")
+            success = response.status_code == 401
+            self.log_test("Recipe History Without Auth", success,
+                         f"Expected 401, got {response.status_code}")
+            return success
+        except Exception as e:
+            self.log_test("Recipe History Without Auth", False, str(e))
+            return False
+
+    def test_recipe_finder_endpoint_exists(self):
+        """Test that recipe finder endpoint exists (should return 401, not 404)"""
+        try:
+            response = requests.post(f"{self.api_url}/recipe-finder", json={
+                "food_item": "pasta"
+            })
+            success = response.status_code != 404
+            self.log_test("Recipe Finder Endpoint Exists", success,
+                         f"Endpoint not found (404)" if not success else f"Endpoint exists (got {response.status_code})")
+            return success
+        except Exception as e:
+            self.log_test("Recipe Finder Endpoint Exists", False, str(e))
+            return False
+
+    def test_recipe_history_endpoint_exists(self):
+        """Test that recipe history endpoint exists (should return 401, not 404)"""
+        try:
+            response = requests.get(f"{self.api_url}/recipe-history")
+            success = response.status_code != 404
+            self.log_test("Recipe History Endpoint Exists", success,
+                         f"Endpoint not found (404)" if not success else f"Endpoint exists (got {response.status_code})")
+            return success
+        except Exception as e:
+            self.log_test("Recipe History Endpoint Exists", False, str(e))
+            return False
+
+    def test_recipe_finder_method_validation(self):
+        """Test recipe finder only accepts POST method"""
+        try:
+            # Test GET method (should fail)
+            response = requests.get(f"{self.api_url}/recipe-finder")
+            success = response.status_code == 405  # Method not allowed
+            self.log_test("Recipe Finder Method Validation", success,
+                         f"Expected 405 for GET method, got {response.status_code}")
+            return success
+        except Exception as e:
+            self.log_test("Recipe Finder Method Validation", False, str(e))
+            return False
+
     def run_all_tests(self):
         """Run all backend API tests"""
         print("🚀 Starting Allergy Assistant API Tests...")
