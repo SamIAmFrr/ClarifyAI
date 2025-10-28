@@ -995,21 +995,10 @@ h1, h2, h3, h4, h5, h6 {
 /* Dark mode for animated border */
 @media (prefers-color-scheme: dark) {
   .animated-border-box {
-    background: linear-gradient(135deg, #1a1a2e 0%, #0f0f1e 100%);
+    background: transparent;
   }
 
-  .animated-border-box::before {
-    background: linear-gradient(
-      90deg,
-      #a855f7,
-      #ec4899,
-      #8b5cf6,
-      #a855f7
-    );
+  .animated-border-box::after {
+    background: rgba(0, 0, 0, 0.7);
   }
-
-  .animated-border-content {
-    background: rgba(0, 0, 0, 0.6);
-  }
-
 }
