@@ -923,7 +923,7 @@ h1, h2, h3, h4, h5, h6 {
 
 }
 
-/* Animated Glowing Line Border Effect - Smooth Continuous Trace */
+/* Animated Glowing Line Border Effect - Travels Around Rectangle */
 .animated-border-box {
   position: relative;
   border-radius: 12px;
@@ -937,56 +937,33 @@ h1, h2, h3, h4, h5, h6 {
   position: absolute;
   inset: 0;
   border-radius: 12px;
-  padding: 2px;
-  background: conic-gradient(
-    from 0deg,
-    transparent 0deg,
-    transparent 270deg,
-    #a855f7 310deg,
-    #e879f9 330deg,
-    #c084fc 340deg,
-    #a855f7 350deg,
-    transparent 360deg
-  );
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  animation: smoothRotate 3s linear infinite;
+  background: 
+    linear-gradient(90deg, transparent 0%, transparent 40%, #a855f7 48%, #e879f9 50%, #a855f7 52%, transparent 60%, transparent 100%) top / 100% 2px no-repeat,
+    linear-gradient(0deg, transparent 0%, transparent 40%, #a855f7 48%, #e879f9 50%, #a855f7 52%, transparent 60%, transparent 100%) right / 2px 100% no-repeat,
+    linear-gradient(90deg, transparent 0%, transparent 40%, #a855f7 48%, #e879f9 50%, #a855f7 52%, transparent 60%, transparent 100%) bottom / 100% 2px no-repeat,
+    linear-gradient(0deg, transparent 0%, transparent 40%, #a855f7 48%, #e879f9 50%, #a855f7 52%, transparent 60%, transparent 100%) left / 2px 100% no-repeat;
+  background-repeat: no-repeat;
+  animation: borderTravel 4s linear infinite;
   pointer-events: none;
   z-index: 10;
-  filter: blur(1px);
+  filter: drop-shadow(0 0 8px #e879f9);
 }
 
-.animated-border-box::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: 12px;
-  padding: 2px;
-  background: conic-gradient(
-    from 0deg,
-    transparent 0deg,
-    transparent 300deg,
-    rgba(168, 85, 247, 0.3) 320deg,
-    rgba(232, 121, 249, 0.5) 330deg,
-    rgba(192, 132, 252, 0.4) 340deg,
-    transparent 360deg
-  );
-  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-  animation: smoothRotate 3s linear infinite;
-  pointer-events: none;
-  z-index: 9;
-  filter: blur(8px);
-}
-
-@keyframes smoothRotate {
+@keyframes borderTravel {
   0% {
-    transform: rotate(0deg);
+    background-position: 0% top, right 0%, 100% bottom, left 100%;
+  }
+  25% {
+    background-position: 100% top, right 0%, 100% bottom, left 100%;
+  }
+  50% {
+    background-position: 100% top, right 100%, 100% bottom, left 100%;
+  }
+  75% {
+    background-position: 100% top, right 100%, 0% bottom, left 100%;
   }
   100% {
-    transform: rotate(360deg);
+    background-position: 100% top, right 100%, 0% bottom, left 0%;
   }
 }
 
@@ -1005,7 +982,7 @@ h1, h2, h3, h4, h5, h6 {
     border: 2px solid rgba(168, 85, 247, 0.3);
   }
   
-  .animated-border-box::after {
-    filter: blur(10px);
+  .animated-border-box::before {
+    filter: drop-shadow(0 0 12px #e879f9) drop-shadow(0 0 20px #a855f7);
   }
 }
