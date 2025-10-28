@@ -10,23 +10,11 @@ const LOGO_URL = "https://customer-assets.emergentagent.com/job_safe-eats-ai/art
 
 export default function AppLayout({ user, setUser, children }) {
   const location = useLocation();
-  const [animateCorners, setAnimateCorners] = useState(false);
+  const [animationKey, setAnimationKey] = useState(0);
 
   // Trigger corner animation on route change
   useEffect(() => {
-    // Reset animation state first
-    setAnimateCorners(false);
-    
-    // Use requestAnimationFrame to ensure the reset happens before triggering
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        setAnimateCorners(true);
-        
-        // Reset after animation completes
-        const timer = setTimeout(() => setAnimateCorners(false), 800);
-        return () => clearTimeout(timer);
-      });
-    });
+    setAnimationKey(prev => prev + 1);
   }, [location.pathname]);
 
   const handleLogout = async () => {
