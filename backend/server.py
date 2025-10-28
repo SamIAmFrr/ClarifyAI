@@ -765,6 +765,116 @@ async def get_menu_history(user_id: str = Depends(get_current_user)):
     ).sort("timestamp", -1).limit(20).to_list(20)
     return history
 
+# Recipe Finder endpoint
+@api_router.post("/recipe-finder", response_model=RecipeFinderResult)
+async def find_recipes(
+    request: RecipeRequest,
+    user_id: str = Depends(get_current_user)
+):
+    # Get user's allergy profile
+    profile = await db.allergy_profiles.find_one({"user_id": user_id})
+    if not profile:
+        raise HTTPException(status_code=400, detail="Please set up your allergy profile first")
+    
+    allergies = profile.get('allergies', [])
+    dietary_restrictions = profile.get('dietary_restrictions', [])
+    religion_restrictions = profile.get('religion_restrictions', [])
+    skin_sensitivities = profile.get('skin_sensitivities', [])
+    
+    try:
+        # Create AI prompt for recipe generation
+        system_message = f"""You are an expert chef and nutritionist specializing in allergy-safe cooking. Generate safe, delicious recipes.
+
+User's allergies: {', '.join(allergies) if allergies else 'None'}
+Dietary restrictions: {', '.join(dietary_restrictions) if dietary_restrictions else 'None'}
+Religion restrictions: {', '.join(religion_restrictions) if religion_restrictions else 'None'}
+Skin sensitivities (avoid if relevant): {', '.join(skin_sensitivities) if skin_sensitivities else 'None'}
+
+Your task:
+1. Generate 2-3 different recipe variations for the requested food item
+2. Ensure ALL recipes are 100% safe for the user's allergies and restrictions
+3. Avoid ALL allergens completely - no substitutions that contain the same allergen
+4. Respect dietary and religious restrictions (Halal, Kosher, Vegetarian, Vegan, etc.)
+5. Provide complete, detailed recipes with ingredients and step-by-step instructions
+6. Include prep time, cook time, and servings
+7. List any potential allergen warnings even if they're avoided in the recipe
+
+Be creative with substitutions and make recipes that are both safe AND delicious."""
+        
+        user_message = f"""Please create allergy-safe recipes for: {request.food_item}
+
+Provide your response in this JSON format:
+{{
+  "recipes": [
+    {{
+      "name": "Recipe name",
+      "description": "Brief description",
+      "prep_time": "15 minutes",
+      "cook_time": "30 minutes",
+      "servings": "4 servings",
+      "ingredients": ["ingredient 1", "ingredient 2", "..."],
+      "instructions": ["Step 1", "Step 2", "..."],
+      "allergen_warnings": ["Note about allergens"],
+      "safe_for_user": true
+    }}
+  ],
+  "summary": "Brief summary explaining how these recipes avoid the user's allergens"
+}}
+
+IMPORTANT: All recipes MUST be safe for the user's allergies and restrictions."""
+        
+        # Initialize Gemini chat
+        chat = LlmChat(
+            api_key=os.environ.get('GOOGLE_API_KEY', os.environ['EMERGENT_LLM_KEY']),
+            session_id=f"recipe_{user_id}_{uuid.uuid4()}",
+            system_message=system_message
+        ).with_model("gemini", "gemini-2.0-flash-exp")
+        
+        message = UserMessage(text=user_message)
+        ai_response = await chat.send_message(message)
+        
+        # Parse AI response
+        import json
+        response_text = ai_response
+        if '```json' in response_text:
+            response_text = response_text.split('```json')[1].split('```')[0].strip()
+        elif '```' in response_text:
+            response_text = response_text.split('```')[1].split('```')[0].strip()
+        
+        try:
+            parsed = json.loads(response_text)
+        except:
+            # Fallback if JSON parsing fails
+            parsed = {
+                "recipes": [],
+                "summary": "Failed to parse recipes. Please try again."
+            }
+        
+        result = RecipeFinderResult(
+            user_id=user_id,
+            food_item=request.food_item,
+            recipes=[Recipe(**recipe) for recipe in parsed.get('recipes', [])],
+            summary=parsed.get('summary', 'Recipes generated based on your allergy profile.')
+        )
+        
+        # Save to history
+        await db.recipe_history.insert_one(result.model_dump())
+        
+        return result
+    
+    except Exception as e:
+        logging.error(f"Recipe finder error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Recipe generation failed: {str(e)}")
+
+# Recipe History endpoint
+@api_router.get("/recipe-history", response_model=List[RecipeFinderResult])
+async def get_recipe_history(user_id: str = Depends(get_current_user)):
+    history = await db.recipe_history.find(
+        {"user_id": user_id},
+        {"_id": 0}
+    ).sort("timestamp", -1).limit(20).to_list(20)
+    return history
+
 # Include router
 app.include_router(api_router)
 
