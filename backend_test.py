@@ -262,6 +262,16 @@ class AllergyAssistantAPITester:
         self.test_analyze_without_auth()
         self.test_history_without_auth()
 
+        # Test Recipe Finder endpoints
+        print("\n🍳 Testing Recipe Finder Endpoints...")
+        self.test_recipe_finder_endpoint_exists()
+        self.test_recipe_history_endpoint_exists()
+        self.test_recipe_finder_without_auth()
+        self.test_recipe_finder_empty_food_item()
+        self.test_recipe_finder_invalid_request()
+        self.test_recipe_history_without_auth()
+        self.test_recipe_finder_method_validation()
+
         # Test CORS
         self.test_cors_headers()
 
