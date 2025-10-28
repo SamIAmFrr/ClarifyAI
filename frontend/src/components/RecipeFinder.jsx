@@ -52,49 +52,51 @@ export default function RecipeFinder({ allergyProfile }) {
       </div>
 
       <div className="section">
-        <div data-testid="recipe-search-section">
-          <div style={{ marginBottom: '1.5rem' }}>
-            <Label htmlFor="recipe-search" className="mb-2 block font-semibold text-purple-700">
-              What would you like to make?
-            </Label>
-            <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
-              <Input
-                id="recipe-search"
-                placeholder="e.g., chocolate cake, pasta carbonara, chicken curry..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-                data-testid="recipe-search-input"
-                style={{ flex: 1, minWidth: '250px' }}
-                className="analysis-input border-purple-300 focus:border-purple-500"
-              />
-              <Button
-                onClick={handleSearch}
-                data-testid="search-recipes-button"
-                disabled={searching || !searchQuery.trim() || !allergyProfile}
-                className="bg-purple-600 hover:bg-purple-700 text-white rounded-lg px-8 disabled:bg-gray-600 shadow-lg shadow-purple-500/30"
-              >
-                {searching ? (
-                  <>
-                    <div className="spinner-small mr-2"></div>
-                    Searching...
-                  </>
-                ) : (
-                  <>
-                    <Search size={18} className="mr-2" />
-                    Find Recipes
-                  </>
-                )}
-              </Button>
+        <div className="animated-border-box">
+          <div className="animated-border-content" data-testid="recipe-search-section">
+            <div style={{ marginBottom: '1.5rem' }}>
+              <Label htmlFor="recipe-search" className="mb-2 block font-semibold text-purple-700">
+                What would you like to make?
+              </Label>
+              <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
+                <Input
+                  id="recipe-search"
+                  placeholder="e.g., chocolate cake, pasta carbonara, chicken curry..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
+                  data-testid="recipe-search-input"
+                  style={{ flex: 1, minWidth: '250px' }}
+                  className="analysis-input border-purple-300 focus:border-purple-500"
+                />
+                <Button
+                  onClick={handleSearch}
+                  data-testid="search-recipes-button"
+                  disabled={searching || !searchQuery.trim() || !allergyProfile}
+                  className="bg-purple-600 hover:bg-purple-700 text-white rounded-lg px-8 disabled:bg-gray-600 shadow-lg shadow-purple-500/30"
+                >
+                  {searching ? (
+                    <>
+                      <div className="spinner-small mr-2"></div>
+                      Searching...
+                    </>
+                  ) : (
+                    <>
+                      <Search size={18} className="mr-2" />
+                      Find Recipes
+                    </>
+                  )}
+                </Button>
+              </div>
             </div>
-          </div>
 
-          {!allergyProfile && (
-            <div className="alert alert-warning">
-              <AlertCircle size={20} />
-              <span>Please set up your allergy profile in the Dashboard first.</span>
-            </div>
-          )}
+            {!allergyProfile && (
+              <div className="alert alert-warning">
+                <AlertCircle size={20} />
+                <span>Please set up your allergy profile in the Dashboard first.</span>
+              </div>
+            )}
+          </div>
         </div>
 
         {result && (
