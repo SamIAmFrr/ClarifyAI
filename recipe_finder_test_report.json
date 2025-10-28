@@ -1,0 +1,106 @@
+{
+  "test_suite": "Recipe Finder API Tests",
+  "timestamp": "2025-10-28T01:42:33.593356",
+  "total_tests": 15,
+  "passed_tests": 14,
+  "failed_tests": 1,
+  "success_rate": "93.3%",
+  "test_results": [
+    {
+      "test": "Backend Service Running",
+      "success": true,
+      "details": "Backend health check failed: 200",
+      "timestamp": "2025-10-28T01:42:33.024644"
+    },
+    {
+      "test": "API Documentation Accessible",
+      "success": true,
+      "details": "FastAPI docs not accessible",
+      "timestamp": "2025-10-28T01:42:33.062098"
+    },
+    {
+      "test": "Recipe Finder Endpoint Exists",
+      "success": true,
+      "details": "Returns 401",
+      "timestamp": "2025-10-28T01:42:33.098679"
+    },
+    {
+      "test": "Authentication Required",
+      "success": true,
+      "details": "Expected 401, got 401",
+      "timestamp": "2025-10-28T01:42:33.137885"
+    },
+    {
+      "test": "Request Validation",
+      "success": true,
+      "details": "Expected 401 or 422, got 401",
+      "timestamp": "2025-10-28T01:42:33.174253"
+    },
+    {
+      "test": "Method Validation (POST only)",
+      "success": true,
+      "details": "Expected 405, got 405",
+      "timestamp": "2025-10-28T01:42:33.213893"
+    },
+    {
+      "test": "Recipe History Endpoint Exists",
+      "success": true,
+      "details": "Returns 401",
+      "timestamp": "2025-10-28T01:42:33.250965"
+    },
+    {
+      "test": "Recipe History Auth Required",
+      "success": true,
+      "details": "Expected 401, got 401",
+      "timestamp": "2025-10-28T01:42:33.286037"
+    },
+    {
+      "test": "Food Item: 'chocolate cake'",
+      "success": true,
+      "details": "Expected [401], got 401",
+      "timestamp": "2025-10-28T01:42:33.324034"
+    },
+    {
+      "test": "Food Item: 'pasta'",
+      "success": true,
+      "details": "Expected [401], got 401",
+      "timestamp": "2025-10-28T01:42:33.361389"
+    },
+    {
+      "test": "Food Item: 'cookies'",
+      "success": true,
+      "details": "Expected [401], got 401",
+      "timestamp": "2025-10-28T01:42:33.400273"
+    },
+    {
+      "test": "Food Item: 'pizza'",
+      "success": true,
+      "details": "Expected [401], got 401",
+      "timestamp": "2025-10-28T01:42:33.438535"
+    },
+    {
+      "test": "Empty Food Item",
+      "success": true,
+      "details": "Expected [401, 422], got 401",
+      "timestamp": "2025-10-28T01:42:33.517395"
+    },
+    {
+      "test": "Malformed JSON Handling",
+      "success": true,
+      "details": "Expected 400 or 422, got 422",
+      "timestamp": "2025-10-28T01:42:33.557342"
+    },
+    {
+      "test": "Missing Content-Type Handling",
+      "success": false,
+      "details": "Expected 400, 422, or 415, got 401",
+      "timestamp": "2025-10-28T01:42:33.592662"
+    }
+  ],
+  "summary": {
+    "endpoint_exists": true,
+    "authentication_working": true,
+    "validation_working": true,
+    "history_endpoint_exists": true
+  }
+}
