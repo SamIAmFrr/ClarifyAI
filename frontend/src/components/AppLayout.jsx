@@ -44,6 +44,13 @@ export default function AppLayout({ user, setUser, children }) {
               Product Scanner
             </Link>
             <Link 
+              to="/recipe-finder" 
+              className={`nav-link ${location.pathname === '/recipe-finder' ? 'active' : ''}`}
+              data-testid="nav-recipe-finder"
+            >
+              Recipe Finder
+            </Link>
+            <Link 
               to="/menu-analyzer" 
               className={`nav-link ${location.pathname === '/menu-analyzer' ? 'active' : ''}`}
               data-testid="nav-menu-analyzer"
