@@ -923,47 +923,52 @@ h1, h2, h3, h4, h5, h6 {
 
 }
 
-/* Animated Glowing Line Border Effect - Travels Around Rectangle */
+/* Animated Glowing Border Effect - Continuous Rotating Glow */
 .animated-border-box {
   position: relative;
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.95);
   border: 2px solid rgba(168, 85, 247, 0.1);
-  overflow: hidden;
+  overflow: visible;
 }
 
 .animated-border-box::before {
   content: '';
   position: absolute;
-  inset: 0;
+  inset: -4px;
   border-radius: 12px;
-  background: 
-    linear-gradient(90deg, transparent 0%, transparent 40%, #a855f7 48%, #e879f9 50%, #a855f7 52%, transparent 60%, transparent 100%) top / 100% 2px no-repeat,
-    linear-gradient(0deg, transparent 0%, transparent 40%, #a855f7 48%, #e879f9 50%, #a855f7 52%, transparent 60%, transparent 100%) right / 2px 100% no-repeat,
-    linear-gradient(90deg, transparent 0%, transparent 40%, #a855f7 48%, #e879f9 50%, #a855f7 52%, transparent 60%, transparent 100%) bottom / 100% 2px no-repeat,
-    linear-gradient(0deg, transparent 0%, transparent 40%, #a855f7 48%, #e879f9 50%, #a855f7 52%, transparent 60%, transparent 100%) left / 2px 100% no-repeat;
-  background-repeat: no-repeat;
-  animation: borderTravel 4s linear infinite;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    transparent 300deg,
+    rgba(168, 85, 247, 0.4) 320deg,
+    rgba(232, 121, 249, 0.8) 330deg,
+    #e879f9 335deg,
+    #c084fc 340deg,
+    rgba(168, 85, 247, 0.8) 345deg,
+    rgba(168, 85, 247, 0.4) 350deg,
+    transparent 360deg
+  );
+  animation: rotateGlow 2s linear infinite;
   pointer-events: none;
   z-index: 10;
-  filter: drop-shadow(0 0 8px #e879f9);
 }
 
-@keyframes borderTravel {
+.animated-border-box::after {
+  content: '';
+  position: absolute;
+  inset: 2px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.95);
+  z-index: 5;
+}
+
+@keyframes rotateGlow {
   0% {
-    background-position: 0% top, right 0%, 100% bottom, left 100%;
-  }
-  25% {
-    background-position: 100% top, right 0%, 100% bottom, left 100%;
-  }
-  50% {
-    background-position: 100% top, right 100%, 100% bottom, left 100%;
-  }
-  75% {
-    background-position: 100% top, right 100%, 0% bottom, left 100%;
+    transform: rotate(0deg);
   }
   100% {
-    background-position: 100% top, right 100%, 0% bottom, left 0%;
+    transform: rotate(360deg);
   }
 }
 
@@ -982,7 +987,23 @@ h1, h2, h3, h4, h5, h6 {
     border: 2px solid rgba(168, 85, 247, 0.3);
   }
   
+  .animated-border-box::after {
+    background: rgba(0, 0, 0, 0.7);
+  }
+  
   .animated-border-box::before {
-    filter: drop-shadow(0 0 12px #e879f9) drop-shadow(0 0 20px #a855f7);
+    background: conic-gradient(
+      from 0deg,
+      transparent 0deg,
+      transparent 300deg,
+      rgba(168, 85, 247, 0.5) 320deg,
+      rgba(232, 121, 249, 1) 330deg,
+      #e879f9 335deg,
+      #c084fc 340deg,
+      rgba(168, 85, 247, 1) 345deg,
+      rgba(168, 85, 247, 0.5) 350deg,
+      transparent 360deg
+    );
+    filter: blur(2px);
   }
 }
