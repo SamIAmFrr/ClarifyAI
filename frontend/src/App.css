@@ -966,10 +966,10 @@ h1, h2, h3, h4, h5, h6 {
 
 .animated-border-content {
   position: relative;
-  background: rgba(255, 255, 255, 0.9);
+  background: transparent;
   border-radius: 10px;
   padding: 1.5rem;
-  z-index: 2;
+  z-index: 3;
 }
 
 @keyframes rotateBorder {
