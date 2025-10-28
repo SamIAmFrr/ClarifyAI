@@ -923,7 +923,7 @@ h1, h2, h3, h4, h5, h6 {
 
 }
 
-/* Animated Shooting Star Border Effect - Constant Speed */
+/* Animated Shooting Star Border Effect - Smooth Corner Transitions */
 .animated-border-box {
   position: relative;
   border-radius: 12px;
@@ -947,21 +947,33 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @keyframes travelBorder {
-  /* Top edge - horizontal oval moving left to right (longest edge, gets most time) */
+  /* Top edge - horizontal oval moving left to right */
   0% {
     top: -4px;
     left: 0%;
     width: 30px;
     height: 8px;
   }
-  30% {
+  28% {
     top: -4px;
     left: calc(100% - 30px);
     width: 30px;
     height: 8px;
   }
   
-  /* Transition to vertical oval */
+  /* Top-right corner transition - gradual rotation */
+  29% {
+    top: -4px;
+    left: calc(100% - 20px);
+    width: 20px;
+    height: 16px;
+  }
+  30% {
+    top: -4px;
+    left: calc(100% - 12px);
+    width: 12px;
+    height: 24px;
+  }
   31% {
     top: -4px;
     left: calc(100% - 4px);
@@ -969,21 +981,33 @@ h1, h2, h3, h4, h5, h6 {
     height: 30px;
   }
   
-  /* Right edge - vertical oval moving top to bottom (shorter edge, gets less time) */
+  /* Right edge - vertical oval moving top to bottom */
   32% {
     top: 0%;
     left: calc(100% - 4px);
     width: 8px;
     height: 30px;
   }
-  48% {
+  46% {
     top: calc(100% - 30px);
     left: calc(100% - 4px);
     width: 8px;
     height: 30px;
   }
   
-  /* Transition to horizontal oval */
+  /* Bottom-right corner transition - gradual rotation */
+  47% {
+    top: calc(100% - 20px);
+    left: calc(100% - 4px);
+    width: 16px;
+    height: 20px;
+  }
+  48% {
+    top: calc(100% - 12px);
+    left: calc(100% - 4px);
+    width: 24px;
+    height: 12px;
+  }
   49% {
     top: calc(100% - 4px);
     left: calc(100% - 30px);
@@ -991,21 +1015,33 @@ h1, h2, h3, h4, h5, h6 {
     height: 8px;
   }
   
-  /* Bottom edge - horizontal oval moving right to left (longest edge, gets most time) */
+  /* Bottom edge - horizontal oval moving right to left */
   50% {
     top: calc(100% - 4px);
     left: calc(100% - 30px);
     width: 30px;
     height: 8px;
   }
-  80% {
+  78% {
     top: calc(100% - 4px);
     left: 0%;
     width: 30px;
     height: 8px;
   }
   
-  /* Transition to vertical oval */
+  /* Bottom-left corner transition - gradual rotation */
+  79% {
+    top: calc(100% - 4px);
+    left: -8px;
+    width: 20px;
+    height: 16px;
+  }
+  80% {
+    top: calc(100% - 4px);
+    left: -4px;
+    width: 12px;
+    height: 24px;
+  }
   81% {
     top: calc(100% - 30px);
     left: -4px;
@@ -1013,21 +1049,33 @@ h1, h2, h3, h4, h5, h6 {
     height: 30px;
   }
   
-  /* Left edge - vertical oval moving bottom to top (shorter edge, gets less time) */
+  /* Left edge - vertical oval moving bottom to top */
   82% {
     top: calc(100% - 30px);
     left: -4px;
     width: 8px;
     height: 30px;
   }
-  98% {
+  96% {
     top: 0%;
     left: -4px;
     width: 8px;
     height: 30px;
   }
   
-  /* Transition back to horizontal oval */
+  /* Top-left corner transition - gradual rotation */
+  97% {
+    top: -8px;
+    left: -4px;
+    width: 16px;
+    height: 20px;
+  }
+  98% {
+    top: -4px;
+    left: -4px;
+    width: 24px;
+    height: 12px;
+  }
   99% {
     top: -4px;
     left: 0%;
