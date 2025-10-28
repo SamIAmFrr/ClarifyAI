@@ -923,126 +923,70 @@ h1, h2, h3, h4, h5, h6 {
 
 }
 
-/* Animated Glowing Line Border Effect - Like Chat */
+/* Animated Glowing Line Border Effect - Smooth Continuous Trace */
 .animated-border-box {
   position: relative;
   border-radius: 12px;
   background: rgba(255, 255, 255, 0.95);
   border: 2px solid rgba(168, 85, 247, 0.1);
-  overflow: visible;
+  overflow: hidden;
 }
 
 .animated-border-box::before {
   content: '';
   position: absolute;
-  width: 80px;
-  height: 3px;
-  background: linear-gradient(90deg, transparent, #a855f7, #e879f9, #a855f7, transparent);
-  box-shadow: 0 0 10px #e879f9, 0 0 20px #a855f7;
-  border-radius: 2px;
+  inset: 0;
+  border-radius: 12px;
+  padding: 2px;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    transparent 270deg,
+    #a855f7 310deg,
+    #e879f9 330deg,
+    #c084fc 340deg,
+    #a855f7 350deg,
+    transparent 360deg
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: smoothRotate 3s linear infinite;
   pointer-events: none;
   z-index: 10;
-  animation: lineTravel 6s linear infinite;
+  filter: blur(1px);
 }
 
-@keyframes lineTravel {
-  /* Top edge - horizontal line moving left to right */
-  0%, 2% {
-    top: 0;
-    left: 0%;
-    width: 80px;
-    height: 3px;
+.animated-border-box::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  padding: 2px;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    transparent 300deg,
+    rgba(168, 85, 247, 0.3) 320deg,
+    rgba(232, 121, 249, 0.5) 330deg,
+    rgba(192, 132, 252, 0.4) 340deg,
+    transparent 360deg
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  animation: smoothRotate 3s linear infinite;
+  pointer-events: none;
+  z-index: 9;
+  filter: blur(8px);
+}
+
+@keyframes smoothRotate {
+  0% {
     transform: rotate(0deg);
   }
-  23% {
-    top: 0;
-    left: calc(100% - 80px);
-    width: 80px;
-    height: 3px;
-    transform: rotate(0deg);
-  }
-  
-  /* Top-right corner transition */
-  25% {
-    top: 0;
-    left: 100%;
-    width: 3px;
-    height: 80px;
-    transform: rotate(0deg);
-  }
-  
-  /* Right edge - vertical line moving top to bottom */
-  27% {
-    top: 0%;
-    left: calc(100% - 3px);
-    width: 3px;
-    height: 80px;
-    transform: rotate(0deg);
-  }
-  48% {
-    top: calc(100% - 80px);
-    left: calc(100% - 3px);
-    width: 3px;
-    height: 80px;
-    transform: rotate(0deg);
-  }
-  
-  /* Bottom-right corner transition */
-  50% {
-    top: 100%;
-    left: calc(100% - 80px);
-    width: 80px;
-    height: 3px;
-    transform: rotate(0deg);
-  }
-  
-  /* Bottom edge - horizontal line moving right to left */
-  52% {
-    top: calc(100% - 3px);
-    left: calc(100% - 80px);
-    width: 80px;
-    height: 3px;
-    transform: rotate(0deg);
-  }
-  73% {
-    top: calc(100% - 3px);
-    left: 0%;
-    width: 80px;
-    height: 3px;
-    transform: rotate(0deg);
-  }
-  
-  /* Bottom-left corner transition */
-  75% {
-    top: calc(100% - 80px);
-    left: 0;
-    width: 3px;
-    height: 80px;
-    transform: rotate(0deg);
-  }
-  
-  /* Left edge - vertical line moving bottom to top */
-  77% {
-    top: calc(100% - 80px);
-    left: 0;
-    width: 3px;
-    height: 80px;
-    transform: rotate(0deg);
-  }
-  98% {
-    top: 0%;
-    left: 0;
-    width: 3px;
-    height: 80px;
-    transform: rotate(0deg);
-  }
-  
   100% {
-    top: 0;
-    left: 0%;
-    width: 80px;
-    height: 3px;
-    transform: rotate(0deg);
+    transform: rotate(360deg);
   }
 }
 
@@ -1051,7 +995,7 @@ h1, h2, h3, h4, h5, h6 {
   background: transparent;
   border-radius: 10px;
   padding: 1.5rem;
-  z-index: 3;
+  z-index: 11;
 }
 
 /* Dark mode for animated border */
@@ -1061,7 +1005,7 @@ h1, h2, h3, h4, h5, h6 {
     border: 2px solid rgba(168, 85, 247, 0.3);
   }
   
-  .animated-border-box::before {
-    box-shadow: 0 0 15px #e879f9, 0 0 25px #a855f7;
+  .animated-border-box::after {
+    filter: blur(10px);
   }
 }
