@@ -923,7 +923,7 @@ h1, h2, h3, h4, h5, h6 {
 
 }
 
-/* Animated Glowing Border Effect - Continuous Rotating Glow */
+/* Animated Small Orb Border Effect - Travels Around Border */
 .animated-border-box {
   position: relative;
   border-radius: 12px;
@@ -935,40 +935,24 @@ h1, h2, h3, h4, h5, h6 {
 .animated-border-box::before {
   content: '';
   position: absolute;
-  inset: -4px;
-  border-radius: 12px;
-  background: conic-gradient(
-    from 0deg,
-    transparent 0deg,
-    transparent 300deg,
-    rgba(168, 85, 247, 0.4) 320deg,
-    rgba(232, 121, 249, 0.8) 330deg,
-    #e879f9 335deg,
-    #c084fc 340deg,
-    rgba(168, 85, 247, 0.8) 345deg,
-    rgba(168, 85, 247, 0.4) 350deg,
-    transparent 360deg
-  );
-  animation: rotateGlow 2s linear infinite;
+  width: 12px;
+  height: 12px;
+  background: radial-gradient(circle, #e879f9 0%, #c084fc 40%, #a855f7 60%, transparent 100%);
+  border-radius: 50%;
+  box-shadow: 0 0 15px #e879f9, 0 0 25px #a855f7, 0 0 35px rgba(232, 121, 249, 0.5);
   pointer-events: none;
   z-index: 10;
+  offset-path: path('M 12 0 L calc(100% - 12) 0 Q 100% 0 100% 12 L 100% calc(100% - 12) Q 100% 100% calc(100% - 12) 100% L 12 100% Q 0 100% 0 calc(100% - 12) L 0 12 Q 0 0 12 0');
+  offset-distance: 0%;
+  animation: travelPath 3s linear infinite;
 }
 
-.animated-border-box::after {
-  content: '';
-  position: absolute;
-  inset: 2px;
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.95);
-  z-index: 5;
-}
-
-@keyframes rotateGlow {
+@keyframes travelPath {
   0% {
-    transform: rotate(0deg);
+    offset-distance: 0%;
   }
   100% {
-    transform: rotate(360deg);
+    offset-distance: 100%;
   }
 }
 
@@ -987,23 +971,7 @@ h1, h2, h3, h4, h5, h6 {
     border: 2px solid rgba(168, 85, 247, 0.3);
   }
   
-  .animated-border-box::after {
-    background: rgba(0, 0, 0, 0.7);
-  }
-  
   .animated-border-box::before {
-    background: conic-gradient(
-      from 0deg,
-      transparent 0deg,
-      transparent 300deg,
-      rgba(168, 85, 247, 0.5) 320deg,
-      rgba(232, 121, 249, 1) 330deg,
-      #e879f9 335deg,
-      #c084fc 340deg,
-      rgba(168, 85, 247, 1) 345deg,
-      rgba(168, 85, 247, 0.5) 350deg,
-      transparent 360deg
-    );
-    filter: blur(2px);
+    box-shadow: 0 0 20px #e879f9, 0 0 35px #a855f7, 0 0 50px rgba(232, 121, 249, 0.6);
   }
 }
