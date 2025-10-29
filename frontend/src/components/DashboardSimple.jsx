@@ -141,6 +141,18 @@ export default function Dashboard({ allergyProfile, reloadProfile }) {
                 </div>
               </div>
             )}
+            {allergyProfile.religion_restrictions?.length > 0 && (
+              <div style={{ marginBottom: '1rem' }}>
+                <Label className="font-semibold text-purple-700">Religion Restrictions:</Label>
+                <div className="allergy-tags">
+                  {allergyProfile.religion_restrictions.map((restriction, idx) => (
+                    <span key={idx} className="allergy-tag">
+                      {restriction}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
             {allergyProfile.skin_sensitivities?.length > 0 && (
               <div style={{ marginBottom: '1rem' }}>
                 <Label className="font-semibold text-purple-700">Skin Sensitivities:</Label>
