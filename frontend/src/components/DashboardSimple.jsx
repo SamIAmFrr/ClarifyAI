@@ -54,6 +54,7 @@ export default function Dashboard({ allergyProfile, reloadProfile }) {
     const profileData = {
       allergies: profileForm.allergies.split(",").map(a => a.trim()).filter(Boolean),
       dietary_restrictions: profileForm.dietary_restrictions.split(",").map(d => d.trim()).filter(Boolean),
+      religion_restrictions: profileForm.religion_restrictions.split(",").map(r => r.trim()).filter(Boolean),
       skin_sensitivities: profileForm.skin_sensitivities.split(",").map(s => s.trim()).filter(Boolean),
       severity_notes: profileForm.severity_notes
     };
