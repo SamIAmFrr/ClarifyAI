@@ -192,6 +192,17 @@ export default function Dashboard({ allergyProfile, reloadProfile }) {
                 />
               </div>
               <div style={{ marginBottom: '1rem' }}>
+                <Label htmlFor="religion">Religion Restrictions (comma-separated)</Label>
+                <Input
+                  id="religion"
+                  data-testid="religion-input"
+                  placeholder="e.g., Halal, Kosher, Hindu (no beef), Jain"
+                  value={profileForm.religion_restrictions}
+                  onChange={(e) => setProfileForm({ ...profileForm, religion_restrictions: e.target.value })}
+                  className="mt-2"
+                />
+              </div>
+              <div style={{ marginBottom: '1rem' }}>
                 <Label htmlFor="skin">Skin Sensitivities (comma-separated)</Label>
                 <Input
                   id="skin"
