@@ -251,7 +251,7 @@ export default function Dashboard({ allergyProfile, reloadProfile }) {
                 { value: 'food', label: 'Food' },
                 { value: 'product', label: 'Product' },
                 { value: 'skincare', label: 'Skincare' },
-                { value: 'fragrance', label: 'Perfume/Cologne' },
+                { value: 'fragrance', label: 'Fragrance' },
                 { value: 'ingredient', label: 'Ingredient' }
               ].map(tab => (
                 <button
