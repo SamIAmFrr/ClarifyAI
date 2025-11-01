@@ -382,6 +382,173 @@ class AllergyAssistantAPITester:
         
         return all_passed
 
+    # Clear History Endpoints Tests
+    def test_clear_history_without_auth(self):
+        """Test DELETE /api/history without authentication (should return 401)"""
+        try:
+            response = requests.delete(f"{self.api_url}/history")
+            success = response.status_code == 401
+            self.log_test("Clear History Without Auth", success,
+                         f"Expected 401, got {response.status_code}")
+            return success
+        except Exception as e:
+            self.log_test("Clear History Without Auth", False, str(e))
+            return False
+
+    def test_clear_image_history_without_auth(self):
+        """Test DELETE /api/image-history without authentication (should return 401)"""
+        try:
+            response = requests.delete(f"{self.api_url}/image-history")
+            success = response.status_code == 401
+            self.log_test("Clear Image History Without Auth", success,
+                         f"Expected 401, got {response.status_code}")
+            return success
+        except Exception as e:
+            self.log_test("Clear Image History Without Auth", False, str(e))
+            return False
+
+    def test_clear_menu_history_without_auth(self):
+        """Test DELETE /api/menu-history without authentication (should return 401)"""
+        try:
+            response = requests.delete(f"{self.api_url}/menu-history")
+            success = response.status_code == 401
+            self.log_test("Clear Menu History Without Auth", success,
+                         f"Expected 401, got {response.status_code}")
+            return success
+        except Exception as e:
+            self.log_test("Clear Menu History Without Auth", False, str(e))
+            return False
+
+    def test_clear_history_method_validation(self):
+        """Test that clear history endpoints require DELETE method"""
+        endpoints = [
+            ("/history", "Clear History"),
+            ("/image-history", "Clear Image History"),
+            ("/menu-history", "Clear Menu History")
+        ]
+        
+        all_passed = True
+        for endpoint, name in endpoints:
+            # Test GET method (should fail with 405)
+            try:
+                response = requests.get(f"{self.api_url}{endpoint}")
+                # For /history and /image-history, GET is valid (returns data)
+                # For /menu-history, GET should also be valid
+                # So we expect either 401 (auth required) or 200 (success)
+                if endpoint in ["/history", "/image-history", "/menu-history"]:
+                    success = response.status_code in [401, 200]
+                    expected = "401 or 200 (GET is valid for history endpoints)"
+                else:
+                    success = response.status_code == 405
+                    expected = "405"
+                
+                self.log_test(f"{name} GET Method", success,
+                             f"Expected {expected}, got {response.status_code}")
+                if not success:
+                    all_passed = False
+            except Exception as e:
+                self.log_test(f"{name} GET Method", False, str(e))
+                all_passed = False
+            
+            # Test POST method (should fail with 405)
+            try:
+                response = requests.post(f"{self.api_url}{endpoint}", json={})
+                success = response.status_code == 405
+                self.log_test(f"{name} POST Method", success,
+                             f"Expected 405, got {response.status_code}")
+                if not success:
+                    all_passed = False
+            except Exception as e:
+                self.log_test(f"{name} POST Method", False, str(e))
+                all_passed = False
+        
+        return all_passed
+
+    def test_get_image_history_endpoint(self):
+        """Test GET /api/image-history endpoint (should work without 500 errors)"""
+        try:
+            response = requests.get(f"{self.api_url}/image-history")
+            # Should return 401 (auth required), not 500 (server error)
+            success = response.status_code == 401
+            self.log_test("GET Image History Endpoint", success,
+                         f"Expected 401 (auth required), got {response.status_code}")
+            return success
+        except Exception as e:
+            self.log_test("GET Image History Endpoint", False, str(e))
+            return False
+
+    def test_get_menu_history_endpoint(self):
+        """Test GET /api/menu-history endpoint (should work without 500 errors)"""
+        try:
+            response = requests.get(f"{self.api_url}/menu-history")
+            # Should return 401 (auth required), not 500 (server error)
+            success = response.status_code == 401
+            self.log_test("GET Menu History Endpoint", success,
+                         f"Expected 401 (auth required), got {response.status_code}")
+            return success
+        except Exception as e:
+            self.log_test("GET Menu History Endpoint", False, str(e))
+            return False
+
+    def test_clear_history_endpoints_exist(self):
+        """Test that all clear history endpoints exist (should return 401, not 404)"""
+        endpoints = [
+            ("/history", "Clear History"),
+            ("/image-history", "Clear Image History"),
+            ("/menu-history", "Clear Menu History")
+        ]
+        
+        all_passed = True
+        for endpoint, name in endpoints:
+            try:
+                response = requests.delete(f"{self.api_url}{endpoint}")
+                success = response.status_code != 404
+                self.log_test(f"{name} Endpoint Exists", success,
+                             f"Endpoint not found (404)" if not success else f"Endpoint exists (got {response.status_code})")
+                if not success:
+                    all_passed = False
+            except Exception as e:
+                self.log_test(f"{name} Endpoint Exists", False, str(e))
+                all_passed = False
+        
+        return all_passed
+
+    def test_clear_history_response_structure(self):
+        """Test clear history endpoints return proper error structure without auth"""
+        endpoints = [
+            ("/history", "Clear History"),
+            ("/image-history", "Clear Image History"),
+            ("/menu-history", "Clear Menu History")
+        ]
+        
+        all_passed = True
+        for endpoint, name in endpoints:
+            try:
+                response = requests.delete(f"{self.api_url}{endpoint}")
+                success = response.status_code == 401
+                
+                # Check if response has proper JSON structure
+                if success:
+                    try:
+                        json_response = response.json()
+                        has_detail = 'detail' in json_response
+                        self.log_test(f"{name} Response Structure", has_detail,
+                                     "Missing 'detail' field in error response" if not has_detail else "")
+                        if not has_detail:
+                            all_passed = False
+                    except:
+                        self.log_test(f"{name} Response Structure", False, "Response is not valid JSON")
+                        all_passed = False
+                else:
+                    self.log_test(f"{name} Response Structure", False,
+                                 f"Expected 401, got {response.status_code}")
+                    all_passed = False
+            except Exception as e:
+                self.log_test(f"{name} Response Structure", False, str(e))
+                all_passed = False
+        
+        return all_passed
+
     def run_all_tests(self):
         """Run all backend API tests"""
         print("🚀 Starting Allergy Assistant API Tests...")
