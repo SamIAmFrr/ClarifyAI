@@ -277,16 +277,21 @@ export default function Dashboard({ allergyProfile, reloadProfile }) {
             </Button>
           </div>
           <div className="history-grid" data-testid="history-list">
-            {history.slice(0, 5).map((item, idx) => (
+            {history.slice(0, 10).map((item, idx) => (
               <div key={item.id} className="history-item" data-testid={`history-item-${idx}`}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                  <div>
-                    <Badge variant={item.is_safe ? "success" : "warning"}>
-                      {item.analysis_type}
-                    </Badge>
-                    <h4 style={{ fontWeight: 600, margin: '0.5rem 0' }}>{item.query}</h4>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+                      <span style={{ fontSize: '1.2rem' }}>{item.icon}</span>
+                      <Badge variant={item.is_safe ? "success" : "warning"}>
+                        {item.displayType}
+                      </Badge>
+                    </div>
+                    <h4 style={{ fontWeight: 600, margin: '0.5rem 0', wordBreak: 'break-word' }}>
+                      {item.query}
+                    </h4>
                     <p style={{ fontSize: '0.85rem', color: '#666' }}>
-                      {new Date(item.timestamp).toLocaleDateString()}
+                      {new Date(item.timestamp).toLocaleDateString()} at {new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </p>
                   </div>
                   {item.is_safe ? (
