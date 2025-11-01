@@ -754,6 +754,7 @@ h1, h2, h3, h4, h5, h6 {
 
   /* Dashboard header mobile */
   .dashboard-header {
+    display: flex;
     flex-direction: column;
     gap: 1rem;
     padding: 1rem;
@@ -762,31 +763,14 @@ h1, h2, h3, h4, h5, h6 {
     box-shadow: 0 4px 12px rgba(168, 85, 247, 0.15);
   }
   
-  .dashboard-header > div:first-child {
-    width: 100%;
-    justify-content: space-between;
-  }
-  
   .logo {
+    justify-self: center;
+    align-self: center;
     font-size: 1.25rem;
   }
   
-  .user-info {
-    flex-direction: row;
-    justify-content: center;
-    gap: 0.75rem;
-    width: 100%;
-    padding: 0.75rem;
-    background: rgba(168, 85, 247, 0.05);
-    border-radius: 12px;
-  }
-  
-  .user-avatar {
-    width: 32px;
-    height: 32px;
-  }
-  
   .nav-links {
+    justify-self: center;
     flex-direction: row;
     width: 100%;
     gap: 0.5rem;
@@ -794,6 +778,8 @@ h1, h2, h3, h4, h5, h6 {
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     -ms-overflow-style: none;
+    justify-content: flex-start;
+    padding: 0.5rem 0;
   }
   
   .nav-links::-webkit-scrollbar {
@@ -806,6 +792,24 @@ h1, h2, h3, h4, h5, h6 {
     padding: 0.75rem 1rem;
     border-radius: 12px;
     white-space: nowrap;
+    font-size: 0.9rem;
+  }
+  
+  .user-info {
+    justify-self: center;
+    align-self: center;
+    flex-direction: row;
+    justify-content: center;
+    gap: 0.75rem;
+    width: 100%;
+    padding: 0.75rem;
+    background: rgba(168, 85, 247, 0.05);
+    border-radius: 12px;
+  }
+  
+  .user-avatar {
+    width: 32px;
+    height: 32px;
   }
 
   /* Page layouts mobile */
