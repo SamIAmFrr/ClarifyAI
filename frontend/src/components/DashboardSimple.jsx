@@ -268,11 +268,11 @@ export default function Dashboard({ allergyProfile, reloadProfile }) {
             <div className="analysis-input-group">
               <Input
                 data-testid="analysis-query-input"
-                placeholder={`Enter ${analysisType} name or description...`}
+                placeholder={`Enter ${analysisType} name`}
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleAnalyze()}
-                className="analysis-input"
+                className="analysis-input centered-input"
               />
               <Button
                 onClick={handleAnalyze}
