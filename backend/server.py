@@ -1099,8 +1099,9 @@ Your task:
 5. Provide complete, detailed recipes with ingredients and step-by-step instructions
 6. Include prep time, cook time, and servings
 7. List any potential allergen warnings even if they're avoided in the recipe
+8. BE CREATIVE AND DIVERSE - think of different cooking styles, cuisines, and variations
 
-Be creative with substitutions and make recipes that are both safe AND delicious."""
+Be creative with substitutions and make recipes that are both safe AND delicious. Generate unique variations each time."""
         
         user_message = f"""Please create allergy-safe recipes for: {request.food_item}
 
