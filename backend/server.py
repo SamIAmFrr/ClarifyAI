@@ -288,8 +288,125 @@ async def analyze_item(request: AnalysisRequest, user_id: str = Depends(get_curr
     religion_restrictions = profile.get('religion_restrictions', [])
     skin_sensitivities = profile.get('skin_sensitivities', [])
     
+    # Check if query is a URL
+    is_url = request.query.strip().startswith(('http://', 'https://'))
+    product_info = ""
+    
+    if is_url:
+        # Fetch and extract product information from URL
+        try:
+            from bs4 import BeautifulSoup
+            import io
+            from PyPDF2 import PdfReader
+            from docx import Document
+            import openpyxl
+            
+            async with httpx.AsyncClient(timeout=30.0, follow_redirects=True) as client:
+                response = await client.get(request.query)
+                if response.status_code != 200:
+                    raise HTTPException(status_code=400, detail="Unable to fetch product page")
+                
+                content_type = response.headers.get('content-type', '').lower()
+                
+                # Try to extract from different file formats
+                extracted_text = None
+                
+                # PDF files
+                if 'pdf' in content_type:
+                    pdf_reader = PdfReader(io.BytesIO(response.content))
+                    text = ""
+                    for page in pdf_reader.pages:
+                        text += page.extract_text() + "\n"
+                    extracted_text = text
+                
+                # Word documents
+                elif 'word' in content_type or 'document' in content_type:
+                    doc = Document(io.BytesIO(response.content))
+                    text = "\n".join([paragraph.text for paragraph in doc.paragraphs])
+                    extracted_text = text
+                
+                # Plain text or HTML
+                else:
+                    soup = BeautifulSoup(response.text, 'html.parser')
+                    
+                    # Remove unwanted elements
+                    for element in soup(["script", "style", "nav", "header", "footer", "iframe", "noscript"]):
+                        element.decompose()
+                    
+                    # Try to find product-related content
+                    product_sections = soup.find_all(['div', 'section', 'article'], class_=lambda x: x and any(
+                        keyword in str(x).lower() for keyword in ['product', 'item', 'detail', 'description', 'ingredient', 'content', 'info']
+                    ))
+                    
+                    if product_sections:
+                        for section in product_sections:
+                            text = section.get_text()
+                            lines = (line.strip() for line in text.splitlines())
+                            chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
+                            clean_text = '\n'.join(chunk for chunk in chunks if chunk and len(chunk) > 5)
+                            if clean_text:
+                                product_info += clean_text + "\n\n"
+                    
+                    # If no specific sections found, get all visible text
+                    if not product_info:
+                        text = soup.get_text()
+                        lines = (line.strip() for line in text.splitlines())
+                        chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
+                        product_info = '\n'.join(chunk for chunk in chunks if chunk and len(chunk) > 5)
+                
+                if extracted_text:
+                    product_info = extracted_text
+                
+                # Limit content size
+                product_info = product_info[:15000]
+                
+                if not product_info or len(product_info) < 50:
+                    raise HTTPException(status_code=400, detail="Could not extract product information from URL")
+                
+        except httpx.RequestError as e:
+            logging.error(f"URL fetch error: {str(e)}")
+            raise HTTPException(status_code=400, detail=f"Unable to fetch product page: {str(e)}")
+        except Exception as e:
+            logging.error(f"URL processing error: {str(e)}")
+            raise HTTPException(status_code=400, detail=f"Error processing URL: {str(e)}")
+    
     # Create AI prompt
-    system_message = f"""You are an expert allergy assistant. Analyze products, ingredients, foods, perfumes, and fragrances for allergy safety.
+    if is_url:
+        system_message = f"""You are an expert allergy assistant. Analyze product information extracted from a website for allergy safety.
+    
+User's allergies: {', '.join(allergies) if allergies else 'None'}
+Dietary restrictions: {', '.join(dietary_restrictions) if dietary_restrictions else 'None'}
+Religion restrictions: {', '.join(religion_restrictions) if religion_restrictions else 'None'}
+Skin sensitivities: {', '.join(skin_sensitivities) if skin_sensitivities else 'None'}
+    
+Provide a thorough analysis including:
+1. Identify the product name and type
+2. Extract all ingredients if available
+3. Safety assessment (safe/warning/danger) - Focus on ACTUAL INGREDIENTS only
+4. Specific concerns related to user's allergies based on listed ingredients
+5. Check against religious dietary laws (Halal, Kosher, Hindu vegetarian, etc.)
+6. For perfumes/fragrances: identify common allergen compounds (linalool, limonene, citronellol, geraniol, etc.)
+7. Alternative suggestions if unsafe - MUST provide 3-5 specific alternatives when item is unsafe
+
+IMPORTANT: Focus on actual ingredients present in the product. Do NOT emphasize cross-contamination warnings as these are often standard disclaimers."""
+        
+        user_message = f"""Analyze this product information extracted from the URL: {request.query}
+
+Product Information:
+{product_info}
+    
+Provide your response in this JSON format:
+{{
+  "is_safe": true/false,
+  "summary": "Brief safety summary including product name and type",
+  "warnings": ["warning1", "warning2"],
+  "alternatives": ["alternative1", "alternative2", "alternative3", "alternative4", "alternative5"],
+  "detailed_analysis": "Detailed explanation including ingredients found and safety assessment"
+}}
+
+IMPORTANT: If is_safe is false, you MUST provide 3-5 safe alternatives that the user can use instead."""
+    else:
+        system_message = f"""You are an expert allergy assistant. Analyze products, ingredients, foods, perfumes, and fragrances for allergy safety.
     
 User's allergies: {', '.join(allergies) if allergies else 'None'}
 Dietary restrictions: {', '.join(dietary_restrictions) if dietary_restrictions else 'None'}
@@ -305,8 +422,8 @@ Provide a thorough analysis including:
 6. Emergency advice if needed
 
 IMPORTANT: Focus on actual ingredients present in the item. Do NOT emphasize cross-contamination warnings as these are often standard disclaimers. Only mention cross-contamination if it's a severe allergy and truly critical."""
-    
-    user_message = f"""Analyze this {request.analysis_type}: {request.query}
+        
+        user_message = f"""Analyze this product: {request.query}
     
 Provide your response in this JSON format:
 {{
@@ -354,7 +471,7 @@ IMPORTANT: If is_safe is false, you MUST provide 3-5 safe alternatives that the 
         result = AnalysisResult(
             user_id=user_id,
             query=request.query,
-            analysis_type=request.analysis_type,
+            analysis_type="url" if is_url else "text",
             result=parsed.get('detailed_analysis', response_text),
             is_safe=parsed.get('is_safe', False),
             warnings=parsed.get('warnings', []),
