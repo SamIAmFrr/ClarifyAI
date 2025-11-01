@@ -113,6 +113,7 @@ class MenuURLRequest(BaseModel):
 
 class RecipeRequest(BaseModel):
     food_item: str
+    exclude_recipes: Optional[List[str]] = []
 
 class Recipe(BaseModel):
     name: str
