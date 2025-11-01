@@ -51,6 +51,7 @@ export default function MenuAnalyzer({ allergyProfile, reloadHistory }) {
           url: menuUrl
         });
         setMenuResult(response.data);
+        if (reloadHistory) reloadHistory();
         toast.success("Menu analyzed successfully!");
       } catch (error) {
         toast.error(error.response?.data?.detail || "Menu analysis failed");
