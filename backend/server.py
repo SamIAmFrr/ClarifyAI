@@ -543,7 +543,31 @@ async def analyze_menu_url(
             response = await client.get(request.url)
             if response.status_code != 200:
                 raise HTTPException(status_code=400, detail="Unable to fetch menu from URL")
-            menu_content = response.text[:15000]  # Limit content size
+            
+            menu_content = response.text
+            
+            # Try to extract clean text from HTML if it's HTML content
+            if '<html' in menu_content.lower() or '<body' in menu_content.lower():
+                try:
+                    from bs4 import BeautifulSoup
+                    soup = BeautifulSoup(menu_content, 'html.parser')
+                    
+                    # Remove script and style elements
+                    for script in soup(["script", "style", "nav", "header", "footer"]):
+                        script.decompose()
+                    
+                    # Get text
+                    text = soup.get_text()
+                    
+                    # Clean up whitespace
+                    lines = (line.strip() for line in text.splitlines())
+                    chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
+                    menu_content = '\n'.join(chunk for chunk in chunks if chunk)
+                except:
+                    # If BeautifulSoup fails, just use the raw content
+                    pass
+            
+            menu_content = menu_content[:15000]  # Limit content size
         
         # Create AI prompt
         system_message = f"""You are an expert restaurant menu analyzer. Analyze menu items for allergen safety.
