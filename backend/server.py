@@ -61,7 +61,6 @@ class AllergyProfileCreate(BaseModel):
 
 class AnalysisRequest(BaseModel):
     query: str
-    analysis_type: str  # 'food', 'product', 'skincare', 'ingredient'
 
 class AnalysisResult(BaseModel):
     model_config = ConfigDict(extra="ignore")
