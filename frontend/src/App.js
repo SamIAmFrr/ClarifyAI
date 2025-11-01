@@ -19,6 +19,11 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
   const [allergyProfile, setAllergyProfile] = useState(null);
+  const [historyTrigger, setHistoryTrigger] = useState(0);
+
+  const triggerHistoryReload = () => {
+    setHistoryTrigger(prev => prev + 1);
+  };
 
   useEffect(() => {
     checkAuth();
