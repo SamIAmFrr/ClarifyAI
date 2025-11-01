@@ -287,6 +287,7 @@ async def analyze_item(request: AnalysisRequest, user_id: str = Depends(get_curr
     allergies = profile.get('allergies', [])
     dietary_restrictions = profile.get('dietary_restrictions', [])
     religion_restrictions = profile.get('religion_restrictions', [])
+    skin_sensitivities = profile.get('skin_sensitivities', [])
     
     # Create AI prompt
     system_message = f"""You are an expert allergy assistant. Analyze products, ingredients, foods, perfumes, and fragrances for allergy safety.
