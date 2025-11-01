@@ -19,7 +19,6 @@ export default function Dashboard({ allergyProfile, reloadProfile }) {
     skin_sensitivities: "",
     severity_notes: ""
   });
-  const [analysisType, setAnalysisType] = useState("food");
   const [query, setQuery] = useState("");
   const [result, setResult] = useState(null);
   const [analyzing, setAnalyzing] = useState(false);
