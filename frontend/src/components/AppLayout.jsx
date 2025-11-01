@@ -60,7 +60,7 @@ export default function AppLayout({ user, setUser, children }) {
       <div key={`bl-${animationKey}`} className="corner-animation corner-bottom-left animate"></div>
       <div key={`br-${animationKey}`} className="corner-animation corner-bottom-right animate"></div>
       
-      <header className="dashboard-header">
+      <header className={`dashboard-header ${!isHeaderVisible ? 'header-hidden' : ''}`}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '2rem', flexWrap: 'wrap' }}>
           <div className="logo">
             <img src={LOGO_URL} alt="ClarifyAI Logo" className="logo-image" />
