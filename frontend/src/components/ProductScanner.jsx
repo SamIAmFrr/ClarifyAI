@@ -95,14 +95,110 @@ export default function ProductScanner({ allergyProfile }) {
   return (
     <div className="scanner-page">
       <div className="page-header">
-        <h1 className="page-title">📷 Product Label Scanner</h1>
-        <p className="page-subtitle">
-          Upload a photo of any product label - food, skincare, cosmetics, perfumes, colognes, or fragrances. 
-          AI will instantly identify allergens and irritants based on your profile.
+        <h1 className="page-title">⚡ Quick Allergy Analysis</h1>
+        <p className="page-subtitle" style={{ textAlign: 'center' }}>
+          Quickly analyze products
         </p>
       </div>
 
+      {/* Quick Text Analysis Section */}
       <div className="section">
+        <div className="animated-border-box">
+          <div className="animated-border-content">
+            <div className="analysis-input-group">
+              <Input
+                data-testid="analysis-query-input"
+                placeholder="Enter product name or URL"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                onKeyPress={(e) => e.key === 'Enter' && handleAnalyze()}
+                className="analysis-input centered-input"
+              />
+              <Button
+                onClick={handleAnalyze}
+                data-testid="analyze-button"
+                disabled={analyzing}
+                className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white rounded-lg px-8 disabled:bg-gray-600 shadow-lg shadow-purple-500/30"
+              >
+                {analyzing ? "Analyzing..." : "Analyze"}
+              </Button>
+            </div>
+          </div>
+        </div>
+
+        {result && (
+          <div
+            data-testid="analysis-result"
+            className={`result-card ${result.is_safe ? 'safe' : result.warnings.length > 0 ? 'warning' : 'danger'}`}
+          >
+            <div className={`result-badge ${result.is_safe ? 'safe' : result.warnings.length > 0 ? 'warning' : 'danger'}`}>
+              {result.is_safe ? (
+                <span data-testid="result-safe"><CheckCircle size={16} style={{ display: 'inline', marginRight: '0.5rem' }} />Safe</span>
+              ) : (
+                <span data-testid="result-unsafe"><AlertCircle size={16} style={{ display: 'inline', marginRight: '0.5rem' }} />Caution</span>
+              )}
+            </div>
+
+            <h3 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '1rem', color: '#7c3aed' }}>
+              {result.query}
+            </h3>
+
+            <p style={{ marginBottom: '1rem', lineHeight: 1.6 }}>{result.result}</p>
+
+            {result.warnings.length > 0 && (
+              <div className="warning-list">
+                <Label className="font-semibold text-orange-700 mb-2 block">
+                  <AlertCircle size={16} style={{ display: 'inline', marginRight: '0.5rem' }} />
+                  Warnings:
+                </Label>
+                {result.warnings.map((warning, idx) => (
+                  <div key={idx} className="warning-item" data-testid={`warning-${idx}`}>
+                    • {warning}
+                  </div>
+                ))}
+              </div>
+            )}
+
+            {result.alternatives.length > 0 && (
+              <div className="alternatives-list">
+                <Label className="font-semibold text-purple-700 mb-2 block" style={{ fontSize: '1rem', marginTop: '1.5rem' }}>
+                  <Info size={16} style={{ display: 'inline', marginRight: '0.5rem' }} />
+                  💡 Safe Alternatives For You:
+                </Label>
+                <div style={{ display: 'grid', gap: '0.75rem' }}>
+                  {result.alternatives.map((alt, idx) => (
+                    <div 
+                      key={idx} 
+                      className="alternative-item" 
+                      data-testid={`alternative-${idx}`}
+                      style={{ 
+                        background: 'rgba(168, 85, 247, 0.1)', 
+                        border: '1px solid rgba(168, 85, 247, 0.3)',
+                        padding: '1rem',
+                        borderRadius: '8px',
+                        display: 'flex',
+                        alignItems: 'start',
+                        gap: '0.75rem'
+                      }}
+                    >
+                      <span style={{ color: '#a855f7', fontWeight: 600, fontSize: '1.1rem' }}>✓</span>
+                      <span style={{ flex: 1, color: '#7c3aed', fontWeight: 500 }}>{alt}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Product Label Scanner Section */}
+      <div className="section" style={{ marginTop: '3rem' }}>
+        <h2 className="section-title">📷 Product Label Scanner</h2>
+        <p className="page-subtitle" style={{ marginBottom: '1.5rem' }}>
+          Upload a photo of any product label - food, skincare, cosmetics, perfumes, colognes, or fragrances. 
+          AI will instantly identify allergens and irritants based on your profile.
+        </p>
         <div className="animated-border-box">
           <div className="animated-border-content" data-testid="image-upload-section">
             <div style={{ marginBottom: '1.5rem' }}>
