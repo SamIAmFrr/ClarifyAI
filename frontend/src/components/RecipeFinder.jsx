@@ -9,7 +9,7 @@ import { toast } from "sonner";
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
-export default function RecipeFinder({ allergyProfile }) {
+export default function RecipeFinder({ allergyProfile, reloadHistory }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [result, setResult] = useState(null);
   const [searching, setSearching] = useState(false);
