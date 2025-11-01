@@ -19,11 +19,9 @@ export default function Dashboard({ allergyProfile, reloadProfile }) {
     skin_sensitivities: "",
     severity_notes: ""
   });
-  const [query, setQuery] = useState("");
-  const [result, setResult] = useState(null);
-  const [analyzing, setAnalyzing] = useState(false);
   const [history, setHistory] = useState([]);
   const [showProfileForm, setShowProfileForm] = useState(false);
+  const [clearingHistory, setClearingHistory] = useState(false);
 
   useEffect(() => {
     if (allergyProfile) {
