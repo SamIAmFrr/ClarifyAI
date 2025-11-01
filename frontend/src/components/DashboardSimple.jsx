@@ -305,17 +305,7 @@ export default function Dashboard({ allergyProfile, reloadProfile, historyTrigge
       {/* History Section */}
       {history.length > 0 && (
         <section className="section">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
-            <h2 className="section-title" style={{ margin: 0 }}>Recent Analysis History</h2>
-            <Button
-              onClick={handleClearHistory}
-              disabled={clearingHistory}
-              variant="outline"
-              className="rounded-lg border-red-500 text-red-600 hover:border-red-400 hover:text-red-500 hover:bg-red-500/10"
-            >
-              {clearingHistory ? "Clearing..." : "Clear History"}
-            </Button>
-          </div>
+          <h2 className="section-title">Recent Analysis History</h2>
           <div className="history-grid" data-testid="history-list">
             {history.slice(0, 10).map((item, idx) => (
               <div key={item.id} className="history-item" data-testid={`history-item-${idx}`}>
