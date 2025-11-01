@@ -540,23 +540,100 @@ async def analyze_menu_url(
     try:
         from bs4 import BeautifulSoup
         from urllib.parse import urljoin, urlparse
+        import io
+        from PyPDF2 import PdfReader
+        from docx import Document
+        import openpyxl
         
         all_menu_content = []
         visited_urls = set()
         base_url = request.url
         
+        async def extract_content_from_file(content, content_type, filename=""):
+            """Extract text from various file formats"""
+            try:
+                # PDF files
+                if 'pdf' in content_type.lower() or filename.endswith('.pdf'):
+                    pdf_reader = PdfReader(io.BytesIO(content))
+                    text = ""
+                    for page in pdf_reader.pages:
+                        text += page.extract_text() + "\n"
+                    return text
+                
+                # Word documents
+                elif 'word' in content_type.lower() or filename.endswith(('.doc', '.docx')):
+                    doc = Document(io.BytesIO(content))
+                    text = "\n".join([paragraph.text for paragraph in doc.paragraphs])
+                    return text
+                
+                # Excel files
+                elif 'excel' in content_type.lower() or 'spreadsheet' in content_type.lower() or filename.endswith(('.xls', '.xlsx')):
+                    wb = openpyxl.load_workbook(io.BytesIO(content))
+                    text = ""
+                    for sheet in wb.worksheets:
+                        for row in sheet.iter_rows(values_only=True):
+                            row_text = " | ".join([str(cell) if cell else "" for cell in row])
+                            if row_text.strip():
+                                text += row_text + "\n"
+                    return text
+                
+                # JSON files
+                elif 'json' in content_type.lower() or filename.endswith('.json'):
+                    import json
+                    data = json.loads(content.decode('utf-8'))
+                    return json.dumps(data, indent=2)
+                
+                # CSV files
+                elif 'csv' in content_type.lower() or filename.endswith('.csv'):
+                    import csv
+                    text = ""
+                    csv_file = io.StringIO(content.decode('utf-8'))
+                    reader = csv.reader(csv_file)
+                    for row in reader:
+                        text += " | ".join(row) + "\n"
+                    return text
+                
+                # Plain text
+                elif 'text' in content_type.lower() or filename.endswith('.txt'):
+                    return content.decode('utf-8')
+                
+                # HTML (existing logic)
+                elif 'html' in content_type.lower():
+                    return None  # Will be handled by existing HTML logic
+                
+                # Try to decode as text for unknown formats
+                else:
+                    try:
+                        return content.decode('utf-8')
+                    except:
+                        return None
+                        
+            except Exception as e:
+                logging.error(f"Error extracting content from {content_type}: {str(e)}")
+                return None
+        
         async def fetch_and_extract(url, is_main_page=False):
-            if url in visited_urls or len(visited_urls) > 10:  # Limit to prevent infinite crawling
+            if url in visited_urls or len(visited_urls) > 10:
                 return
             
             visited_urls.add(url)
             
             try:
-                async with httpx.AsyncClient(timeout=30.0) as client:
+                async with httpx.AsyncClient(timeout=30.0, follow_redirects=True) as client:
                     response = await client.get(url)
                     if response.status_code != 200:
                         return
                     
+                    content_type = response.headers.get('content-type', '').lower()
+                    
+                    # Try to extract from file formats first
+                    extracted_text = await extract_content_from_file(response.content, content_type, url)
+                    
+                    if extracted_text:
+                        all_menu_content.append(extracted_text)
+                        return
+                    
+                    # If not a file format or extraction failed, treat as HTML
                     soup = BeautifulSoup(response.text, 'html.parser')
                     
                     # Remove unwanted elements
