@@ -61,7 +61,7 @@ export default function RecipeFinder({ allergyProfile }) {
               <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
                 <Input
                   id="recipe-search"
-                  placeholder="e.g., chocolate cake, pasta carbonara, chicken curry..."
+                  placeholder="Type here"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
