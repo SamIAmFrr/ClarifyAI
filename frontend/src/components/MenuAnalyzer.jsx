@@ -127,7 +127,7 @@ export default function MenuAnalyzer({ allergyProfile }) {
                 <div style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem', flexWrap: 'wrap' }}>
                   <Input
                     data-testid="menu-url-input"
-                    placeholder="Paste Restaurant Menu URL"
+                    placeholder="Paste Menu URL (HTML, PDF, Word, Excel, etc.)"
                     value={menuUrl}
                     onChange={(e) => setMenuUrl(e.target.value)}
                     style={{ flex: 1, minWidth: '300px' }}
