@@ -121,16 +121,12 @@ export default function Dashboard({ allergyProfile, reloadProfile, historyTrigge
 
     setClearingHistory(true);
     try {
-      console.log('Starting clear history...');
-      
       // Clear all three types of history
       const results = await Promise.allSettled([
         axios.delete(`${API}/history`),
         axios.delete(`${API}/image-history`),
         axios.delete(`${API}/menu-history`)
       ]);
-      
-      console.log('Delete results:', results);
       
       // Check if any succeeded
       const anySuccess = results.some(r => r.status === 'fulfilled' && r.value?.status === 200);
@@ -143,7 +139,6 @@ export default function Dashboard({ allergyProfile, reloadProfile, historyTrigge
         await loadHistory();
         toast.success("History cleared successfully!");
       } else {
-        console.error('All delete operations failed:', results);
         toast.error("Failed to clear history. Please try again.");
       }
     } catch (error) {
