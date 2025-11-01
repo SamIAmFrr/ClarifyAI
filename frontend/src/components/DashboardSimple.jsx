@@ -114,6 +114,37 @@ export default function Dashboard({ allergyProfile, reloadProfile, historyTrigge
     }
   };
 
+  const handleClearHistory = async () => {
+    if (!window.confirm("Are you sure you want to clear all your analysis history? This cannot be undone.")) {
+      return;
+    }
+
+    setClearingHistory(true);
+    
+    try {
+      // Clear all three types of history
+      await Promise.all([
+        axios.delete(`${API}/history`),
+        axios.delete(`${API}/image-history`),
+        axios.delete(`${API}/menu-history`)
+      ]);
+      
+      // Wait for database to sync
+      await new Promise(resolve => setTimeout(resolve, 500));
+      
+      // Clear local state and reload
+      setHistory([]);
+      await loadHistory();
+      
+      toast.success("History cleared successfully!");
+    } catch (error) {
+      console.error('Clear history error:', error);
+      toast.error("Failed to clear history");
+    } finally {
+      setClearingHistory(false);
+    }
+  };
+
   return (
     <div className="dashboard-content">
       {/* Allergy Profile Section */}
