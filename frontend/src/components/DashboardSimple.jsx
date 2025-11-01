@@ -44,15 +44,17 @@ export default function Dashboard({ allergyProfile, reloadProfile, historyTrigge
 
   const loadHistory = async () => {
     try {
-      // Fetch all three types of history with proper error handling
+      // Fetch all four types of history with proper error handling
       const textHistoryPromise = axios.get(`${API}/history`).then(res => res.data).catch(() => []);
       const imageHistoryPromise = axios.get(`${API}/image-history`).then(res => res.data).catch(() => []);
       const menuHistoryPromise = axios.get(`${API}/menu-history`).then(res => res.data).catch(() => []);
+      const recipeHistoryPromise = axios.get(`${API}/recipe-history`).then(res => res.data).catch(() => []);
 
-      const [textHistory, imageHistory, menuHistory] = await Promise.all([
+      const [textHistory, imageHistory, menuHistory, recipeHistory] = await Promise.all([
         textHistoryPromise,
         imageHistoryPromise,
-        menuHistoryPromise
+        menuHistoryPromise,
+        recipeHistoryPromise
       ]);
 
       // Combine and format all history items
@@ -78,6 +80,14 @@ export default function Dashboard({ allergyProfile, reloadProfile, historyTrigge
           icon: '🍽️',
           query: item.restaurant_name || item.source_data,
           is_safe: item.safe_dishes && item.safe_dishes.length > 0
+        })),
+        ...recipeHistory.map(item => ({
+          ...item,
+          type: 'recipe',
+          displayType: 'Recipe Search',
+          icon: '👨‍🍳',
+          query: item.food_item,
+          is_safe: true // Recipes are always safe by design
         }))
       ];
 
