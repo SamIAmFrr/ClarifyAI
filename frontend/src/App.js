@@ -127,7 +127,7 @@ function App() {
             element={
               user ? (
                 <AppLayout user={user} setUser={setUser}>
-                  <RecipeFinder allergyProfile={allergyProfile} />
+                  <RecipeFinder allergyProfile={allergyProfile} reloadHistory={triggerHistoryReload} />
                 </AppLayout>
               ) : (
                 <Navigate to="/" />
