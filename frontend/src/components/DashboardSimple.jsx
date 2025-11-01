@@ -89,8 +89,7 @@ export default function Dashboard({ allergyProfile, reloadProfile }) {
 
     try {
       const response = await axios.post(`${API}/analyze`, {
-        query,
-        analysis_type: analysisType
+        query
       });
       setResult(response.data);
       loadHistory();
