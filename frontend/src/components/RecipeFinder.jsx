@@ -59,9 +59,14 @@ export default function RecipeFinder({ allergyProfile }) {
 
     try {
       const response = await axios.post(`${API}/recipe-finder`, {
-        food_item: lastSearchQuery
+        food_item: lastSearchQuery,
+        exclude_recipes: previousRecipeNames // Send previous recipe names to exclude
       });
       setResult(response.data);
+      // Add new recipes to the exclusion list
+      if (response.data.recipes) {
+        setPreviousRecipeNames([...previousRecipeNames, ...response.data.recipes.map(r => r.name)]);
+      }
       toast.success("New recipe options generated!");
     } catch (error) {
       toast.error(error.response?.data?.detail || "Recipe search failed");
