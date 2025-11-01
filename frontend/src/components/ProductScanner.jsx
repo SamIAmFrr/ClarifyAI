@@ -9,7 +9,7 @@ import { toast } from "sonner";
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
-export default function ProductScanner({ allergyProfile }) {
+export default function ProductScanner({ allergyProfile, reloadHistory }) {
   // Quick text analysis states
   const [query, setQuery] = useState("");
   const [result, setResult] = useState(null);
@@ -40,6 +40,7 @@ export default function ProductScanner({ allergyProfile }) {
         query
       });
       setResult(response.data);
+      if (reloadHistory) reloadHistory();
     } catch (error) {
       toast.error(error.response?.data?.detail || "Analysis failed");
     } finally {
