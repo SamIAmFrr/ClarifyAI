@@ -90,6 +90,9 @@ export default function RecipeFinder({ allergyProfile, reloadHistory }) {
         }));
       }
       
+      // Trigger history reload in Dashboard
+      if (reloadHistory) reloadHistory();
+      
       toast.success("New recipe options generated!");
     } catch (error) {
       toast.error(error.response?.data?.detail || "Recipe search failed");
