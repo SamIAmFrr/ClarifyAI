@@ -32,12 +32,17 @@ export default function RecipeFinder({ allergyProfile }) {
     setResult(null);
     setSelectedRecipe(null);
     setLastSearchQuery(searchQuery);
+    setPreviousRecipeNames([]); // Reset previous recipes on new search
 
     try {
       const response = await axios.post(`${API}/recipe-finder`, {
         food_item: searchQuery
       });
       setResult(response.data);
+      // Store the recipe names for reroll
+      if (response.data.recipes) {
+        setPreviousRecipeNames(response.data.recipes.map(r => r.name));
+      }
       toast.success("3 recipe options generated!");
     } catch (error) {
       toast.error(error.response?.data?.detail || "Recipe search failed");
