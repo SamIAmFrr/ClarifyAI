@@ -21,6 +21,7 @@ export default function Dashboard({ allergyProfile, reloadProfile, historyTrigge
   });
   const [history, setHistory] = useState([]);
   const [showProfileForm, setShowProfileForm] = useState(false);
+  const [showAllHistory, setShowAllHistory] = useState(false);
 
   useEffect(() => {
     if (allergyProfile) {
