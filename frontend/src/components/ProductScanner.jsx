@@ -85,6 +85,7 @@ export default function ProductScanner({ allergyProfile, reloadHistory }) {
         }
       });
       setImageResult(response.data);
+      if (reloadHistory) reloadHistory();
       toast.success("Product analyzed successfully!");
     } catch (error) {
       toast.error(error.response?.data?.detail || "Image analysis failed");
