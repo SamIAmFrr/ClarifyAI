@@ -68,15 +68,25 @@ export default function RecipeFinder({ allergyProfile }) {
     setSelectedRecipe(null);
 
     try {
+      // Get all previously shown recipes for this food item
+      const normalizedQuery = lastSearchQuery.toLowerCase().trim();
+      const excludedRecipes = recipeHistory[normalizedQuery] || [];
+      
       const response = await axios.post(`${API}/recipe-finder`, {
         food_item: lastSearchQuery,
-        exclude_recipes: previousRecipeNames // Send previous recipe names to exclude
+        exclude_recipes: excludedRecipes
       });
       setResult(response.data);
-      // Add new recipes to the exclusion list
+      
+      // Add new recipes to the history for this food item
       if (response.data.recipes) {
-        setPreviousRecipeNames([...previousRecipeNames, ...response.data.recipes.map(r => r.name)]);
+        const newRecipeNames = response.data.recipes.map(r => r.name);
+        setRecipeHistory(prev => ({
+          ...prev,
+          [normalizedQuery]: [...(prev[normalizedQuery] || []), ...newRecipeNames]
+        }));
       }
+      
       toast.success("New recipe options generated!");
     } catch (error) {
       toast.error(error.response?.data?.detail || "Recipe search failed");
