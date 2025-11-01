@@ -44,16 +44,33 @@ export default function Dashboard({ allergyProfile, reloadProfile, historyTrigge
 
   const loadHistory = async () => {
     try {
+      console.log('Loading history...');
+      
       // Fetch all three types of history with proper error handling
-      const textHistoryPromise = axios.get(`${API}/history`).then(res => res.data).catch(() => []);
-      const imageHistoryPromise = axios.get(`${API}/image-history`).then(res => res.data).catch(() => []);
-      const menuHistoryPromise = axios.get(`${API}/menu-history`).then(res => res.data).catch(() => []);
+      const textHistoryPromise = axios.get(`${API}/history`).then(res => res.data).catch(err => {
+        console.error('Text history error:', err);
+        return [];
+      });
+      const imageHistoryPromise = axios.get(`${API}/image-history`).then(res => res.data).catch(err => {
+        console.error('Image history error:', err);
+        return [];
+      });
+      const menuHistoryPromise = axios.get(`${API}/menu-history`).then(res => res.data).catch(err => {
+        console.error('Menu history error:', err);
+        return [];
+      });
 
       const [textHistory, imageHistory, menuHistory] = await Promise.all([
         textHistoryPromise,
         imageHistoryPromise,
         menuHistoryPromise
       ]);
+
+      console.log('Fetched history:', {
+        text: textHistory.length,
+        image: imageHistory.length,
+        menu: menuHistory.length
+      });
 
       // Combine and format all history items
       const allHistory = [
@@ -84,6 +101,7 @@ export default function Dashboard({ allergyProfile, reloadProfile, historyTrigge
       // Sort by timestamp (newest first)
       allHistory.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
 
+      console.log('Total combined history items:', allHistory.length);
       setHistory(allHistory);
     } catch (error) {
       console.error('Failed to load history:', error);
