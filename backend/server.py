@@ -79,13 +79,13 @@ class ImageAnalysisResult(BaseModel):
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
     user_id: str
     product_name: Optional[str] = ""
-    ingredients: List[str]
-    detected_allergens: List[str]
-    is_safe: bool
-    safety_rating: int  # 0-100 rating for the user
-    warnings: List[str]
-    alternatives: List[str]  # Safe alternative products
-    detailed_analysis: str
+    ingredients: List[str] = []
+    detected_allergens: List[str] = []
+    is_safe: bool = False
+    safety_rating: int = 0  # 0-100 rating for the user
+    warnings: List[str] = []
+    alternatives: List[str] = []  # Safe alternative products
+    detailed_analysis: str = ""
     timestamp: str = Field(default_factory=lambda: datetime.now(timezone.utc).isoformat())
 
 class MenuDish(BaseModel):
