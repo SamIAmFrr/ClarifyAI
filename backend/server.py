@@ -1105,7 +1105,13 @@ Be creative with substitutions and make recipes that are both safe AND delicious
         
         user_message = f"""Please create allergy-safe recipes for: {request.food_item}
 
-{f"IMPORTANT: Do NOT generate any of these recipes as they were already shown: {', '.join(request.exclude_recipes)}" if request.exclude_recipes else ""}
+{f"IMPORTANT: Do NOT generate any of these recipes as they were already shown to the user: {', '.join(request.exclude_recipes)}. Create completely NEW and DIFFERENT variations with unique names, ingredients, and cooking methods." if request.exclude_recipes else ""}
+
+Think creatively - consider different:
+- Cooking methods (baked, fried, steamed, grilled, etc.)
+- Cuisines (Italian, Asian, Mexican, Mediterranean, etc.) 
+- Styles (traditional, modern, fusion, etc.)
+- Flavor profiles (sweet, savory, spicy, tangy, etc.)
 
 Provide your response in this JSON format with EXACTLY 3 different recipe variations:
 {{
