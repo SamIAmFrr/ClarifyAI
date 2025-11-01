@@ -139,8 +139,8 @@ frontend:
     working: "NA"
     file: "/app/frontend/src/components/RecipeFinder.jsx"
     stuck_count: 0
-    priority: "high"
-    needs_retesting: true
+    priority: "medium"
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
@@ -151,8 +151,8 @@ frontend:
     working: "NA"
     file: "/app/frontend/src/components/AppLayout.jsx, /app/frontend/src/App.js"
     stuck_count: 0
-    priority: "high"
-    needs_retesting: true
+    priority: "medium"
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
@@ -163,12 +163,24 @@ frontend:
     working: "NA"
     file: "/app/frontend/src/App.css"
     stuck_count: 0
-    priority: "medium"
-    needs_retesting: true
+    priority: "low"
+    needs_retesting: false
     status_history:
       - working: "NA"
         agent: "main"
         comment: "Added comprehensive recipe styles including recipe-card, recipe-header, recipe-meta, recipe-section, badges, and alerts with dark mode support."
+  
+  - task: "Quick Text Analysis UI Update"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/components/DashboardSimple.jsx"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Removed product type selector tabs (food, product, skincare, fragrance, ingredient). Changed placeholder text to 'Enter product name or URL'. Updated description to clarify URL support. Removed analysisType state and related logic. Updated API call to remove analysis_type parameter."
 
 metadata:
   created_by: "main_agent"
