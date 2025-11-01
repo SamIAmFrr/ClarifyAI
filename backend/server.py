@@ -414,7 +414,7 @@ Your task:
 2. Read all text from the product label image
 3. Extract the product name if visible
 4. List all ingredients found
-5. Identify ALL potential allergens and irritants:
+5. Identify potential allergens and irritants based on ACTUAL INGREDIENTS:
    - For food: gluten, nuts, dairy, soy, eggs, fish, shellfish, sesame, etc.
    - For skincare/cosmetics: fragrances, parabens, sulfates, alcohol, essential oils, preservatives, etc.
    - For perfumes/colognes: specific fragrance compounds, alcohol content, allergens like linalool, limonene, citronellol, geraniol, etc.
@@ -426,6 +426,8 @@ Your task:
    - 50-74 = Caution advised, some concerning ingredients
    - 25-49 = High risk, multiple allergens present
    - 0-24 = Dangerous, contains user's major allergens
+
+IMPORTANT: Focus on actual ingredients in the product. Do NOT overemphasize cross-contamination warnings or "may contain" statements - these are standard disclaimers and don't indicate the product actually contains the allergen.
 
 Respond in JSON format:
 {{
