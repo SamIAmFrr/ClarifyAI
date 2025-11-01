@@ -61,42 +61,42 @@ export default function AppLayout({ user, setUser, children }) {
       <div key={`br-${animationKey}`} className="corner-animation corner-bottom-right animate"></div>
       
       <header className={`dashboard-header ${!isHeaderVisible ? 'header-hidden' : ''}`}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '2rem', flexWrap: 'wrap' }}>
-          <div className="logo">
-            <img src={LOGO_URL} alt="ClarifyAI Logo" className="logo-image" />
-            ClarifyAI
-          </div>
-          <nav className="nav-links">
-            <Link 
-              to="/dashboard" 
-              className={`nav-link ${location.pathname === '/dashboard' ? 'active' : ''}`}
-              data-testid="nav-dashboard"
-            >
-              Dashboard
-            </Link>
-            <Link 
-              to="/product-scanner" 
-              className={`nav-link ${location.pathname === '/product-scanner' ? 'active' : ''}`}
-              data-testid="nav-product-scanner"
-            >
-              Product Scanner
-            </Link>
-            <Link 
-              to="/recipe-finder" 
-              className={`nav-link ${location.pathname === '/recipe-finder' ? 'active' : ''}`}
-              data-testid="nav-recipe-finder"
-            >
-              Recipe Finder
-            </Link>
-            <Link 
-              to="/menu-analyzer" 
-              className={`nav-link ${location.pathname === '/menu-analyzer' ? 'active' : ''}`}
-              data-testid="nav-menu-analyzer"
-            >
-              Menu Analyzer
-            </Link>
-          </nav>
+        <div className="logo">
+          <img src={LOGO_URL} alt="ClarifyAI Logo" className="logo-image" />
+          ClarifyAI
         </div>
+        
+        <nav className="nav-links">
+          <Link 
+            to="/dashboard" 
+            className={`nav-link ${location.pathname === '/dashboard' ? 'active' : ''}`}
+            data-testid="nav-dashboard"
+          >
+            Dashboard
+          </Link>
+          <Link 
+            to="/product-scanner" 
+            className={`nav-link ${location.pathname === '/product-scanner' ? 'active' : ''}`}
+            data-testid="nav-product-scanner"
+          >
+            Product Scanner
+          </Link>
+          <Link 
+            to="/recipe-finder" 
+            className={`nav-link ${location.pathname === '/recipe-finder' ? 'active' : ''}`}
+            data-testid="nav-recipe-finder"
+          >
+            Recipe Finder
+          </Link>
+          <Link 
+            to="/menu-analyzer" 
+            className={`nav-link ${location.pathname === '/menu-analyzer' ? 'active' : ''}`}
+            data-testid="nav-menu-analyzer"
+          >
+            Menu Analyzer
+          </Link>
+        </nav>
+        
         <div className="user-info">
           {user.picture && (
             <img src={user.picture} alt={user.name} className="user-avatar" />
