@@ -40,8 +40,43 @@ export default function Dashboard({ allergyProfile, reloadProfile }) {
 
   const loadHistory = async () => {
     try {
-      const response = await axios.get(`${API}/history`);
-      setHistory(response.data);
+      // Fetch all three types of history
+      const [textHistory, imageHistory, menuHistory] = await Promise.all([
+        axios.get(`${API}/history`).catch(() => ({ data: [] })),
+        axios.get(`${API}/image-history`).catch(() => ({ data: [] })),
+        axios.get(`${API}/menu-history`).catch(() => ({ data: [] }))
+      ]);
+
+      // Combine and format all history items
+      const allHistory = [
+        ...textHistory.data.map(item => ({
+          ...item,
+          type: 'text',
+          displayType: 'Quick Analysis',
+          icon: '🔍'
+        })),
+        ...imageHistory.data.map(item => ({
+          ...item,
+          type: 'image',
+          displayType: 'Product Scan',
+          icon: '📷',
+          query: item.product_name || 'Product Label',
+          is_safe: item.is_safe
+        })),
+        ...menuHistory.data.map(item => ({
+          ...item,
+          type: 'menu',
+          displayType: 'Menu Analysis',
+          icon: '🍽️',
+          query: item.restaurant_name || item.source_data,
+          is_safe: item.safe_dishes && item.safe_dishes.length > 0
+        }))
+      ];
+
+      // Sort by timestamp (newest first)
+      allHistory.sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+      setHistory(allHistory);
     } catch (error) {
       console.error('Failed to load history:', error);
     }
