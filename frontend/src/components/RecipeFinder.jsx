@@ -15,7 +15,7 @@ export default function RecipeFinder({ allergyProfile }) {
   const [searching, setSearching] = useState(false);
   const [selectedRecipe, setSelectedRecipe] = useState(null);
   const [lastSearchQuery, setLastSearchQuery] = useState("");
-  const [previousRecipeNames, setPreviousRecipeNames] = useState([]);
+  const [recipeHistory, setRecipeHistory] = useState({}); // Track recipes by food item
 
   const handleSearch = async () => {
     if (!searchQuery.trim()) {
