@@ -298,14 +298,14 @@ Religion restrictions: {', '.join(religion_restrictions) if religion_restriction
 Skin sensitivities: {', '.join(skin_sensitivities) if skin_sensitivities else 'None'}
     
 Provide a thorough analysis including:
-1. Safety assessment (safe/warning/danger)
-2. Specific concerns related to user's allergies and skin sensitivities
+1. Safety assessment (safe/warning/danger) - Focus on ACTUAL INGREDIENTS only
+2. Specific concerns related to user's allergies based on listed ingredients
 3. Check against religious dietary laws (Halal, Kosher, Hindu vegetarian, etc.)
 4. For perfumes/fragrances: identify common allergen compounds (linalool, limonene, citronellol, geraniol, etc.)
 5. Alternative suggestions if unsafe - MUST provide 3-5 specific alternatives when item is unsafe
 6. Emergency advice if needed
 
-Be clear, concise, and prioritize user safety. When something is unsafe, ALWAYS suggest 3-5 safe alternatives."""
+IMPORTANT: Focus on actual ingredients present in the item. Do NOT emphasize cross-contamination warnings as these are often standard disclaimers. Only mention cross-contamination if it's a severe allergy and truly critical."""
     
     user_message = f"""Analyze this {request.analysis_type}: {request.query}
     
