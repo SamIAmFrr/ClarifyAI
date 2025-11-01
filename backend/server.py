@@ -620,18 +620,18 @@ async def analyze_menu_url(
             raise HTTPException(status_code=400, detail="Could not extract menu content from the website")
         
         # Create AI prompt
-        system_message = f"""You are an expert restaurant menu analyzer. Analyze menu items for allergen safety.
+        system_message = f"""You are an expert restaurant menu analyzer. You've explored the entire menu across multiple pages.
 
 User's allergies: {', '.join(allergies) if allergies else 'None'}
 Dietary restrictions: {', '.join(dietary_restrictions) if dietary_restrictions else 'None'}
 Religion restrictions: {', '.join(religion_restrictions) if religion_restrictions else 'None'}
 
 Your task:
-1. Extract restaurant name if visible
-2. List all menu items with descriptions
-3. For each dish, determine if it's safe based on user's allergies
-4. Identify allergens in each dish
-5. Suggest modifications for unsafe dishes (e.g., "ask for no nuts", "dressing on the side")
+1. Review ALL menu items from all sections (appetizers, entrees, desserts, drinks, etc.)
+2. Identify the BEST and SAFEST options for this user across the entire menu
+3. Focus on dishes that are completely safe (no allergens, fits restrictions)
+4. For potentially unsafe dishes, suggest modifications to make them safe
+5. Provide a curated list of recommended items, not everything on the menu
 
 Respond in JSON format:
 {{
@@ -639,7 +639,7 @@ Respond in JSON format:
   "safe_dishes": [
     {{
       "name": "Dish name",
-      "description": "Description",
+      "description": "Description including what makes it great for this user",
       "is_safe": true,
       "allergens": [],
       "warnings": [],
@@ -648,7 +648,7 @@ Respond in JSON format:
   ],
   "unsafe_dishes": [
     {{
-      "name": "Dish name",
+      "name": "Dish name (only include if popular/notable)",
       "description": "Description",
       "is_safe": false,
       "allergens": ["allergen1"],
@@ -656,10 +656,20 @@ Respond in JSON format:
       "modifications": ["Order without X", "Ask for Y on the side"]
     }}
   ],
-  "summary": "Overall summary"
+  "summary": "Summary of the best options found across the entire menu for this user's dietary needs"
 }}"""
         
-        user_message = f"Analyze this restaurant menu:\n\n{menu_content}\n\nProvide analysis in the JSON format specified."
+        user_message = f"""I've crawled this restaurant's website and found menu content from multiple pages:
+
+{menu_content}
+
+Based on ALL the menu items above, identify the BEST options for this user. Focus on:
+- Completely safe dishes (top priority)
+- Popular items that can be modified to be safe
+- Best drinks and beverages that fit their needs
+- Any standout options across all categories
+
+Provide your analysis in the JSON format specified."""
         
         # Initialize Gemini chat - Using your free Google API key
         chat = LlmChat(
