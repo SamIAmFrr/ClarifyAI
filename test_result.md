@@ -205,7 +205,6 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Quick Text Analysis URL Support"
     - "Quick Text Analysis UI Update"
   stuck_tasks: []
   test_all: false
