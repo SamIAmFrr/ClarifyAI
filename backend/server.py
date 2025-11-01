@@ -849,14 +849,36 @@ Be creative with substitutions and make recipes that are both safe AND delicious
         
         user_message = f"""Please create allergy-safe recipes for: {request.food_item}
 
-Provide your response in this JSON format:
+Provide your response in this JSON format with EXACTLY 3 different recipe variations:
 {{
   "recipes": [
     {{
-      "name": "Recipe name",
+      "name": "Recipe name 1",
       "description": "Brief description",
       "prep_time": "15 minutes",
       "cook_time": "30 minutes",
+      "servings": "4 servings",
+      "ingredients": ["ingredient 1", "ingredient 2", "..."],
+      "instructions": ["Step 1", "Step 2", "..."],
+      "allergen_warnings": ["Note about allergens"],
+      "safe_for_user": true
+    }},
+    {{
+      "name": "Recipe name 2",
+      "description": "Brief description",
+      "prep_time": "20 minutes",
+      "cook_time": "25 minutes",
+      "servings": "4 servings",
+      "ingredients": ["ingredient 1", "ingredient 2", "..."],
+      "instructions": ["Step 1", "Step 2", "..."],
+      "allergen_warnings": ["Note about allergens"],
+      "safe_for_user": true
+    }},
+    {{
+      "name": "Recipe name 3",
+      "description": "Brief description",
+      "prep_time": "10 minutes",
+      "cook_time": "35 minutes",
       "servings": "4 servings",
       "ingredients": ["ingredient 1", "ingredient 2", "..."],
       "instructions": ["Step 1", "Step 2", "..."],
@@ -867,7 +889,7 @@ Provide your response in this JSON format:
   "summary": "Brief summary explaining how these recipes avoid the user's allergens"
 }}
 
-IMPORTANT: All recipes MUST be safe for the user's allergies and restrictions."""
+CRITICAL: You MUST provide EXACTLY 3 different recipe variations. All recipes MUST be safe for the user's allergies and restrictions."""
         
         # Initialize Gemini chat
         chat = LlmChat(
