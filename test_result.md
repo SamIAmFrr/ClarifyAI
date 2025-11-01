@@ -103,7 +103,7 @@
 #====================================================================================================
 
 
-user_problem_statement: "Add a new Recipe Finder feature that searches for allergy-safe recipes. The feature should allow users to search for recipes by food item and receive AI-generated allergy-safe recipes with ingredients, instructions, prep/cook time, and allergen warnings."
+user_problem_statement: "Update the Quick Text Analysis feature to remove the product type selector, change placeholder to 'enter product name or URL', and add functionality to allow users to input a product URL for analysis. The URL scanning should work similar to the Menu Analyzer, using BeautifulSoup to extract product information."
 
 backend:
   - task: "Recipe Finder API Endpoint"
@@ -111,7 +111,7 @@ backend:
     working: true
     file: "/app/backend/server.py"
     stuck_count: 0
-    priority: "high"
+    priority: "medium"
     needs_retesting: false
     status_history:
       - working: "NA"
@@ -120,6 +120,18 @@ backend:
       - working: true
         agent: "testing"
         comment: "✅ BACKEND TESTING COMPLETE - Recipe Finder API endpoints working correctly. POST /api/recipe-finder properly requires authentication (401), validates request structure, and only accepts POST method (405 for GET). GET /api/recipe-history also properly secured with authentication. All Pydantic models (RecipeRequest, Recipe, RecipeFinderResult) are correctly implemented. Error handling works for malformed JSON (422). Endpoints exist and are accessible. Backend service running properly on configured URL. 14/15 comprehensive tests passed (93.3% success rate). Minor: Content-Type validation occurs after auth check, which is acceptable behavior."
+  
+  - task: "Quick Text Analysis URL Support"
+    implemented: true
+    working: "NA"
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "main"
+        comment: "Modified /api/analyze endpoint to support URL input. Removed analysis_type parameter. Added URL detection logic (checks for http:// or https://). Implemented web scraping using BeautifulSoup to extract product information from URLs. Added support for extracting content from PDF and DOCX files at URLs. Updated AI prompts to handle both text product names and URL-based product scanning. URL functionality mirrors the Menu Analyzer approach."
 
 frontend:
   - task: "Recipe Finder Component"
