@@ -11,11 +11,36 @@ const LOGO_URL = "https://customer-assets.emergentagent.com/job_safe-eats-ai/art
 export default function AppLayout({ user, setUser, children }) {
   const location = useLocation();
   const [animationKey, setAnimationKey] = useState(0);
+  const [isHeaderVisible, setIsHeaderVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
 
   // Trigger corner animation on route change
   useEffect(() => {
     setAnimationKey(prev => prev + 1);
   }, [location.pathname]);
+
+  // Handle scroll for header visibility
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      if (currentScrollY < 10) {
+        // Always show at top
+        setIsHeaderVisible(true);
+      } else if (currentScrollY > lastScrollY && currentScrollY > 100) {
+        // Scrolling down - hide header
+        setIsHeaderVisible(false);
+      } else if (currentScrollY < lastScrollY) {
+        // Scrolling up - show header
+        setIsHeaderVisible(true);
+      }
+      
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [lastScrollY]);
 
   const handleLogout = async () => {
     try {
