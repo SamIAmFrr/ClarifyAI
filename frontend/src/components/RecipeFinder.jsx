@@ -122,95 +122,168 @@ export default function RecipeFinder({ allergyProfile }) {
           </div>
         </div>
 
-        {result && (
+        {result && !selectedRecipe && (
           <div className="results-section" data-testid="recipe-results">
-            <div style={{ marginBottom: '1.5rem' }}>
-              <h2 className="section-title">
-                <ChefHat size={24} className="mr-2" />
-                Recipes for "{result.food_item}"
-              </h2>
-              <p className="text-gray-600 dark:text-gray-400 mt-2">
-                {result.summary}
-              </p>
+            <div style={{ marginBottom: '1.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
+              <div>
+                <h2 className="section-title">
+                  <ChefHat size={24} className="mr-2" />
+                  Choose a Recipe for "{result.food_item}"
+                </h2>
+                <p className="text-gray-600 dark:text-gray-400 mt-2">
+                  {result.summary}
+                </p>
+              </div>
+              <Button
+                onClick={handleReroll}
+                disabled={searching}
+                className="bg-purple-600 hover:bg-purple-700 text-white rounded-lg px-6"
+              >
+                <RefreshCw size={18} className="mr-2" />
+                Reroll Options
+              </Button>
             </div>
 
             {result.recipes && result.recipes.length > 0 ? (
-              <div style={{ display: 'grid', gap: '2rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
                 {result.recipes.map((recipe, idx) => (
                   <div
                     key={idx}
-                    data-testid={`recipe-${idx}`}
-                    className="recipe-card"
+                    data-testid={`recipe-option-${idx}`}
+                    className="recipe-option-card"
+                    onClick={() => setSelectedRecipe(recipe)}
                   >
-                    <div className="recipe-header">
-                      <h3 className="recipe-name">{recipe.name}</h3>
+                    <div className="recipe-option-header">
+                      <h3 className="recipe-option-name">{recipe.name}</h3>
                       {recipe.safe_for_user && (
                         <span className="badge badge-success">
-                          <CheckCircle size={16} className="mr-1" />
-                          Safe for You
+                          <CheckCircle size={14} />
                         </span>
                       )}
                     </div>
 
                     {recipe.description && (
-                      <p className="recipe-description">{recipe.description}</p>
+                      <p className="recipe-option-description">{recipe.description}</p>
                     )}
 
-                    <div className="recipe-meta">
+                    <div className="recipe-option-meta">
                       {recipe.prep_time && (
-                        <div className="meta-item">
-                          <Clock size={16} />
-                          <span>Prep: {recipe.prep_time}</span>
-                        </div>
+                        <span className="meta-tag">
+                          <Clock size={14} /> {recipe.prep_time}
+                        </span>
                       )}
                       {recipe.cook_time && (
-                        <div className="meta-item">
-                          <Clock size={16} />
-                          <span>Cook: {recipe.cook_time}</span>
-                        </div>
+                        <span className="meta-tag">
+                          <Clock size={14} /> {recipe.cook_time}
+                        </span>
                       )}
                       {recipe.servings && (
-                        <div className="meta-item">
-                          <Users size={16} />
-                          <span>{recipe.servings}</span>
-                        </div>
+                        <span className="meta-tag">
+                          <Users size={14} /> {recipe.servings}
+                        </span>
                       )}
                     </div>
 
-                    {recipe.allergen_warnings && recipe.allergen_warnings.length > 0 && (
-                      <div className="alert alert-info mt-3">
-                        <AlertCircle size={18} />
-                        <div>
-                          <strong>Note:</strong>
-                          <ul className="mt-1">
-                            {recipe.allergen_warnings.map((warning, i) => (
-                              <li key={i}>{warning}</li>
-                            ))}
-                          </ul>
-                        </div>
-                      </div>
-                    )}
-
-                    <div className="recipe-section">
-                      <h4 className="recipe-section-title">Ingredients</h4>
-                      <ul className="recipe-list">
-                        {recipe.ingredients.map((ingredient, i) => (
-                          <li key={i}>{ingredient}</li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    <div className="recipe-section">
-                      <h4 className="recipe-section-title">Instructions</h4>
-                      <ol className="recipe-list recipe-list-numbered">
-                        {recipe.instructions.map((instruction, i) => (
-                          <li key={i}>{instruction}</li>
-                        ))}
-                      </ol>
+                    <div className="recipe-option-footer">
+                      <span className="view-recipe-text">Click to view full recipe →</span>
                     </div>
                   </div>
                 ))}
               </div>
+            ) : (
+              <div className="alert alert-warning">
+                <AlertCircle size={20} />
+                <span>No recipes found. Please try a different search.</span>
+              </div>
+            )}
+          </div>
+        )}
+
+        {selectedRecipe && (
+          <div className="results-section" data-testid="recipe-detail">
+            <div style={{ marginBottom: '1.5rem' }}>
+              <Button
+                onClick={() => setSelectedRecipe(null)}
+                className="bg-gray-500 hover:bg-gray-600 text-white rounded-lg px-4 mb-4"
+              >
+                ← Back to Options
+              </Button>
+              <h2 className="section-title">
+                <ChefHat size={24} className="mr-2" />
+                {selectedRecipe.name}
+              </h2>
+            </div>
+
+            <div className="recipe-card">
+              <div className="recipe-header">
+                <h3 className="recipe-name">{selectedRecipe.name}</h3>
+                {selectedRecipe.safe_for_user && (
+                  <span className="badge badge-success">
+                    <CheckCircle size={16} className="mr-1" />
+                    Safe for You
+                  </span>
+                )}
+              </div>
+
+              {selectedRecipe.description && (
+                <p className="recipe-description">{selectedRecipe.description}</p>
+              )}
+
+              <div className="recipe-meta">
+                {selectedRecipe.prep_time && (
+                  <div className="meta-item">
+                    <Clock size={16} />
+                    <span>Prep: {selectedRecipe.prep_time}</span>
+                  </div>
+                )}
+                {selectedRecipe.cook_time && (
+                  <div className="meta-item">
+                    <Clock size={16} />
+                    <span>Cook: {selectedRecipe.cook_time}</span>
+                  </div>
+                )}
+                {selectedRecipe.servings && (
+                  <div className="meta-item">
+                    <Users size={16} />
+                    <span>{selectedRecipe.servings}</span>
+                  </div>
+                )}
+              </div>
+
+              {selectedRecipe.allergen_warnings && selectedRecipe.allergen_warnings.length > 0 && (
+                <div className="alert alert-info mt-3">
+                  <AlertCircle size={18} />
+                  <div>
+                    <strong>Note:</strong>
+                    <ul className="mt-1">
+                      {selectedRecipe.allergen_warnings.map((warning, i) => (
+                        <li key={i}>{warning}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              )}
+
+              <div className="recipe-section">
+                <h4 className="recipe-section-title">Ingredients</h4>
+                <ul className="recipe-list">
+                  {selectedRecipe.ingredients.map((ingredient, i) => (
+                    <li key={i}>{ingredient}</li>
+                  ))}
+                </ul>
+              </div>
+
+              <div className="recipe-section">
+                <h4 className="recipe-section-title">Instructions</h4>
+                <ol className="recipe-list recipe-list-numbered">
+                  {selectedRecipe.instructions.map((instruction, i) => (
+                    <li key={i}>{instruction}</li>
+                  ))}
+                </ol>
+              </div>
+            </div>
+          </div>
+        )}
             ) : (
               <div className="alert alert-warning">
                 <AlertCircle size={20} />
