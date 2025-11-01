@@ -44,22 +44,26 @@ export default function Dashboard({ allergyProfile, reloadProfile, historyTrigge
 
   const loadHistory = async () => {
     try {
-      // Fetch all three types of history
+      // Fetch all three types of history with proper error handling
+      const textHistoryPromise = axios.get(`${API}/history`).then(res => res.data).catch(() => []);
+      const imageHistoryPromise = axios.get(`${API}/image-history`).then(res => res.data).catch(() => []);
+      const menuHistoryPromise = axios.get(`${API}/menu-history`).then(res => res.data).catch(() => []);
+
       const [textHistory, imageHistory, menuHistory] = await Promise.all([
-        axios.get(`${API}/history`).catch(() => ({ data: [] })),
-        axios.get(`${API}/image-history`).catch(() => ({ data: [] })),
-        axios.get(`${API}/menu-history`).catch(() => ({ data: [] }))
+        textHistoryPromise,
+        imageHistoryPromise,
+        menuHistoryPromise
       ]);
 
       // Combine and format all history items
       const allHistory = [
-        ...textHistory.data.map(item => ({
+        ...textHistory.map(item => ({
           ...item,
           type: 'text',
           displayType: 'Quick Analysis',
           icon: '🔍'
         })),
-        ...imageHistory.data.map(item => ({
+        ...imageHistory.map(item => ({
           ...item,
           type: 'image',
           displayType: 'Product Scan',
@@ -67,7 +71,7 @@ export default function Dashboard({ allergyProfile, reloadProfile, historyTrigge
           query: item.product_name || 'Product Label',
           is_safe: item.is_safe
         })),
-        ...menuHistory.data.map(item => ({
+        ...menuHistory.map(item => ({
           ...item,
           type: 'menu',
           displayType: 'Menu Analysis',
@@ -83,6 +87,7 @@ export default function Dashboard({ allergyProfile, reloadProfile, historyTrigge
       setHistory(allHistory);
     } catch (error) {
       console.error('Failed to load history:', error);
+      setHistory([]);
     }
   };
 
