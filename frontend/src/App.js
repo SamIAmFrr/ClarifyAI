@@ -103,7 +103,7 @@ function App() {
             element={
               user ? (
                 <AppLayout user={user} setUser={setUser}>
-                  <Dashboard allergyProfile={allergyProfile} reloadProfile={loadProfile} />
+                  <Dashboard allergyProfile={allergyProfile} reloadProfile={loadProfile} historyTrigger={historyTrigger} />
                 </AppLayout>
               ) : (
                 <Navigate to="/" />
@@ -115,7 +115,7 @@ function App() {
             element={
               user ? (
                 <AppLayout user={user} setUser={setUser}>
-                  <ProductScanner allergyProfile={allergyProfile} />
+                  <ProductScanner allergyProfile={allergyProfile} reloadHistory={triggerHistoryReload} />
                 </AppLayout>
               ) : (
                 <Navigate to="/" />
@@ -139,7 +139,7 @@ function App() {
             element={
               user ? (
                 <AppLayout user={user} setUser={setUser}>
-                  <MenuAnalyzer allergyProfile={allergyProfile} />
+                  <MenuAnalyzer allergyProfile={allergyProfile} reloadHistory={triggerHistoryReload} />
                 </AppLayout>
               ) : (
                 <Navigate to="/" />
