@@ -74,18 +74,21 @@ export default function ProductScanner({ allergyProfile }) {
         <div className="animated-border-box">
           <div className="animated-border-content" data-testid="image-upload-section">
             <div style={{ marginBottom: '1.5rem' }}>
-              <Label htmlFor="label-image" className="mb-2 block font-semibold text-purple-700">
+              <Label className="mb-2 block font-semibold text-purple-700">
                 Upload or Take Photo of Product Label
               </Label>
               <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
-                <Input
+                <label htmlFor="label-image" className="upload-button">
+                  <Upload size={18} className="mr-2" />
+                  Upload Photo
+                </label>
+                <input
                   id="label-image"
                   type="file"
                   accept="image/*"
-                  capture="environment"
                   onChange={handleImageChange}
                   data-testid="image-upload-input"
-                  style={{ flex: 1, minWidth: '250px' }}
+                  style={{ display: 'none' }}
                 />
                 <Button
                   onClick={handleImageAnalyze}
@@ -98,7 +101,7 @@ export default function ProductScanner({ allergyProfile }) {
                 </Button>
               </div>
               <p style={{ fontSize: '0.85rem', color: '#666', marginTop: '0.5rem' }}>
-                📱 On mobile: Tap to take a photo with your camera or choose from gallery
+                📱 On mobile: Choose from gallery or take a new photo
               </p>
             </div>
           </div>
