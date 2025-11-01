@@ -113,65 +113,6 @@ export default function Dashboard({ allergyProfile, reloadProfile, historyTrigge
     }
   };
 
-  const handleClearHistory = async () => {
-    if (!window.confirm("Are you sure you want to clear all your analysis history? This cannot be undone.")) {
-      return;
-    }
-
-    setClearingHistory(true);
-    
-    try {
-      // Clear each type individually and log results
-      const results = [];
-      
-      try {
-        const res1 = await axios.delete(`${API}/history`);
-        results.push({ type: 'text', status: res1.status, data: res1.data });
-      } catch (err) {
-        results.push({ type: 'text', error: err.response?.data || err.message });
-      }
-      
-      try {
-        const res2 = await axios.delete(`${API}/image-history`);
-        results.push({ type: 'image', status: res2.status, data: res2.data });
-      } catch (err) {
-        results.push({ type: 'image', error: err.response?.data || err.message });
-      }
-      
-      try {
-        const res3 = await axios.delete(`${API}/menu-history`);
-        results.push({ type: 'menu', status: res3.status, data: res3.data });
-      } catch (err) {
-        results.push({ type: 'menu', error: err.response?.data || err.message });
-      }
-      
-      console.log('Clear history results:', results);
-      
-      // Check if at least one succeeded
-      const successCount = results.filter(r => r.status === 200).length;
-      
-      if (successCount > 0) {
-        // Immediately clear the UI
-        setHistory([]);
-        
-        // Wait a moment then reload to confirm
-        setTimeout(async () => {
-          await loadHistory();
-        }, 1000);
-        
-        toast.success(`History cleared! (${successCount}/3 categories cleared)`);
-      } else {
-        toast.error("Failed to clear history. Please check console for details.");
-      }
-      
-    } catch (error) {
-      console.error('Unexpected error:', error);
-      toast.error("An unexpected error occurred");
-    } finally {
-      setClearingHistory(false);
-    }
-  };
-
   return (
     <div className="dashboard-content">
       {/* Allergy Profile Section */}
