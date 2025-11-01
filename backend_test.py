@@ -413,6 +413,18 @@ class AllergyAssistantAPITester:
         self.test_recipe_history_without_auth()
         self.test_recipe_finder_method_validation()
 
+        # Test Quick Text Analysis URL Support
+        print("\n🔍 Testing Quick Text Analysis URL Support...")
+        self.test_analyze_endpoint_exists()
+        self.test_analyze_text_without_auth()
+        self.test_analyze_url_without_auth()
+        self.test_analyze_missing_query_field()
+        self.test_analyze_empty_query()
+        self.test_analyze_method_validation()
+        self.test_analyze_invalid_json()
+        self.test_analyze_no_analysis_type_param()
+        self.test_analyze_url_detection()
+
         # Test CORS
         self.test_cors_headers()
 
