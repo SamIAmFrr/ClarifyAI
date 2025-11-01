@@ -709,9 +709,11 @@ Religion restrictions: {', '.join(religion_restrictions) if religion_restriction
 Your task:
 1. Review ALL menu items from all sections (appetizers, entrees, desserts, drinks, etc.)
 2. Identify the BEST and SAFEST options for this user across the entire menu
-3. Focus on dishes that are completely safe (no allergens, fits restrictions)
+3. Focus on dishes that are completely safe based on listed ingredients
 4. For potentially unsafe dishes, suggest modifications to make them safe
 5. Provide a curated list of recommended items, not everything on the menu
+
+IMPORTANT: Focus on actual ingredients in menu descriptions. Do NOT be overly concerned with cross-contamination as this is typically unavoidable in restaurant kitchens. Only mention if absolutely critical for severe allergies.
 
 Respond in JSON format:
 {{
