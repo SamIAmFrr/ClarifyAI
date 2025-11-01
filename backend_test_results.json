@@ -1,8 +1,8 @@
 {
-  "total_tests": 30,
-  "passed_tests": 29,
+  "total_tests": 47,
+  "passed_tests": 46,
   "failed_tests": 1,
-  "success_rate": "96.7%",
+  "success_rate": "97.9%",
   "test_results": [
     {
       "test": "Backend Health Check",
@@ -148,6 +148,91 @@
       "test": "URL Detection - Regular text",
       "success": true,
       "details": "Expected 401, got 401"
+    },
+    {
+      "test": "Clear History Endpoint Exists",
+      "success": true,
+      "details": "Endpoint exists (got 401)"
+    },
+    {
+      "test": "Clear Image History Endpoint Exists",
+      "success": true,
+      "details": "Endpoint exists (got 401)"
+    },
+    {
+      "test": "Clear Menu History Endpoint Exists",
+      "success": true,
+      "details": "Endpoint exists (got 401)"
+    },
+    {
+      "test": "Clear History Without Auth",
+      "success": true,
+      "details": "Expected 401, got 401"
+    },
+    {
+      "test": "Clear Image History Without Auth",
+      "success": true,
+      "details": "Expected 401, got 401"
+    },
+    {
+      "test": "Clear Menu History Without Auth",
+      "success": true,
+      "details": "Expected 401, got 401"
+    },
+    {
+      "test": "Clear History GET Method",
+      "success": true,
+      "details": "Expected 401 or 200 (GET is valid for history endpoints), got 401"
+    },
+    {
+      "test": "Clear History POST Method",
+      "success": true,
+      "details": "Expected 405, got 405"
+    },
+    {
+      "test": "Clear Image History GET Method",
+      "success": true,
+      "details": "Expected 401 or 200 (GET is valid for history endpoints), got 401"
+    },
+    {
+      "test": "Clear Image History POST Method",
+      "success": true,
+      "details": "Expected 405, got 405"
+    },
+    {
+      "test": "Clear Menu History GET Method",
+      "success": true,
+      "details": "Expected 401 or 200 (GET is valid for history endpoints), got 401"
+    },
+    {
+      "test": "Clear Menu History POST Method",
+      "success": true,
+      "details": "Expected 405, got 405"
+    },
+    {
+      "test": "GET Image History Endpoint",
+      "success": true,
+      "details": "Expected 401 (auth required), got 401"
+    },
+    {
+      "test": "GET Menu History Endpoint",
+      "success": true,
+      "details": "Expected 401 (auth required), got 401"
+    },
+    {
+      "test": "Clear History Response Structure",
+      "success": true,
+      "details": ""
+    },
+    {
+      "test": "Clear Image History Response Structure",
+      "success": true,
+      "details": ""
+    },
+    {
+      "test": "Clear Menu History Response Structure",
+      "success": true,
+      "details": ""
     },
     {
       "test": "CORS Headers",
