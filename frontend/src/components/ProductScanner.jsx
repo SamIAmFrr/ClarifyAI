@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { AlertCircle, CheckCircle, Upload } from "lucide-react";
+import { AlertCircle, CheckCircle, Upload, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -10,10 +10,42 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
 export default function ProductScanner({ allergyProfile }) {
+  // Quick text analysis states
+  const [query, setQuery] = useState("");
+  const [result, setResult] = useState(null);
+  const [analyzing, setAnalyzing] = useState(false);
+
+  // Image analysis states
   const [imageFile, setImageFile] = useState(null);
   const [imagePreview, setImagePreview] = useState(null);
   const [imageResult, setImageResult] = useState(null);
   const [analyzingImage, setAnalyzingImage] = useState(false);
+
+  const handleAnalyze = async () => {
+    if (!query.trim()) {
+      toast.error("Please enter something to analyze");
+      return;
+    }
+
+    if (!allergyProfile) {
+      toast.error("Please set up your allergy profile first");
+      return;
+    }
+
+    setAnalyzing(true);
+    setResult(null);
+
+    try {
+      const response = await axios.post(`${API}/analyze`, {
+        query
+      });
+      setResult(response.data);
+    } catch (error) {
+      toast.error(error.response?.data?.detail || "Analysis failed");
+    } finally {
+      setAnalyzing(false);
+    }
+  };
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
