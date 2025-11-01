@@ -1059,6 +1059,12 @@ async def get_menu_history(user_id: str = Depends(get_current_user)):
     ).sort("timestamp", -1).limit(20).to_list(20)
     return history
 
+# Clear menu history endpoint
+@api_router.delete("/menu-history")
+async def clear_menu_history(user_id: str = Depends(get_current_user)):
+    result = await db.menu_analysis_history.delete_many({"user_id": user_id})
+    return {"message": f"Cleared {result.deleted_count} menu history items", "deleted_count": result.deleted_count}
+
 # Recipe Finder endpoint
 @api_router.post("/recipe-finder", response_model=RecipeFinderResult)
 async def find_recipes(
