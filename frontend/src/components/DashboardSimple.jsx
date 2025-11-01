@@ -113,59 +113,6 @@ export default function Dashboard({ allergyProfile, reloadProfile, historyTrigge
     }
   };
 
-  const handleClearHistory = async () => {
-    if (!window.confirm("Are you sure you want to clear all your analysis history? This cannot be undone.")) {
-      return;
-    }
-
-    setClearingHistory(true);
-    
-    try {
-      // Delete each history type one by one with explicit error handling
-      let deletedCount = 0;
-      
-      try {
-        await axios.delete(`${API}/history`, { withCredentials: true });
-        deletedCount++;
-      } catch (err) {
-        console.error('Failed to delete text history:', err.response?.status);
-      }
-      
-      try {
-        await axios.delete(`${API}/image-history`, { withCredentials: true });
-        deletedCount++;
-      } catch (err) {
-        console.error('Failed to delete image history:', err.response?.status);
-      }
-      
-      try {
-        await axios.delete(`${API}/menu-history`, { withCredentials: true });
-        deletedCount++;
-      } catch (err) {
-        console.error('Failed to delete menu history:', err.response?.status);
-      }
-      
-      // Wait for database to sync
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      // Force reload history
-      setHistory([]);
-      await loadHistory();
-      
-      if (deletedCount > 0) {
-        toast.success("History cleared successfully!");
-      } else {
-        toast.error("Failed to clear history. Please try again.");
-      }
-      
-    } catch (error) {
-      console.error('Clear history error:', error);
-      toast.error("An error occurred while clearing history");
-    } finally {
-      setClearingHistory(false);
-    }
-  };
-
   return (
     <div className="dashboard-content">
       {/* Allergy Profile Section */}
