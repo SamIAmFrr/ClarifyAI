@@ -592,6 +592,17 @@ class AllergyAssistantAPITester:
         self.test_analyze_no_analysis_type_param()
         self.test_analyze_url_detection()
 
+        # Test Clear History Endpoints
+        print("\n🗑️  Testing Clear History Endpoints...")
+        self.test_clear_history_endpoints_exist()
+        self.test_clear_history_without_auth()
+        self.test_clear_image_history_without_auth()
+        self.test_clear_menu_history_without_auth()
+        self.test_clear_history_method_validation()
+        self.test_get_image_history_endpoint()
+        self.test_get_menu_history_endpoint()
+        self.test_clear_history_response_structure()
+
         # Test CORS
         self.test_cors_headers()
 
