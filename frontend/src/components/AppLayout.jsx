@@ -79,7 +79,7 @@ export default function AppLayout({ user, setUser, children }) {
             className={`nav-link ${location.pathname === '/product-scanner' ? 'active' : ''}`}
             data-testid="nav-product-scanner"
           >
-            Product Scanner
+            Quick Allergy Analysis
           </Link>
           <Link 
             to="/recipe-finder" 
