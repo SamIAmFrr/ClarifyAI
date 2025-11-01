@@ -538,58 +538,86 @@ async def analyze_menu_url(
     religion_restrictions = profile.get('religion_restrictions', [])
     
     try:
-        # Fetch the menu content
-        async with httpx.AsyncClient(timeout=30.0) as client:
-            response = await client.get(request.url)
-            if response.status_code != 200:
-                raise HTTPException(status_code=400, detail="Unable to fetch menu from URL")
+        from bs4 import BeautifulSoup
+        from urllib.parse import urljoin, urlparse
+        
+        all_menu_content = []
+        visited_urls = set()
+        base_url = request.url
+        
+        async def fetch_and_extract(url, is_main_page=False):
+            if url in visited_urls or len(visited_urls) > 10:  # Limit to prevent infinite crawling
+                return
             
-            menu_content = response.text
+            visited_urls.add(url)
             
-            # Try to extract clean text from HTML if it's HTML content
-            if '<html' in menu_content.lower() or '<body' in menu_content.lower():
-                try:
-                    from bs4 import BeautifulSoup
-                    soup = BeautifulSoup(menu_content, 'html.parser')
+            try:
+                async with httpx.AsyncClient(timeout=30.0) as client:
+                    response = await client.get(url)
+                    if response.status_code != 200:
+                        return
+                    
+                    soup = BeautifulSoup(response.text, 'html.parser')
                     
                     # Remove unwanted elements
                     for element in soup(["script", "style", "nav", "header", "footer", "iframe", "noscript"]):
                         element.decompose()
                     
-                    # Try to find menu-specific content first
-                    menu_sections = soup.find_all(['main', 'article', 'section'], class_=lambda x: x and any(
-                        keyword in str(x).lower() for keyword in ['menu', 'food', 'dish', 'item', 'product']
+                    # Extract menu content
+                    menu_sections = soup.find_all(['main', 'article', 'section', 'div'], class_=lambda x: x and any(
+                        keyword in str(x).lower() for keyword in ['menu', 'food', 'dish', 'item', 'product', 'category']
                     ))
                     
                     if menu_sections:
-                        # Use only menu sections
-                        text = '\n\n'.join(section.get_text() for section in menu_sections)
-                    else:
-                        # Fallback to main content area or body
-                        main_content = soup.find('main') or soup.find('body')
-                        if main_content:
-                            text = main_content.get_text()
-                        else:
-                            text = soup.get_text()
+                        for section in menu_sections:
+                            text = section.get_text()
+                            lines = (line.strip() for line in text.splitlines())
+                            chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
+                            clean_text = '\n'.join(chunk for chunk in chunks if chunk and len(chunk) > 10)
+                            if clean_text:
+                                all_menu_content.append(clean_text)
                     
-                    # Clean up whitespace
-                    lines = (line.strip() for line in text.splitlines())
-                    chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
-                    clean_text = '\n'.join(chunk for chunk in chunks if chunk)
-                    
-                    # Filter out common non-menu phrases
-                    filtered_lines = []
-                    skip_phrases = ['sign in', 'account', 'rewards', 'join', 'login', 'register', 'newsletter', 'subscribe', 'cart', 'checkout']
-                    for line in clean_text.split('\n'):
-                        if len(line) > 10 and not any(phrase in line.lower() for phrase in skip_phrases):
-                            filtered_lines.append(line)
-                    
-                    menu_content = '\n'.join(filtered_lines) if filtered_lines else clean_text
-                except:
-                    # If BeautifulSoup fails, just use the raw content
-                    pass
-            
-            menu_content = menu_content[:15000]  # Limit content size
+                    # If this is the main page, find menu-related links to explore
+                    if is_main_page and len(visited_urls) < 10:
+                        menu_links = []
+                        for link in soup.find_all('a', href=True):
+                            href = link.get('href')
+                            link_text = link.get_text().lower()
+                            
+                            # Check if link is menu-related
+                            menu_keywords = ['menu', 'food', 'dish', 'category', 'breakfast', 'lunch', 'dinner', 
+                                           'drink', 'beverage', 'appetizer', 'entree', 'dessert', 'sandwich', 'salad']
+                            
+                            if any(keyword in link_text or keyword in href.lower() for keyword in menu_keywords):
+                                full_url = urljoin(base_url, href)
+                                # Only follow links from the same domain
+                                if urlparse(full_url).netloc == urlparse(base_url).netloc:
+                                    menu_links.append(full_url)
+                        
+                        # Follow up to 5 menu links
+                        for menu_link in menu_links[:5]:
+                            await fetch_and_extract(menu_link, is_main_page=False)
+                            
+            except Exception as e:
+                logging.error(f"Error fetching {url}: {str(e)}")
+        
+        # Start with the main URL
+        await fetch_and_extract(base_url, is_main_page=True)
+        
+        # Combine all menu content
+        combined_menu = '\n\n=== MENU SECTION ===\n\n'.join(all_menu_content)
+        
+        # Filter out promotional content
+        filtered_lines = []
+        skip_phrases = ['sign in', 'account', 'rewards', 'join', 'login', 'register', 'newsletter', 'subscribe', 'cart', 'checkout']
+        for line in combined_menu.split('\n'):
+            if len(line) > 10 and not any(phrase in line.lower() for phrase in skip_phrases):
+                filtered_lines.append(line)
+        
+        menu_content = '\n'.join(filtered_lines)[:20000]  # Increased limit for more content
+        
+        if not menu_content or len(menu_content) < 100:
+            raise HTTPException(status_code=400, detail="Could not extract menu content from the website")
         
         # Create AI prompt
         system_message = f"""You are an expert restaurant menu analyzer. Analyze menu items for allergen safety.
