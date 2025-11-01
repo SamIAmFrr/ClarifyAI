@@ -10,7 +10,7 @@ import { toast } from "sonner";
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
-export default function MenuAnalyzer({ allergyProfile }) {
+export default function MenuAnalyzer({ allergyProfile, reloadHistory }) {
   const [menuUrl, setMenuUrl] = useState("");
   const [menuFile, setMenuFile] = useState(null);
   const [menuPreview, setMenuPreview] = useState(null);
