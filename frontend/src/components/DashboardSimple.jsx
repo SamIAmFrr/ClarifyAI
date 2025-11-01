@@ -237,7 +237,7 @@ export default function Dashboard({ allergyProfile, reloadProfile }) {
 
       {/* Quick Analysis Section */}
       <section className="section">
-        <h2 className="section-title">Quick Text Analysis</h2>
+        <h2 className="section-title">Quick Allergy Analysis</h2>
         <p style={{ marginBottom: '1.5rem', color: '#7c3aed' }}>
           Quickly analyze products by name or URL. Enter a product name or paste a product link.
         </p>
