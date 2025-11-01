@@ -252,9 +252,20 @@ export default function Dashboard({ allergyProfile, reloadProfile, historyTrigge
       {/* History Section */}
       {history.length > 0 && (
         <section className="section">
-          <h2 className="section-title">Recent Analysis History</h2>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
+            <h2 className="section-title" style={{ margin: 0 }}>Recent Analysis History</h2>
+            {history.length > 10 && (
+              <Button
+                onClick={() => setShowAllHistory(!showAllHistory)}
+                variant="outline"
+                className="rounded-lg border-purple-500 text-purple-600 hover:border-purple-400 hover:text-purple-500 hover:bg-purple-500/10"
+              >
+                {showAllHistory ? "View Less" : "View All"}
+              </Button>
+            )}
+          </div>
           <div className="history-grid" data-testid="history-list">
-            {history.slice(0, 10).map((item, idx) => (
+            {(showAllHistory ? history : history.slice(0, 10)).map((item, idx) => (
               <div key={item.id} className="history-item" data-testid={`history-item-${idx}`}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                   <div style={{ flex: 1 }}>
