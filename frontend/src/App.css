@@ -453,6 +453,10 @@ h1, h2, h3, h4, h5, h6 {
   min-width: 250px;
 }
 
+.centered-input {
+  text-align: center;
+}
+
 .analysis-input::placeholder {
   color: #9ca3af;
 }
