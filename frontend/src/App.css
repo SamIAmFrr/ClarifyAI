@@ -306,12 +306,6 @@ h1, h2, h3, h4, h5, h6 {
   gap: 1rem;
 }
 
-.nav-links {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
-
 .nav-link {
   padding: 0.5rem 1rem;
   border-radius: 8px;
