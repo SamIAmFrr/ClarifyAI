@@ -70,31 +70,20 @@ export default function Dashboard({ allergyProfile, reloadProfile }) {
     }
   };
 
-  const handleAnalyze = async () => {
-    if (!query.trim()) {
-      toast.error("Please enter something to analyze");
+  const handleClearHistory = async () => {
+    if (!window.confirm("Are you sure you want to clear all your analysis history?")) {
       return;
     }
 
-    if (!allergyProfile) {
-      toast.error("Please set up your allergy profile first");
-      setShowProfileForm(true);
-      return;
-    }
-
-    setAnalyzing(true);
-    setResult(null);
-
+    setClearingHistory(true);
     try {
-      const response = await axios.post(`${API}/analyze`, {
-        query
-      });
-      setResult(response.data);
-      loadHistory();
+      await axios.delete(`${API}/history`);
+      setHistory([]);
+      toast.success("History cleared successfully!");
     } catch (error) {
-      toast.error(error.response?.data?.detail || "Analysis failed");
+      toast.error("Failed to clear history");
     } finally {
-      setAnalyzing(false);
+      setClearingHistory(false);
     }
   };
 
