@@ -1104,6 +1104,8 @@ Be creative with substitutions and make recipes that are both safe AND delicious
         
         user_message = f"""Please create allergy-safe recipes for: {request.food_item}
 
+{f"IMPORTANT: Do NOT generate any of these recipes as they were already shown: {', '.join(request.exclude_recipes)}" if request.exclude_recipes else ""}
+
 Provide your response in this JSON format with EXACTLY 3 different recipe variations:
 {{
   "recipes": [
@@ -1144,7 +1146,7 @@ Provide your response in this JSON format with EXACTLY 3 different recipe variat
   "summary": "Brief summary explaining how these recipes avoid the user's allergens"
 }}
 
-CRITICAL: You MUST provide EXACTLY 3 different recipe variations. All recipes MUST be safe for the user's allergies and restrictions."""
+CRITICAL: You MUST provide EXACTLY 3 different recipe variations. All recipes MUST be safe for the user's allergies and restrictions.{f" DO NOT include: {', '.join(request.exclude_recipes)}" if request.exclude_recipes else ""}"""
         
         # Initialize Gemini chat
         chat = LlmChat(
