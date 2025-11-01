@@ -90,7 +90,7 @@ export default function MenuAnalyzer({ allergyProfile }) {
       <div className="page-header">
         <h1 className="page-title">🍽️ Restaurant Menu Analyzer</h1>
         <p className="page-subtitle">
-          Paste a restaurant menu URL or upload a photo. AI will identify safe dishes and suggest modifications.
+          Paste a restaurant menu URL (website, PDF, Word, Excel, etc.) or upload a photo. AI will explore all sections and find the best safe options for you.
         </p>
       </div>
 
