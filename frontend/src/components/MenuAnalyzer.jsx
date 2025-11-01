@@ -146,18 +146,21 @@ export default function MenuAnalyzer({ allergyProfile }) {
             ) : (
               <div data-testid="menu-photo-section">
                 <div style={{ marginBottom: '1.5rem' }}>
-                  <Label htmlFor="menu-photo" className="mb-2 block font-semibold text-purple-700">
+                  <Label className="mb-2 block font-semibold text-purple-700">
                     Upload or Take Photo of Menu
                   </Label>
                   <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
-                    <Input
+                    <label htmlFor="menu-photo" className="upload-button">
+                      <Upload size={18} className="mr-2" />
+                      Upload Photo
+                    </label>
+                    <input
                       id="menu-photo"
                       type="file"
                       accept="image/*"
-                      capture="environment"
                       onChange={handleMenuFileChange}
                       data-testid="menu-photo-input"
-                      style={{ flex: 1, minWidth: '250px' }}
+                      style={{ display: 'none' }}
                     />
                     <Button
                       onClick={handleMenuAnalyze}
@@ -169,7 +172,7 @@ export default function MenuAnalyzer({ allergyProfile }) {
                     </Button>
                   </div>
                   <p style={{ fontSize: '0.85rem', color: '#666', marginTop: '0.5rem' }}>
-                    📱 On mobile: Tap to take a photo with your camera or choose from gallery
+                    📱 On mobile: Choose from gallery or take a new photo
                   </p>
                   {menuPreview && (
                     <div style={{ marginTop: '1.5rem', textAlign: 'center', background: '#f5f5f5', padding: '1.5rem', borderRadius: '16px' }}>
