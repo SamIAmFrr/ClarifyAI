@@ -847,6 +847,21 @@ h1, h2, h3, h4, h5, h6 {
     width: 100%;
   }
   
+  /* Center inputs on mobile */
+  .analysis-input,
+  input[type="text"],
+  input[type="url"] {
+    width: 100% !important;
+    min-width: 100% !important;
+    text-align: center;
+  }
+  
+  /* Upload button full width on mobile */
+  .upload-button {
+    width: 100%;
+    justify-content: center;
+  }
+  
   /* Tabs mobile */
   .analysis-tabs {
     flex-wrap: wrap;
