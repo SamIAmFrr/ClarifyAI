@@ -11,7 +11,7 @@ import { Badge } from "@/components/ui/badge";
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 const API = `${BACKEND_URL}/api`;
 
-export default function Dashboard({ allergyProfile, reloadProfile }) {
+export default function Dashboard({ allergyProfile, reloadProfile, historyTrigger }) {
   const [profileForm, setProfileForm] = useState({
     allergies: "",
     dietary_restrictions: "",
@@ -37,6 +37,10 @@ export default function Dashboard({ allergyProfile, reloadProfile }) {
     }
     loadHistory();
   }, [allergyProfile]);
+
+  useEffect(() => {
+    loadHistory();
+  }, [historyTrigger]);
 
   const loadHistory = async () => {
     try {
