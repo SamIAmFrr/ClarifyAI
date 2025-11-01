@@ -173,12 +173,17 @@ export default function MenuAnalyzer({ allergyProfile }) {
                       disabled={analyzingMenu || !menuFile}
                       className="bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white rounded-lg px-8 disabled:bg-gray-600 shadow-lg shadow-purple-500/30"
                     >
-                      {analyzingMenu ? "Analyzing..." : "Analyze Menu"}
+                      {analyzingMenu ? "AI Analyzing..." : "Analyze Menu"}
                     </Button>
                   </div>
                   <p style={{ fontSize: '0.85rem', color: '#666', marginTop: '0.5rem' }}>
                     📱 On mobile: Choose from gallery or take a new photo
                   </p>
+                  {analyzingMenu && (
+                    <p style={{ fontSize: '0.85rem', color: '#7c3aed', marginTop: '0.5rem', fontStyle: 'italic' }}>
+                      🔍 AI is analyzing the menu image...
+                    </p>
+                  )}
                   {menuPreview && (
                     <div style={{ marginTop: '1.5rem', textAlign: 'center', background: '#f5f5f5', padding: '1.5rem', borderRadius: '16px' }}>
                       <img
