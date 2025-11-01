@@ -1,8 +1,8 @@
 {
-  "total_tests": 17,
-  "passed_tests": 16,
+  "total_tests": 30,
+  "passed_tests": 29,
   "failed_tests": 1,
-  "success_rate": "94.1%",
+  "success_rate": "96.7%",
   "test_results": [
     {
       "test": "Backend Health Check",
@@ -83,6 +83,71 @@
       "test": "Recipe Finder Method Validation",
       "success": true,
       "details": "Expected 405 for GET method, got 405"
+    },
+    {
+      "test": "Analyze Endpoint Exists",
+      "success": true,
+      "details": "Endpoint exists (got 401)"
+    },
+    {
+      "test": "Analyze Text Without Auth",
+      "success": true,
+      "details": "Expected 401, got 401"
+    },
+    {
+      "test": "Analyze URL Without Auth",
+      "success": true,
+      "details": "Expected 401, got 401"
+    },
+    {
+      "test": "Analyze Missing Query Field",
+      "success": true,
+      "details": "Expected 401 or 422, got 401"
+    },
+    {
+      "test": "Analyze Empty Query",
+      "success": true,
+      "details": "Expected 401 (auth failure), got 401"
+    },
+    {
+      "test": "Analyze Method Validation",
+      "success": true,
+      "details": "Expected 405 for GET method, got 405"
+    },
+    {
+      "test": "Analyze Invalid JSON",
+      "success": true,
+      "details": "Expected 422, got 422"
+    },
+    {
+      "test": "Analyze No Analysis Type Required",
+      "success": true,
+      "details": "Expected 401 (auth failure), got 401"
+    },
+    {
+      "test": "URL Detection - HTTP URL",
+      "success": true,
+      "details": "Expected 401, got 401"
+    },
+    {
+      "test": "URL Detection - HTTPS URL",
+      "success": true,
+      "details": "Expected 401, got 401"
+    },
+    {
+      "test": "URL Detection - Non-HTTP URL (should be treated as text)",
+      "success": true,
+      "details": "Expected 401, got 401"
+    },
+    {
+      "test": "URL Detection - Domain without protocol (should be treated as text)",
+      "success": true,
+      "details": "Expected 401, got 401"
+    },
+    {
+      "test": "URL Detection - Regular text",
+      "success": true,
+      "details": "Expected 401, got 401"
     },
     {
       "test": "CORS Headers",
