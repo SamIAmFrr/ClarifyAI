@@ -647,6 +647,12 @@ async def get_image_history(user_id: str = Depends(get_current_user)):
     ).sort("timestamp", -1).limit(20).to_list(20)
     return history
 
+# Clear image history endpoint
+@api_router.delete("/image-history")
+async def clear_image_history(user_id: str = Depends(get_current_user)):
+    result = await db.image_analysis_history.delete_many({"user_id": user_id})
+    return {"message": f"Cleared {result.deleted_count} image history items", "deleted_count": result.deleted_count}
+
 # Menu URL Analysis endpoint
 @api_router.post("/analyze-menu-url", response_model=MenuAnalysisResult)
 async def analyze_menu_url(
