@@ -241,6 +241,147 @@ class AllergyAssistantAPITester:
             self.log_test("Recipe Finder Method Validation", False, str(e))
             return False
 
+    # Quick Text Analysis URL Support Tests
+    def test_analyze_text_without_auth(self):
+        """Test text analysis without authentication (should fail)"""
+        try:
+            response = requests.post(f"{self.api_url}/analyze", json={
+                "query": "Peanut butter"
+            })
+            success = response.status_code == 401
+            self.log_test("Analyze Text Without Auth", success,
+                         f"Expected 401, got {response.status_code}")
+            return success
+        except Exception as e:
+            self.log_test("Analyze Text Without Auth", False, str(e))
+            return False
+
+    def test_analyze_url_without_auth(self):
+        """Test URL analysis without authentication (should fail)"""
+        try:
+            response = requests.post(f"{self.api_url}/analyze", json={
+                "query": "https://example.com/product"
+            })
+            success = response.status_code == 401
+            self.log_test("Analyze URL Without Auth", success,
+                         f"Expected 401, got {response.status_code}")
+            return success
+        except Exception as e:
+            self.log_test("Analyze URL Without Auth", False, str(e))
+            return False
+
+    def test_analyze_missing_query_field(self):
+        """Test analyze endpoint with missing query field"""
+        try:
+            response = requests.post(f"{self.api_url}/analyze", json={})
+            success = response.status_code in [401, 422]  # Auth or validation error
+            self.log_test("Analyze Missing Query Field", success,
+                         f"Expected 401 or 422, got {response.status_code}")
+            return success
+        except Exception as e:
+            self.log_test("Analyze Missing Query Field", False, str(e))
+            return False
+
+    def test_analyze_empty_query(self):
+        """Test analyze endpoint with empty query string"""
+        try:
+            response = requests.post(f"{self.api_url}/analyze", json={
+                "query": ""
+            })
+            success = response.status_code == 401  # Should fail auth first
+            self.log_test("Analyze Empty Query", success,
+                         f"Expected 401 (auth failure), got {response.status_code}")
+            return success
+        except Exception as e:
+            self.log_test("Analyze Empty Query", False, str(e))
+            return False
+
+    def test_analyze_method_validation(self):
+        """Test analyze endpoint only accepts POST method"""
+        try:
+            # Test GET method (should fail)
+            response = requests.get(f"{self.api_url}/analyze")
+            success = response.status_code == 405  # Method not allowed
+            self.log_test("Analyze Method Validation", success,
+                         f"Expected 405 for GET method, got {response.status_code}")
+            return success
+        except Exception as e:
+            self.log_test("Analyze Method Validation", False, str(e))
+            return False
+
+    def test_analyze_invalid_json(self):
+        """Test analyze endpoint with malformed JSON"""
+        try:
+            response = requests.post(f"{self.api_url}/analyze", 
+                                   data="invalid json",
+                                   headers={'Content-Type': 'application/json'})
+            success = response.status_code == 422  # Validation error
+            self.log_test("Analyze Invalid JSON", success,
+                         f"Expected 422, got {response.status_code}")
+            return success
+        except Exception as e:
+            self.log_test("Analyze Invalid JSON", False, str(e))
+            return False
+
+    def test_analyze_endpoint_exists(self):
+        """Test that analyze endpoint exists (should return 401, not 404)"""
+        try:
+            response = requests.post(f"{self.api_url}/analyze", json={
+                "query": "test product"
+            })
+            success = response.status_code != 404
+            self.log_test("Analyze Endpoint Exists", success,
+                         f"Endpoint not found (404)" if not success else f"Endpoint exists (got {response.status_code})")
+            return success
+        except Exception as e:
+            self.log_test("Analyze Endpoint Exists", False, str(e))
+            return False
+
+    def test_analyze_no_analysis_type_param(self):
+        """Test that analyze endpoint no longer requires analysis_type parameter"""
+        try:
+            # Test with old analysis_type parameter (should still work but parameter ignored)
+            response = requests.post(f"{self.api_url}/analyze", json={
+                "query": "test product",
+                "analysis_type": "food"  # This should be ignored
+            })
+            success = response.status_code == 401  # Should fail auth, not validation
+            self.log_test("Analyze No Analysis Type Required", success,
+                         f"Expected 401 (auth failure), got {response.status_code}")
+            return success
+        except Exception as e:
+            self.log_test("Analyze No Analysis Type Required", False, str(e))
+            return False
+
+    def test_analyze_url_detection(self):
+        """Test URL detection logic (without auth, just structure validation)"""
+        test_cases = [
+            ("http://example.com", "HTTP URL"),
+            ("https://example.com", "HTTPS URL"),
+            ("ftp://example.com", "Non-HTTP URL (should be treated as text)"),
+            ("example.com", "Domain without protocol (should be treated as text)"),
+            ("product name", "Regular text")
+        ]
+        
+        all_passed = True
+        for query, description in test_cases:
+            try:
+                response = requests.post(f"{self.api_url}/analyze", json={
+                    "query": query
+                })
+                # All should fail with 401 (auth required), not 422 (validation error)
+                success = response.status_code == 401
+                test_name = f"URL Detection - {description}"
+                self.log_test(test_name, success,
+                             f"Expected 401, got {response.status_code}")
+                if not success:
+                    all_passed = False
+            except Exception as e:
+                self.log_test(f"URL Detection - {description}", False, str(e))
+                all_passed = False
+        
+        return all_passed
+
     def run_all_tests(self):
         """Run all backend API tests"""
         print("🚀 Starting Allergy Assistant API Tests...")
