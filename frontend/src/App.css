@@ -849,6 +849,7 @@ h1, h2, h3, h4, h5, h6 {
   
   /* Center inputs on mobile */
   .analysis-input,
+  .centered-input,
   input[type="text"],
   input[type="url"] {
     width: 100% !important;
