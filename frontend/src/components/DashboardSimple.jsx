@@ -239,34 +239,15 @@ export default function Dashboard({ allergyProfile, reloadProfile }) {
       <section className="section">
         <h2 className="section-title">Quick Text Analysis</h2>
         <p style={{ marginBottom: '1.5rem', color: '#7c3aed' }}>
-          Quickly analyze food, products, skincare items, or ingredients by name.
+          Quickly analyze products by name or URL. Enter a product name or paste a product link.
         </p>
         
         <div className="animated-border-box">
           <div className="animated-border-content">
-            <div className="analysis-tabs">
-              {[
-                { value: 'food', label: 'Food' },
-                { value: 'product', label: 'Product' },
-                { value: 'skincare', label: 'Skincare' },
-                { value: 'fragrance', label: 'Fragrance' },
-                { value: 'ingredient', label: 'Ingredient' }
-              ].map(tab => (
-                <button
-                  key={tab.value}
-                  data-testid={`tab-${tab.value}`}
-                  className={`tab-button ${analysisType === tab.value ? 'active' : ''}`}
-                  onClick={() => setAnalysisType(tab.value)}
-                >
-                  {tab.label}
-                </button>
-              ))}
-            </div>
-
             <div className="analysis-input-group">
               <Input
                 data-testid="analysis-query-input"
-                placeholder={`Enter ${analysisType} name`}
+                placeholder="Enter product name or URL"
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleAnalyze()}
