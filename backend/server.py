@@ -552,17 +552,39 @@ async def analyze_menu_url(
                     from bs4 import BeautifulSoup
                     soup = BeautifulSoup(menu_content, 'html.parser')
                     
-                    # Remove script and style elements
-                    for script in soup(["script", "style", "nav", "header", "footer"]):
-                        script.decompose()
+                    # Remove unwanted elements
+                    for element in soup(["script", "style", "nav", "header", "footer", "iframe", "noscript"]):
+                        element.decompose()
                     
-                    # Get text
-                    text = soup.get_text()
+                    # Try to find menu-specific content first
+                    menu_sections = soup.find_all(['main', 'article', 'section'], class_=lambda x: x and any(
+                        keyword in str(x).lower() for keyword in ['menu', 'food', 'dish', 'item', 'product']
+                    ))
+                    
+                    if menu_sections:
+                        # Use only menu sections
+                        text = '\n\n'.join(section.get_text() for section in menu_sections)
+                    else:
+                        # Fallback to main content area or body
+                        main_content = soup.find('main') or soup.find('body')
+                        if main_content:
+                            text = main_content.get_text()
+                        else:
+                            text = soup.get_text()
                     
                     # Clean up whitespace
                     lines = (line.strip() for line in text.splitlines())
                     chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
-                    menu_content = '\n'.join(chunk for chunk in chunks if chunk)
+                    clean_text = '\n'.join(chunk for chunk in chunks if chunk)
+                    
+                    # Filter out common non-menu phrases
+                    filtered_lines = []
+                    skip_phrases = ['sign in', 'account', 'rewards', 'join', 'login', 'register', 'newsletter', 'subscribe', 'cart', 'checkout']
+                    for line in clean_text.split('\n'):
+                        if len(line) > 10 and not any(phrase in line.lower() for phrase in skip_phrases):
+                            filtered_lines.append(line)
+                    
+                    menu_content = '\n'.join(filtered_lines) if filtered_lines else clean_text
                 except:
                     # If BeautifulSoup fails, just use the raw content
                     pass
