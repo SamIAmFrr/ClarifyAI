@@ -284,14 +284,6 @@ export default function RecipeFinder({ allergyProfile }) {
             </div>
           </div>
         )}
-            ) : (
-              <div className="alert alert-warning">
-                <AlertCircle size={20} />
-                <span>No recipes found. Please try a different search.</span>
-              </div>
-            )}
-          </div>
-        )}
       </div>
     </div>
   );
