@@ -190,9 +190,8 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Recipe Finder API Endpoint"
-    - "Recipe Finder Component"
-    - "Recipe Finder Navigation"
+    - "Quick Text Analysis URL Support"
+    - "Quick Text Analysis UI Update"
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
@@ -202,3 +201,5 @@ agent_communication:
     message: "Implemented Recipe Finder feature with backend endpoint /api/recipe-finder and frontend component. The feature allows users to search for food items and receive 2-3 AI-generated allergy-safe recipes. Ready for backend testing."
   - agent: "testing"
     message: "✅ BACKEND TESTING COMPLETED - Recipe Finder API endpoints are working perfectly. Both /api/recipe-finder (POST) and /api/recipe-history (GET) endpoints are properly implemented with authentication, validation, and error handling. All Pydantic models are correctly structured. Backend service is running and accessible. 14/15 comprehensive tests passed. Ready for frontend testing or main agent can summarize and finish if no frontend testing needed."
+  - agent: "main"
+    message: "Updated Quick Text Analysis feature: 1) Removed product type selector tabs from frontend. 2) Changed placeholder to 'Enter product name or URL'. 3) Modified backend /api/analyze endpoint to detect URLs and scrape product information using BeautifulSoup (similar to Menu Analyzer). 4) Added support for PDF and DOCX files at URLs. 5) Updated AI prompts to handle both text and URL inputs. Ready for backend testing with both text product names and product URLs."
